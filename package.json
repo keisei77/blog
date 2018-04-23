@@ -1,5 +1,27 @@
 {
+  "name": "keisei77.github.io",
+  "version": "1.0.0",
+  "description": "Keisei's static website",
+  "main": "index.js",
   "scripts": {
-    "docs:build": "vuepress build docs"
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keisei77/keisei77.github.io.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "keisei",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/keisei77/keisei77.github.io/issues"
+  },
+  "homepage": "https://github.com/keisei77/keisei77.github.io#readme",
+  "devDependencies": {
+    "vuepress": "^0.7.1"
   }
 }
