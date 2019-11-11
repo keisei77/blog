@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/keisei77/blog/issues"
   },
-  "homepage": "https://keisei77.github.io/blog",
+  "homepage": "https://www.keisei.top",
   "private": true,
   "dependencies": {
     "@types/jest": "^24.0.22",
