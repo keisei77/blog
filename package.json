@@ -1,16 +1,11 @@
 {
-  "name": "keisei77.github.io",
+  "name": "blog",
   "version": "1.0.0",
   "description": "Keisei's static website",
   "main": "index.js",
-  "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/keisei77/keisei77.github.io.git"
+    "url": "git+https://github.com/keisei77/blog.git"
   },
   "keywords": [
     "blog"
@@ -18,10 +13,43 @@
   "author": "keisei",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/keisei77/keisei77.github.io/issues"
+    "url": "https://github.com/keisei77/blog/issues"
   },
-  "homepage": "https://github.com/keisei77/keisei77.github.io#readme",
-  "devDependencies": {
-    "vuepress": "^0.7.1"
+  "homepage": "https://keisei77.github.io/blog",
+  "private": true,
+  "dependencies": {
+    "@types/jest": "^24.0.22",
+    "@types/node": "^12.12.7",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
+    "gh-pages": "^2.1.1",
+    "less": "^3.10.3",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-scripts": "3.2.0",
+    "typescript": "^3.7.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+  "deploy": "gh-pages -d build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
