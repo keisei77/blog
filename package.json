@@ -52,8 +52,8 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "type-check": "tsc --noEmit",
-    "predeploy": "npm run build && cp CNAME build/CNAME",
-    "deploy": "gh-pages -d build"
+    "predeploy": "npm run build && cp CNAME public/CNAME",
+    "deploy": "gh-pages -d public"
   },
   "eslintConfig": {
     "extends": "react-app"
