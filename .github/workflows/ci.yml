@@ -11,5 +11,5 @@ jobs:
         with:
           node-version: 12
       - run: npm install
-      - run: npm predeploy
-      - run: npm deploy
+      - run: npm run predeploy
+      - run: npm run deploy
