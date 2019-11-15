@@ -1,7 +1,7 @@
 ---
 title: React源码中导致V8性能断崖下滑的真相
 date: "2019-11-14 22:42"
-description: "本文主要讲述了V8如何在内存中表示Javascript类型，并且是如何影响Shape机制的，这将会为我们解释近期发现的一个React核心代码中的性能问题。"
+description: "本文主要讲述了V8如何在内存中表示JavaScript类型，并且是如何影响Shape机制的，这将会为我们解释近期发现的一个React核心代码中的性能问题。"
 tags: ["React", "V8", "representations", "optimize"]
 ---
 
@@ -116,3 +116,225 @@ NaN; // HeapNumber
 如上面的示例所示，一些 JavaScript 数字表示为 `Smi` s，而其他 JavaScript 数字表示为 `HeapNumber`s。 V8 特别针对 `Smi`s 进行了优化，因为小整数在现实世界的 JavaScript 程序中非常常见。 不需要为 `Smi`s 在内存中分配特殊块，并且通常整数运算会更快。
 
 这里重要的一点是，即使是具有相同 JavaScript 类型的值，作为优化在后台可能会以完全不同的方式表示。
+
+## Smi vs. HeapNumber vs. MutableHeapNumber
+
+下面我们来看一下底层的实现。
+
+```javascript
+const o = {
+  x: 42, //Smi
+  y: 4.2, // HeapNumber
+};
+```
+
+`42` 可以通过 `Smi` 来表示，它可以直接存在 object 中，而 `4.2` 需要一个独立的实体来保存，object 指向那个实体。
+
+![smi vs heapnumber](./smi-vs-heapnumber.svg)
+
+当我们执行以下代码时：
+
+```javascript
+o.x += 10;
+// -> o.x = 52
+o.y += 1;
+// -> o.y = 5.2
+```
+
+因为新值 `52` 仍满足 `Smi` 表示的范围，所以 `x` 值会在原位置更新。
+
+![update smi](./update-smi.svg)
+
+`y = 5.2` 不能用 `Smi` 表示，并且与 `4.2` 不同，所以 V8 只好分配一份新的 `HeapNumber` 实体给到 `y` 。
+
+![update heapnumber](./update-heapnumber.svg)
+
+`HeapNumber`s 是不可变的，这可以带来一些明显的优化。如 `o.x = o.y` 操作，实际上只是将 `x` 的指针指向 `y` 指向的实体 `HeapNumber` ，而不需要重新创建。
+
+![update heapnumber](./heapnumbers.svg)
+
+`HeapNumber` 的一个劣势是更新数据会比 `Smi` 慢，考虑以下代码：
+
+```javascript
+// 创建`HeapNumber` 实体
+const o = { x: 0.1 };
+
+for (let i = 0; i < 5; ++i) {
+  // 创建一个新 `HeapNumber` 实体
+  o.x += 1;
+}
+```
+
+这段代码总共生成了 6 个 `HeapNumber` 实体，但其中 5 个是没有必要的。为了避免这种情况， V8 将这种数据标记为 `Double` 字段，提供了一种原地更新非 `Smi` 的类型 `MutableHeapNumber` 来存储 `Float64` 数据。
+
+![mutableheapnumber](./mutableheapnumber.svg)
+
+当值更新时，V8 会简单原地更新 `MutableHeapNumber` 的数据。
+
+![update mutableheapnumber](./update-mutableheapnumber.svg)
+
+但这中也有陷阱，当`y = o.x` 时，如果 `y` 也指向同一 `MutableHeapNumber` 那么下次 `o.x` 的值更新， `y` 也会跟着更新，这显然是违背 JavaScript 规范的。所以当 `o.x` 被访问时，首先需要将值转换为正常的 `HeapNumber` 。
+
+## Shape 弃用和迁移
+
+如果一个字段初始时是 `Smi` 后来变更为非 `Smi` 类型，底层是如何变更呢？
+
+```javascript
+const a = { x: 1 };
+const b = { x: 2 };
+// -> 两个对象的 x 是 Smi 类型
+b.x = 0.2;
+// -> b.x 现在是 Double 类型
+y = a.x;
+```
+
+![shape](./shape.svg)
+
+当 `b.x` 变为 `Double` 表示时，V8 分配了一个新的空 shape，并指向 x，也创建了一个 `MutableHeapNumber` 来存储新值 `0.2`。然后对象 `b` 指向新 shape ，对象的值指向偏移量为 0 的 `MutableHeapNumber`。最后把旧 shape 标记为弃用的，断开 transition 树。`x` 完成了从空 shape 到新创建的 shape 的过渡。
+
+![shape transition](./shape-transition.svg)
+
+由于 a 对象还在指向旧的 shape，所以不能移除。V8 定义了任何取 a 中的属性或对 a 赋值之前先将 a 迁移至新的 shape。这样最终会使得标记为弃用的 shape 不可访问， 这时垃圾回收就可以释放这段内存了。
+
+![shape deprecation](./shape-deprecation.svg)
+
+还有另一种情况：
+
+```javascript
+const o = {
+  x: 1,
+  y: 2,
+  z: 3,
+};
+
+o.y = 0.1;
+```
+
+这时 V8 需要找到这条链路上 `y` 之前的 shape，即 `x`。
+
+![split shape](./split-shape.svg)
+
+从分离的 shape 开始，我们创建了新的过渡链，并标记 `y` 为 `Double` 类型，旧的子树弃用。最后一步迁移对象 o 至新的 shape，`y` 的值保存在 `MutableHeapNumber` 中。一旦所有旧 shape 的引用全都消失，那这棵树上所有旧的 shape 也会被回收。
+
+## 可扩展性和完整过渡
+
+`Object.preventExtensions()` 可以阻止新的属性添加至一个对象中。
+`Object.seal` 包含了 `Object.preventExtensions()` 的功能，并且它会标记所有属性为不可配置。
+`Object.freeze` 与 `Object.seal` 类似，同时所有属性值不能更改。
+
+考虑一个具体的情况：
+
+```javascript
+const a = { x: 1 };
+const b = { x: 2 };
+
+Object.preventExtensions(b);
+```
+
+像之前一样，从空 shape 过渡到新的存有 `x` 属性的 shape。当我们执行 `Object.preventExtensions()` 时，执行了一个特殊过渡至被标记为不可扩展的新 shape。这个过渡并不是因为新的属性，只是进行了标记。
+
+![shape nonextensible](./shape-nonextensible.svg)
+
+注意我们不能直接在原地更新 `x` 的 shape，原因是对象 `a` 仍然是可扩展的。
+
+## React 性能问题
+
+让我们最终来看一个真实的问题，[react issue #14365](https://github.com/facebook/react/issues/14365)。当 React 团队对一个现实的程序执行 profile 时，他们发现了 V8 一个奇怪的性能问题影响了 React 核心代码。下面是简化过的代码：
+
+```javascript
+const o = { x: 1, y: 2 };
+Object.preventExtensions(o);
+o.y = 0.2;
+```
+
+对象 `o` 有两个值为 `Smi` 表示的属性，然后禁用了 `o` 的扩展性，并强制将第二个属性转换为 `Double` 表示。
+根据前面的知识，代码的运行步骤如下：
+
+![repro shape setup](./repro-shape-setup.svg)
+
+两个属性为 `Smi` 表示，对象 `o` 指向最终过渡到 non-extensible 的 shape。
+
+现在我们将 `y` 更新为 `Double` 表示，意味着我们需要从头开始找到分离的 shape `x`，但是 V8 出现了分歧，分离的 shape 是可扩展的，但是当前的 shape 被标记为非扩展的，V8 不知道如何正确进行过渡，实际上创建了一个独立的 shape。
+
+![orphaned shape](./orphaned-shape.svg)
+
+可以想象当有很多这种对象时，会多糟糕。React 核心代码就产生了这一问题，`FiberNode` 有几个开启 profile 操作时记录时间戳的字段。
+
+```javascript
+class FiberNode {
+  constructor() {
+    this.actualStartTime = 0;
+    Object.preventExtensions(this);
+  }
+}
+
+const node1 = new FiberNode();
+const node2 = new FiberNode();
+```
+
+这些字段如 `actualStartTime` 初始时赋值为 0 或 -1，即初始以 `Smi` 表示。但是后来执行[performance.now()](https://w3c.github.io/hr-time/#dom-performance-now)时返回的浮点数的时间戳保存至这些字段中，即变更为 `Double` 表示。
+
+最初的表示：
+
+![fibernode shape](./fibernode-shape.svg)
+
+当存储时间戳时，V8 产生了矛盾：
+
+![orphan islands](./orphan-islands.svg)
+
+V8 为 node1 生成了 orphaned shape，在随后的某个节点为 node2 生成了不相交的另一个 orphaned shape。现实中 React 应用中 `FiberNode` 不止一两个，所以可想而知严重降低了 V8 的性能。
+
+现在 V8 v7.4 版本已经修复了这个问题，并且使得字段表示的更新成本更低。
+
+![fix fibernode shape](./fix-fibernode-shape-2.svg)
+
+现在当 `actualStartTime` 赋值为 `Double` 表示时，会正确的产生一条新的过渡链，并将之前的标记为弃用，在未来的某个时间点回收。
+
+React 团队的[解决方式](https://github.com/facebook/react/pull/14383)是初始化时将所有的 time 和 duration 字段以 `Double` 表示：
+
+```javascript
+class FiberNode {
+  constructor() {
+    // 强制以 Double 表示
+    this.actualStartTime = Number.NaN;
+    // 随后可以以 Smi 来真正初始化值
+    this.actualStartTime = 0;
+    Object.preventExtensions(this);
+  }
+}
+
+const node1 = new FiberNode();
+const node2 = new FiberNode();
+```
+
+可以使用任何不符合 `Smi` 范围的浮点值来代替 Number.NaN，如 `0.000001`， `Number.MIN_VALUE`， `-0`和 `Infinity`。
+
+JavaScript 引擎在底层做了哪些神奇的操作，我们不得而知，但是记住不要混用类型，这样可以提交 V8 的性能。例如不要给数字类型的字段初始化 `null` 值，这会失去字段表示的优势，并且代码更易读：
+
+```javascript
+// 不要这么写!
+class Point {
+  x = null;
+  y = null;
+}
+
+const p = new Point();
+p.x = 0.1;
+p.y = 402;
+```
+
+换句话说，**可读性高的代码性能更好！**
+
+## 收获与总结
+
+本文主要深入了以下内容：
+
+- JavaScript 类型分为基本类型和引用类型，`typeof` 会有误导性；
+- 即便是同一种数据类型，它背后的表示形式可能不同；
+- V8 尽可能去寻找 JavaScript 应用中每个字段的最佳表示形式；
+- V8 如何处理 shape 弃用和迁移，包括扩展性过渡。
+
+基于以上知识，在编写 JavaScript 代码时以下注意事项可以提高性能：
+
+- 总是以同一种方式初始化对象，shape 可以变得高效；
+- 选择对字段类型合适的初始值来帮助 JavaScript 引擎选择表示形式。
