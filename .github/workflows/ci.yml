@@ -3,15 +3,17 @@ name: ci
 on: [push]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: npm install
-      - run: npm run predeploy
-      - run: git config user.email ${{ secrets.EMAIL }}
-      - run: git config user.name ${{ secrets.NAME }}
-      - run: npm run deploy
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Build and Deploy
+        uses: JamesIves/github-pages-deploy-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          BASE_BRANCH: master # The branch the action should deploy from.
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: build # The folder the action should deploy.
+          BUILD_SCRIPT: npm install && npm run predeploy # The build script the action should run prior to deploying.
