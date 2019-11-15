@@ -12,4 +12,6 @@ jobs:
           node-version: 12
       - run: npm install
       - run: npm run predeploy
+      - run: git config user.email ${{ secrets.EMAIL }}
+      - run: git config user.name ${{ secrets.NAME }}
       - run: npm run deploy
