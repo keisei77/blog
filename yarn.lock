@@ -5470,6 +5470,11 @@ gatsby-plugin-react-helmet@^3.1.14:
   dependencies:
     "@babel/runtime" "^7.7.2"
 
+gatsby-plugin-remove-serviceworker@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-remove-serviceworker/-/gatsby-plugin-remove-serviceworker-1.0.0.tgz#9fb433bc8bd766e14e1d3711c4ac6f051e1dff7c"
+  integrity sha1-n7QzvIvXZuFOHTcRxKxvBR4d/3w=
+
 gatsby-plugin-sharp@^2.2.38:
   version "2.2.38"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-sharp/-/gatsby-plugin-sharp-2.2.38.tgz#3cebc9c0ebe65f22b0ae4e9d27368a9610ab1d04"
