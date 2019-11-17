@@ -46,13 +46,14 @@
     "typescript": "^3.7.2"
   },
   "scripts": {
+    "clean": "gatsby clean",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",
     "type-check": "tsc --noEmit",
-    "predeploy": "npm run build && cp CNAME public/CNAME",
+    "predeploy": "npm run clean && npm run build && cp CNAME public/CNAME",
     "deploy": "gh-pages -d public"
   },
   "eslintConfig": {
