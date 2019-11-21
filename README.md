@@ -1,3 +1,3 @@
 # Blog
 
-[My personal blog](www.keisei.top) about learning computer science.
+[My personal blog](https://www.keisei.top) about learning computer science.
