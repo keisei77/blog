@@ -21,14 +21,14 @@ class BlogPostTemplate extends React.Component {
           <header>
             <h1
               style={{
-                marginBottom: 0
+                marginBottom: 0,
               }}
             >
               {post.frontmatter.title}
             </h1>
             <p
               style={{
-                display: `block`
+                display: `block`,
               }}
             >
               {post.frontmatter.date}
@@ -48,7 +48,7 @@ class BlogPostTemplate extends React.Component {
               flexWrap: `wrap`,
               justifyContent: `space-between`,
               listStyle: `none`,
-              padding: 0
+              padding: 0,
             }}
           >
             <li>
