@@ -1,8 +1,8 @@
 ---
 title: JavaScript 引擎基础：Shapes 和 Inline Caches
-date: "2019-11-18 22:51"
-description: "了解 JavaScript 引擎基本的工作原理，可以帮助我们写出更加高性能的代码。"
-tags: ["javascript engines", "V8", "shapes", "inline caches", "fundamentals"]
+date: '2019-11-18 22:51'
+description: '了解 JavaScript 引擎基本的工作原理，可以帮助我们写出更加高性能的代码。'
+tags: ['javascript engines', 'V8', 'shapes', 'inline caches', 'fundamentals']
 ---
 
 ## JavaScript 引擎管道
@@ -45,7 +45,7 @@ ECMAScript 规范定义了所有对象都是字典，[属性的键值](https://t
 
 ```javascript
 const object = { foo: 42 };
-Object.getOwnPropertyDescriptor(object, "foo");
+Object.getOwnPropertyDescriptor(object, 'foo');
 // -> { value: 42, writable: true, enumerable: true, configurable: true }
 ```
 
@@ -54,9 +54,9 @@ Object.getOwnPropertyDescriptor(object, "foo");
 另一个不同点是数组有一个魔法的`length`属性。
 
 ```javascript
-const array = ["a", "b"];
+const array = ['a', 'b'];
 array.length; // -> 2
-array[2] = "c";
+array[2] = 'c';
 array.length; // -> 3
 ```
 
@@ -80,8 +80,8 @@ JavaScript 定义数组和定义对象相似，所有键值包括索引值都是
 
 ```javascript
 const object = {
-  foo: "bar",
-  baz: "qux",
+  foo: 'bar',
+  baz: 'qux',
 };
 
 // 这里我们访问 object 的 foo 属性。
@@ -244,7 +244,7 @@ JSC 还将内联缓存嵌入包含两个未初始化插槽的 `get_by_id` 指令
 数组保存的属性又称为索引，对应的值称为数组元素。在每个单个数组中保存每个数组元素的属性信息是浪费内存的，JavaScript 引擎默认情况下索引值的属性是可写、可遍历、可删除，并且将数组元素和其他命名属性分开存储。
 
 ```javascript
-const array = ["#jsconfeu"];
+const array = ['#jsconfeu'];
 ```
 
 引擎保存了数组长度 `1`，并指向包含偏移量和 `length` 属性的 `Shape`。

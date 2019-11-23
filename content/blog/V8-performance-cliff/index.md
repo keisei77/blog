@@ -1,20 +1,26 @@
 ---
 title: React源码中导致V8性能断崖下滑的真相
-date: "2019-11-14 22:42"
-description: "本文主要讲述了V8如何在内存中表示JavaScript类型，并且是如何影响Shape机制的，这将会为我们解释近期发现的一个React核心代码中的性能问题。"
-tags: ["React", "V8", "representations", "optimize"]
+date: '2019-11-14 22:42'
+description: '本文主要讲述了V8如何在内存中表示JavaScript类型，并且是如何影响Shape机制的，这将会为我们解释近期发现的一个React核心代码中的性能问题。'
+tags: ['React', 'V8', 'representations', 'optimize']
 ---
 
 ## JavaScript 类型
 
-JavaScript 的值总共具有 8 种不同的类型：`Number, String, Symbol, BigInt, Boolean, Undefined, Null, Object` ，可以通过 `typeof` 关键字来校验值的类型。
+JavaScript 的值总共具有 8 种不同的类型：
+
+```javascript
+Number, String, Symbol, BigInt, Boolean, Undefined, Null, Object;
+```
+
+可以通过 `typeof` 关键字来校验值的类型。
 
 ```javascript
 typeof 42;
 // -> 'number'
-typeof "foo";
+typeof 'foo';
 // -> 'string'
-typeof Symbol("bar");
+typeof Symbol('bar');
 // -> 'symbol'
 typeof 42n;
 // -> 'bigint'
