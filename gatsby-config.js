@@ -127,5 +127,19 @@ module.exports = {
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-typescript`,
     `gatsby-plugin-less`,
+    {
+      resolve: `gatsby-plugin-prefetch-google-fonts`,
+      options: {
+        fonts: [
+          {
+            family: `Cardo`,
+          },
+          {
+            family: `Ovo`,
+            variants: [`400`, `700`],
+          },
+        ],
+      },
+    },
   ],
 };
