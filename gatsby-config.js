@@ -1,9 +1,13 @@
 module.exports = {
   siteMetadata: {
-    title: `Blog`,
-    author: `Keisei Jia`,
-    description: `A starter blog demonstrating what Gatsby can do.`,
+    title: `学习随笔`,
+    author: `Keisei`,
+    description: `日常学习之互联网技术`,
     siteUrl: `https://www.keisei.top/`,
+    social: {
+      email: `keisei.jia@gmail.com`,
+      github: `https://github.com/keisei77`,
+    },
   },
   plugins: [
     {
