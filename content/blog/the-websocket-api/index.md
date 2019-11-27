@@ -163,7 +163,7 @@ exampleSocket.onmessage = function(event) {
 exampleSocket.close();
 ```
 
-在关闭连接时最好检查 [`bufferedAmount`](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/bufferedAmount) 在网路中是否还有未传输的数据。如果值不为 0，说明还有数据未接收，所以需要等待完全接收再关闭。
+在关闭连接时最好检查 [`bufferedAmount`](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/bufferedAmount) 在网路中是否还有未传输的数据。如果值不为 0，说明还有数据待处理，所以需要处理完成再关闭。
 
 ### 安全事项
 
