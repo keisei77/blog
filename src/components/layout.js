@@ -4,6 +4,7 @@ import { Link } from 'gatsby';
 class Layout extends React.Component {
   render() {
     const { location, title, children } = this.props;
+    // eslint-disable-next-line no-undef
     const rootPath = `${__PATH_PREFIX__}/`;
     let header;
 
@@ -11,14 +12,14 @@ class Layout extends React.Component {
       header = (
         <h1
           style={{
-            marginTop: 0
+            marginTop: '2rem',
           }}
         >
           <Link
             style={{
               boxShadow: `none`,
               textDecoration: `none`,
-              color: `inherit`
+              color: `inherit`,
             }}
             to={`/`}
           >
@@ -31,14 +32,14 @@ class Layout extends React.Component {
         <h3
           style={{
             fontFamily: `Montserrat, sans-serif`,
-            marginTop: 0
+            marginTop: '1rem',
           }}
         >
           <Link
             style={{
               boxShadow: `none`,
               textDecoration: `none`,
-              color: `inherit`
+              color: `inherit`,
             }}
             to={`/`}
           >
@@ -51,7 +52,8 @@ class Layout extends React.Component {
       <div
         style={{
           marginLeft: `auto`,
-          marginRight: `auto`
+          marginRight: `auto`,
+          padding: '0 1rem',
         }}
       >
         <header>{header}</header>
