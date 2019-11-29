@@ -6,6 +6,11 @@
  */
 
 import React from 'react';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import EmailIcon from '@material-ui/icons/Email';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
 import { useStaticQuery, graphql } from 'gatsby';
 
 const Bio = () => {
@@ -26,21 +31,40 @@ const Bio = () => {
   const { author, social } = data.site.siteMetadata;
   const { email, github } = social;
   return (
-    <div>
-      <p>
+    <Grid>
+      <Box my={1}>
         Written by <strong>{author}</strong> who lives and works in Shanghai
         building useful things.
-      </p>
-      <p>
-        Email: <a href={`mailto:${email}`}>{email}</a>
-      </p>
-      <p>
-        Github:{' '}
-        <a href={github} target="_blank" rel="noopener noreferrer">
-          {github}
-        </a>
-      </p>
-    </div>
+      </Box>
+      <Box my={1}>
+        <Grid
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="center"
+        >
+          <Box mr={0.5}>
+            <EmailIcon />
+          </Box>
+          <Link href={`mailto:${email}`}>{email}</Link>
+        </Grid>
+      </Box>
+      <Box my={1}>
+        <Grid
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="center"
+        >
+          <Box mr={0.5}>
+            <GitHubIcon />
+          </Box>
+          <Link href={github} target="_blank" rel="noopener noreferrer">
+            {github}
+          </Link>
+        </Grid>
+      </Box>
+    </Grid>
   );
 };
 
