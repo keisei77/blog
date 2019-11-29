@@ -136,11 +136,8 @@ module.exports = {
       options: {
         fonts: [
           {
-            family: `Cardo`,
-          },
-          {
-            family: `Ovo`,
-            variants: [`400`, `700`],
+            family: `Roboto`,
+            variants: [`300`, `400`, `500`, `700`],
           },
         ],
       },
