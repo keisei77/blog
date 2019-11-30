@@ -131,6 +131,7 @@ module.exports = {
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-typescript`,
     `gatsby-plugin-less`,
+    `gatsby-plugin-styled-components`,
     {
       resolve: `gatsby-plugin-prefetch-google-fonts`,
       options: {
