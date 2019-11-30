@@ -10,7 +10,7 @@ interface HeaderProps {
 }
 
 const StyledHeader = styled.header`
-  background: ${props => (props.isScrolled ? '#551a8b' : '#fff')};
+  background: ${props => (props.isScrolled ? '#663399' : '#fff')};
   position: sticky;
   top: 0;
   transition: background 0.1s ease-in-out;
