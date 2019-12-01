@@ -15,6 +15,7 @@ const StyledHeader = styled.header`
     props.isScrolled ? '0px 0px 0.25rem rgba(0, 0, 0, 0.4)' : 'none'};
   position: sticky;
   top: 0;
+  z-index: 10;
   transition: background 0.1s ease-in-out;
 `;
 
