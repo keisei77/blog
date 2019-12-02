@@ -9,7 +9,7 @@ interface HeaderProps {
   isScrolled: boolean;
 }
 
-const StyledHeader = styled.header`
+const StyledHeader = styled.header<{ isScrolled: boolean }>`
   background: ${props => (props.isScrolled ? '#663399' : '#fff')};
   box-shadow: ${props =>
     props.isScrolled ? '0px 0px 0.25rem rgba(0, 0, 0, 0.4)' : 'none'};
@@ -19,7 +19,7 @@ const StyledHeader = styled.header`
   transition: background 0.1s ease-in-out;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link)<{ isScrolled: boolean }>`
   color: ${props => (props.isScrolled ? '#fff' : 'inherit')};
   transition: color 0.1s ease-in-out;
 `;
