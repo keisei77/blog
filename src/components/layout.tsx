@@ -1,17 +1,18 @@
-import React, {
-  ReactChildren,
-  useRef,
-  useEffect,
-  useState,
-  useCallback,
-} from 'react';
+import React, { ReactChildren, useRef, useEffect, useState } from 'react';
 import Header from './header';
 import throttle from 'lodash/throttle';
+import styled from 'styled-components';
 
 interface LayoutProps {
   title: string;
   children: ReactChildren;
 }
+
+const StyledMain = styled.main`
+  @media screen and (min-width: 1200px) {
+    width: 65%;
+  }
+`;
 
 function Layout(props: LayoutProps) {
   const { title, children } = props;
@@ -38,7 +39,7 @@ function Layout(props: LayoutProps) {
   return (
     <div>
       <Header isScrolled={isScrolled} title={title} />
-      <main
+      <StyledMain
         ref={mainRef}
         style={{
           marginLeft: `auto`,
@@ -47,7 +48,7 @@ function Layout(props: LayoutProps) {
         }}
       >
         {children}
-      </main>
+      </StyledMain>
       <footer
         style={{
           marginLeft: `auto`,
