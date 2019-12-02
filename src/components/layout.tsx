@@ -14,6 +14,12 @@ const StyledMain = styled.main`
   }
 `;
 
+const StyledFooter = styled.footer`
+  position: fixed;
+  bottom: 0;
+  padding: 0 1rem 1rem;
+`;
+
 function Layout(props: LayoutProps) {
   const { title, children } = props;
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -49,17 +55,11 @@ function Layout(props: LayoutProps) {
       >
         {children}
       </StyledMain>
-      <footer
-        style={{
-          marginLeft: `auto`,
-          marginRight: `auto`,
-          padding: '0 1rem',
-        }}
-      >
+      <StyledFooter>
         © {new Date().getFullYear()}, Built with
         {` `}
         <a href="https://www.gatsbyjs.org">Gatsby</a>
-      </footer>
+      </StyledFooter>
     </div>
   );
 }
