@@ -10,7 +10,7 @@ interface HeaderProps {
 }
 
 const StyledHeader = styled.header<{ isScrolled: boolean }>`
-  background: ${props => (props.isScrolled ? '#663399' : '#fff')};
+  background: ${props => (props.isScrolled ? '#a1c4fd' : '#fff')};
   box-shadow: ${props =>
     props.isScrolled ? '0px 0px 0.25rem rgba(0, 0, 0, 0.4)' : 'none'};
   position: sticky;

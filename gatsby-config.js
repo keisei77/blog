@@ -118,11 +118,11 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Blog`,
-        short_name: `Blog`,
+        name: `学习随笔`,
+        short_name: `学习随笔`,
         start_url: `/`,
         background_color: `#ffffff`,
-        theme_color: `#663399`,
+        theme_color: `#a1c4fd`,
         display: `minimal-ui`,
         icon: `content/assets/gatsby-icon.png`,
       },
