@@ -15,8 +15,6 @@ const StyledMain = styled.main`
 `;
 
 const StyledFooter = styled.footer`
-  position: fixed;
-  bottom: 0;
   padding: 0 1rem 1rem;
 `;
 
@@ -43,7 +41,7 @@ function Layout(props: LayoutProps) {
     };
   }, [!!mainRef.current]);
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <Header isScrolled={isScrolled} title={title} />
       <StyledMain
         ref={mainRef}
