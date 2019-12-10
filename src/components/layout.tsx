@@ -1,11 +1,12 @@
-import React, { ReactChildren, useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, ReactElement } from 'react';
 import Header from './header';
 import throttle from 'lodash/throttle';
 import styled from 'styled-components';
 
 interface LayoutProps {
   title: string;
-  children: ReactChildren;
+  location: string;
+  children: ReactElement;
 }
 
 const StyledMain = styled.main`

@@ -4,18 +4,19 @@ import { Link, graphql } from 'gatsby';
 import Bio from '../components/bio';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
+import APOD from '../components/APOD';
 
-class BlogIndex extends React.Component {
-  render() {
-    const { data } = this.props;
-    const siteTitle = data.site.siteMetadata.title;
-    const posts = data.allMarkdownRemark.edges;
-
-    return (
-      <Layout location={this.props.location} title={siteTitle}>
+const BlogIndex = (props: any) => {
+  const { data } = props;
+  const siteTitle = data.site.siteMetadata.title;
+  const posts = data.allMarkdownRemark.edges;
+  return (
+    <Layout location={props.location} title={siteTitle}>
+      <>
         <SEO title="Keisei's Blog" />
         <Bio />
-        {posts.map(({ node }) => {
+        <APOD />
+        {posts.map(({ node }: { node: any }) => {
           const title = node.frontmatter.title || node.fields.slug;
           return (
             <article key={node.fields.slug}>
@@ -44,10 +45,10 @@ class BlogIndex extends React.Component {
             </article>
           );
         })}
-      </Layout>
-    );
-  }
-}
+      </>
+    </Layout>
+  );
+};
 
 export default BlogIndex;
 
