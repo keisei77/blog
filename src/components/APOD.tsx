@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Image from 'material-ui-image';
 import APIKey from '../config/NASA';
 
 interface APOD_OPTIONS {
@@ -29,7 +28,7 @@ const APOD = () => {
       <strong>{APOD_Info.title}</strong>
       <p>{APOD_Info.date}</p>
       <p>{APOD_Info.explanation}</p>
-      <Image src={APOD_Info.url} />
+      <image src={APOD_Info.url} />
     </div>
   ) : null;
 };
