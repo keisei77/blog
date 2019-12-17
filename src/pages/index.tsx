@@ -17,7 +17,7 @@ const BlogIndex = (props: any) => {
         {posts.map(({ node }: { node: any }) => {
           const title = node.frontmatter.title || node.fields.slug;
           return (
-            <article key={node.fields.slug}>
+            <article style={{ margin: '10px 0' }} key={node.fields.slug}>
               <header>
                 <h3
                   style={{
