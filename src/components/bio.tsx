@@ -36,27 +36,27 @@ const Bio = () => {
         Written by <strong>{author}</strong> who lives and works in Shanghai
         building useful things.
       </Box>
-      <Box my={1}>
+      <Box height="1.5rem" my={1}>
         <Grid
           container
           direction="row"
           justify="flex-start"
           alignItems="center"
         >
-          <Box mr={0.5}>
+          <Box display="flex" mr={0.5}>
             <EmailIcon />
           </Box>
           <Link href={`mailto:${email}`}>{email}</Link>
         </Grid>
       </Box>
-      <Box my={1}>
+      <Box height="1.5rem" my={1}>
         <Grid
           container
           direction="row"
           justify="flex-start"
           alignItems="center"
         >
-          <Box mr={0.5}>
+          <Box display="flex" mr={0.5}>
             <GitHubIcon />
           </Box>
           <Link href={github} target="_blank" rel="noopener noreferrer">
