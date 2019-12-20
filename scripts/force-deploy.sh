@@ -1,5 +1,8 @@
 #!/bin/sh
 
+git config user.email "keisei.jia@gmail.com";
+git config user.name "keisei77";
+git fetch origin;
 git checkout gh-pages;
 git fetch origin gh-pages;
 rm -rf public/*;
