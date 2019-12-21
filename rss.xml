@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 21 Dec 2019 16:50:21 GMT</lastBuildDate><item><title><![CDATA[渲染器进程的内部执行]]></title><description><![CDATA[简介 前一节我们介绍了浏览器从地址栏输入 URL 开始内部是如何工作的。本文来看一下渲染器进程内部是如何工作的，由于该部分涉及到了 web 优化的众多方面，本文尽量以高度概括的方式进行讲解，如需进一步学习可访问 Web 基础之性能优化。 渲染器进程处理 web…]]></description><link>https://www.keisei.top/web-browser-render/</link><guid isPermaLink="false">https://www.keisei.top/web-browser-render/</guid><pubDate>Wed, 18 Dec 2019 23:38:00 GMT</pubDate><content:encoded>&lt;!-- https://developers.google.com/web/updates/2018/09/inside-browser-part3 --&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 21 Dec 2019 16:54:46 GMT</lastBuildDate><item><title><![CDATA[渲染器进程的内部执行]]></title><description><![CDATA[简介 前一节我们介绍了浏览器从地址栏输入 URL 开始内部是如何工作的。本文来看一下渲染器进程内部是如何工作的，由于该部分涉及到了 web 优化的众多方面，本文尽量以高度概括的方式进行讲解，如需进一步学习可访问 Web 基础之性能优化。 渲染器进程处理 web…]]></description><link>https://www.keisei.top/web-browser-render/</link><guid isPermaLink="false">https://www.keisei.top/web-browser-render/</guid><pubDate>Wed, 18 Dec 2019 15:38:00 GMT</pubDate><content:encoded>&lt;!-- https://developers.google.com/web/updates/2018/09/inside-browser-part3 --&gt;
 &lt;h2&gt;简介&lt;/h2&gt;
 &lt;p&gt;前一节我们介绍了&lt;a href=&quot;/web-browser-happen-in-navigation&quot;&gt;浏览器从地址栏输入 URL&lt;/a&gt; 开始内部是如何工作的。本文来看一下渲染器进程内部是如何工作的，由于该部分涉及到了 web 优化的众多方面，本文尽量以高度概括的方式进行讲解，如需进一步学习可访问 &lt;a href=&quot;https://developers.google.com/web/fundamentals/performance/why-performance-matters/&quot;&gt;Web 基础之性能优化&lt;/a&gt;。&lt;/p&gt;
 &lt;h2&gt;渲染器进程处理 web 内容&lt;/h2&gt;
@@ -394,7 +394,7 @@
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;合成的好处是不需要涉及到主线程。合成器线程不需要等待样式计算或 JavaScript 执行。如果布局或绘制需要重新计算就会涉及到主进程。&lt;/p&gt;
 &lt;h2&gt;总结&lt;/h2&gt;
-&lt;p&gt;本文主要了解了渲染的流程，从解析到合成的过程。希望在阅读更深入的性能优化时能够有一些帮助。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[浏览器输入URL...]]></title><description><![CDATA[前言 我们知道现在市场上大多数浏览器是多进程多线程的方式来处理不同的任务。我们今天来看一下进程和线程是如何合作来呈现一个网站的。 我们以简单的浏览网页为例：从地址栏中输入 URL…]]></description><link>https://www.keisei.top/web-browser-happen-in-navigation/</link><guid isPermaLink="false">https://www.keisei.top/web-browser-happen-in-navigation/</guid><pubDate>Sun, 15 Dec 2019 23:35:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;本文主要了解了渲染的流程，从解析到合成的过程。希望在阅读更深入的性能优化时能够有一些帮助。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[浏览器输入URL...]]></title><description><![CDATA[前言 我们知道现在市场上大多数浏览器是多进程多线程的方式来处理不同的任务。我们今天来看一下进程和线程是如何合作来呈现一个网站的。 我们以简单的浏览网页为例：从地址栏中输入 URL…]]></description><link>https://www.keisei.top/web-browser-happen-in-navigation/</link><guid isPermaLink="false">https://www.keisei.top/web-browser-happen-in-navigation/</guid><pubDate>Sun, 15 Dec 2019 15:35:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;我们知道现在市场上大多数浏览器是&lt;a href=&quot;https://developers.google.com/web/updates/2018/09/inside-browser-part1&quot;&gt;多进程多线程的方式来处理不同的任务&lt;/a&gt;。我们今天来看一下进程和线程是如何合作来呈现一个网站的。&lt;/p&gt;
 &lt;p&gt;我们以简单的浏览网页为例：从地址栏中输入 URL 开始，浏览器从网络请求数据并展示内容。我们重点关注用户请求网站数据和浏览器准备渲染一个页面。（如无特殊说明，以下均以 Chrome 浏览器为例）&lt;/p&gt;
 &lt;h2&gt;从浏览器一个进程开始&lt;/h2&gt;
@@ -717,7 +717,7 @@
         loading=&quot;lazy&quot;
       /&gt;
   &lt;/a&gt;
-    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[区分CSS 分辨率和设备分辨率]]></title><description><![CDATA[前言 作为 Web 开发人员，我们在工作中可能会接触移动端 Web…]]></description><link>https://www.keisei.top/css-resolution-vs-device-resolution/</link><guid isPermaLink="false">https://www.keisei.top/css-resolution-vs-device-resolution/</guid><pubDate>Sat, 14 Dec 2019 21:33:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
+    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[区分CSS 分辨率和设备分辨率]]></title><description><![CDATA[前言 作为 Web 开发人员，我们在工作中可能会接触移动端 Web…]]></description><link>https://www.keisei.top/css-resolution-vs-device-resolution/</link><guid isPermaLink="false">https://www.keisei.top/css-resolution-vs-device-resolution/</guid><pubDate>Sat, 14 Dec 2019 13:33:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;作为 Web 开发人员，我们在工作中可能会接触移动端 Web 应用的开发。近年来移动端设备都是高分屏/视网膜屏，而且我们有各种尺寸的屏幕需要兼容：手机，平板，桌面端。在我们面前需要理解并运用的就是分辨率这个关键问题。
 我们需要处理两种分辨率：一个是真正的设备屏幕分辨率，另一个便是 CSS 可测量的分辨率。&lt;/p&gt;
 &lt;h2&gt;高分屏的新时代&lt;/h2&gt;
@@ -774,7 +774,7 @@
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;h2&gt;写在最后&lt;/h2&gt;
-&lt;p&gt;了解 CSS 分辨率和设备分辨率的区别可以让我们更好地理解响应式，针对不同分辨率提供不同尺寸地图片、视频充分发挥高分辨率地优势，为用户带来更好的体验。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[简单的Promise实现]]></title><link>https://www.keisei.top/promise-from-scratch/</link><guid isPermaLink="false">https://www.keisei.top/promise-from-scratch/</guid><pubDate>Sun, 08 Dec 2019 19:30:00 GMT</pubDate><content:encoded>&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// https://www.youtube.com/watch?v=4GpwM8FmVgQ&lt;/span&gt;
+&lt;p&gt;了解 CSS 分辨率和设备分辨率的区别可以让我们更好地理解响应式，针对不同分辨率提供不同尺寸地图片、视频充分发挥高分辨率地优势，为用户带来更好的体验。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[简单的Promise实现]]></title><link>https://www.keisei.top/promise-from-scratch/</link><guid isPermaLink="false">https://www.keisei.top/promise-from-scratch/</guid><pubDate>Sun, 08 Dec 2019 11:30:00 GMT</pubDate><content:encoded>&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// https://www.youtube.com/watch?v=4GpwM8FmVgQ&lt;/span&gt;
 
 &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; states &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;token constant&quot;&gt;PENDING&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;pending&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
@@ -980,7 +980,7 @@ LLJSPromise&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;spa
   &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;finally&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
     console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;--- All done! ---&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[webpack 基本原理]]></title><description><![CDATA[简介 现代化的前端应用离不开打包工具，从早期人们所熟知的 Grunt, Gulp 到现在炙手可热的 webpack, rollup 等，这些工具的崛起使得我们的代码构建更加方便，通过 Loader，插件等机制我们可以应用最新的技术，如新语法，预处理 CSS（Scss, Less…]]></description><link>https://www.keisei.top/webpack-behind-the-scene/</link><guid isPermaLink="false">https://www.keisei.top/webpack-behind-the-scene/</guid><pubDate>Wed, 04 Dec 2019 22:33:00 GMT</pubDate><content:encoded>&lt;h2&gt;简介&lt;/h2&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[webpack 基本原理]]></title><description><![CDATA[简介 现代化的前端应用离不开打包工具，从早期人们所熟知的 Grunt, Gulp 到现在炙手可热的 webpack, rollup 等，这些工具的崛起使得我们的代码构建更加方便，通过 Loader，插件等机制我们可以应用最新的技术，如新语法，预处理 CSS（Scss, Less…]]></description><link>https://www.keisei.top/webpack-behind-the-scene/</link><guid isPermaLink="false">https://www.keisei.top/webpack-behind-the-scene/</guid><pubDate>Wed, 04 Dec 2019 14:33:00 GMT</pubDate><content:encoded>&lt;h2&gt;简介&lt;/h2&gt;
 &lt;p&gt;现代化的前端应用离不开打包工具，从早期人们所熟知的 Grunt, Gulp 到现在炙手可热的 webpack, rollup 等，这些工具的崛起使得我们的代码构建更加方便，通过 Loader，插件等机制我们可以应用最新的技术，如新语法，预处理 CSS（Scss, Less），热更新方便了开发体验，摇树（Tree Shaking）减少打包体积等。&lt;/p&gt;
 &lt;p&gt;今天主要以 webpack 为例来了解打包工具发展至今是如何工作的，又通过哪些方式为我们提供了更多能力。以下图片简单描述了 webpack 的整个构建流程。&lt;/p&gt;
 &lt;p&gt;&lt;span
@@ -1199,7 +1199,7 @@ LLJSPromise&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;spa
 &lt;/ul&gt;
 &lt;p&gt;这个处理过程会重复执行直到处理完所有的依赖。webpack 的核心工作是解析文件并将所有内容捆绑到一个依赖图中。这使得 webpack 可以增量编译。&lt;/p&gt;
 &lt;h2&gt;小结&lt;/h2&gt;
-&lt;p&gt;webpack 的出现使前端工程化迈向了新的台阶，使我们开发更便捷。webpack 提供的能力也促进了社区的发展来完善构建流程。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[神奇的模板字符串]]></title><description><![CDATA[背景 最近在个人博客中采用了styled-components库来写组件的样式，在翻看文档时，发现用法： 这个用法引起了我的兴趣，这是如何 work 起来的？ 带标签的模板字符串（Tagged Template Literals…]]></description><link>https://www.keisei.top/tagged-template-literals/</link><guid isPermaLink="false">https://www.keisei.top/tagged-template-literals/</guid><pubDate>Sun, 01 Dec 2019 16:41:00 GMT</pubDate><content:encoded>&lt;h2&gt;背景&lt;/h2&gt;
+&lt;p&gt;webpack 的出现使前端工程化迈向了新的台阶，使我们开发更便捷。webpack 提供的能力也促进了社区的发展来完善构建流程。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[神奇的模板字符串]]></title><description><![CDATA[背景 最近在个人博客中采用了styled-components库来写组件的样式，在翻看文档时，发现用法： 这个用法引起了我的兴趣，这是如何 work 起来的？ 带标签的模板字符串（Tagged Template Literals…]]></description><link>https://www.keisei.top/tagged-template-literals/</link><guid isPermaLink="false">https://www.keisei.top/tagged-template-literals/</guid><pubDate>Sun, 01 Dec 2019 08:41:00 GMT</pubDate><content:encoded>&lt;h2&gt;背景&lt;/h2&gt;
 &lt;p&gt;最近在个人博客中采用了&lt;a href=&quot;https://www.styled-components.com/&quot;&gt;styled-components&lt;/a&gt;库来写组件的样式，在翻看文档时，发现用法：&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;jsx&quot;&gt;&lt;pre class=&quot;language-jsx&quot;&gt;&lt;code class=&quot;language-jsx&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; styled &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;styled-components&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
 
@@ -1333,7 +1333,7 @@ execFuncArgs&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&
 &lt;span class=&quot;token comment&quot;&gt;// -&gt; &apos;Executed!&apos;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;在带标签的模板字符串中 execFuncArgs 的第二个参数传递的是实际函数，然后继续执行该函数。&lt;code class=&quot;language-text&quot;&gt;styled-components&lt;/code&gt; 底层的实现就是依赖这个特性，在渲染时传入插值函数的 props 可以帮用户来动态更新样式。&lt;/p&gt;
 &lt;h2&gt;总结&lt;/h2&gt;
-&lt;p&gt;可以看到，JavaScript 的一个新特性就可以实现一个强大的库，为我们的开发带来更好的体验，我们需要不断去探索去总结去实践 JavaScript 实现更多新的能力。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[The WebSocket API]]></title><description><![CDATA[引言 WebSocket API 是一种较为高级的通信方式，它在客户端和服务端开启一条全双工的通道，可以从客户端发送消息至服务端并且可以接受事件驱动的响应而不需要主动去请求回复。简而言之，收发消息的两端一旦开启通道可相互自由通信。 WebSocket…]]></description><link>https://www.keisei.top/the-websocket-api/</link><guid isPermaLink="false">https://www.keisei.top/the-websocket-api/</guid><pubDate>Tue, 26 Nov 2019 23:21:00 GMT</pubDate><content:encoded>&lt;h2&gt;引言&lt;/h2&gt;
+&lt;p&gt;可以看到，JavaScript 的一个新特性就可以实现一个强大的库，为我们的开发带来更好的体验，我们需要不断去探索去总结去实践 JavaScript 实现更多新的能力。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[The WebSocket API]]></title><description><![CDATA[引言 WebSocket API 是一种较为高级的通信方式，它在客户端和服务端开启一条全双工的通道，可以从客户端发送消息至服务端并且可以接受事件驱动的响应而不需要主动去请求回复。简而言之，收发消息的两端一旦开启通道可相互自由通信。 WebSocket…]]></description><link>https://www.keisei.top/the-websocket-api/</link><guid isPermaLink="false">https://www.keisei.top/the-websocket-api/</guid><pubDate>Tue, 26 Nov 2019 15:21:00 GMT</pubDate><content:encoded>&lt;h2&gt;引言&lt;/h2&gt;
 &lt;p&gt;WebSocket API 是一种较为高级的通信方式，它在客户端和服务端开启一条全双工的通道，可以从客户端发送消息至服务端并且可以接受事件驱动的响应而不需要主动去请求回复。简而言之，收发消息的两端一旦开启通道可相互自由通信。&lt;/p&gt;
 &lt;h2&gt;WebSocket 客户端&lt;/h2&gt;
 &lt;p&gt;为了使用 WebSocket 协议通信，需要创建 &lt;code class=&quot;language-text&quot;&gt;WebSocket&lt;/code&gt; 对象，会自动尝试创建到服务端的连接。&lt;/p&gt;
@@ -1485,9 +1485,9 @@ Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=&lt;/code&gt;&lt;/pre&gt;&lt;/
     |N|V|V|V|       |S|             |   (if payload len==126/127)   |
     | |1|2|3|       |K|             |                               |
     +-+-+-+-+-------+-+-------------+ - - - - - - - - - - - - - - - +
-    |     Extended payload length continuedundefined if payload len == 127  |
+    |     Extended payload length continued, if payload len == 127  |
     + - - - - - - - - - - - - - - - +-------------------------------+
-    |                               |Masking-keyundefined if MASK set to 1  |
+    |                               |Masking-key, if MASK set to 1  |
     +-------------------------------+-------------------------------+
     | Masking-key (continued)       |          Payload Data         |
     +-------------------------------- - - - - - - - - - - - - - - - +
@@ -1519,20 +1519,20 @@ Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=&lt;/code&gt;&lt;/pre&gt;&lt;/
 &lt;li&gt;0x2：代表载荷为二进制格式&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;下面是一个简单的例子来说明服务端是如何响应客户端信息的：&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Client: FIN=1undefined opcode=0x1undefined msg=&amp;quot;hello&amp;quot;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Client: FIN=1, opcode=0x1, msg=&amp;quot;hello&amp;quot;
 Server: (process complete message immediately) Hi.
-Client: FIN=0undefined opcode=0x1undefined msg=&amp;quot;and a&amp;quot;
-Server: (listeningundefined new message containing text started)
-Client: FIN=0undefined opcode=0x0undefined msg=&amp;quot;happy new&amp;quot;
-Server: (listeningundefined payload concatenated to previous message)
-Client: FIN=1undefined opcode=0x0undefined msg=&amp;quot;year!&amp;quot;
+Client: FIN=0, opcode=0x1, msg=&amp;quot;and a&amp;quot;
+Server: (listening, new message containing text started)
+Client: FIN=0, opcode=0x0, msg=&amp;quot;happy new&amp;quot;
+Server: (listening, payload concatenated to previous message)
+Client: FIN=1, opcode=0x0, msg=&amp;quot;year!&amp;quot;
 Server: (process complete message) Happy new year to you too!&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;第一帧包含了全部的消息，所以服务端可以处理并响应。第二帧客户端发送了文本载荷但整个信息并没有完全送达，其他剩余部分通过连接帧来发送，通过标记&lt;code class=&quot;language-text&quot;&gt;FIN=1&lt;/code&gt;指明了最后一帧。&lt;/p&gt;
 &lt;h3&gt;Pings and Pongs: WebSocket 心跳检测&lt;/h3&gt;
 &lt;p&gt;在握手完成后，客户端或服务端都可以选择发送一个 ping 至对方，当 ping 收到时，接收方必须尽快发送一个 pong 给对方。可以通过这个机制来确认对方是否仍在连接。&lt;/p&gt;
 &lt;p&gt;一个 ping 或 pong 只是一个普通的控制帧，Pings 的 opcode 为 &lt;code class=&quot;language-text&quot;&gt;0x9&lt;/code&gt; ，pongs 的 opcode 为 &lt;code class=&quot;language-text&quot;&gt;0xA&lt;/code&gt;。当收到一个 ping，发送 pong 时携带 ping 发送的一致的数据载荷（最大载荷长度为 125）。&lt;/p&gt;
 &lt;h3&gt;关闭连接&lt;/h3&gt;
-&lt;p&gt;客户端或服务端关闭连接可以发送一个带有包含一个特殊控制序列数据的控制帧来开启关闭握手。接收到此帧后，另一方会发送一个结束帧作为响应。先前的一方会关闭连接。关闭连接后收到的任何其他数据都会被丢掉。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[React Fiber 架构]]></title><description><![CDATA[介绍 React Fiber 是当前开发中的最新版 React…]]></description><link>https://www.keisei.top/react-fiber-architecture/</link><guid isPermaLink="false">https://www.keisei.top/react-fiber-architecture/</guid><pubDate>Fri, 22 Nov 2019 23:08:00 GMT</pubDate><content:encoded>&lt;h2&gt;介绍&lt;/h2&gt;
+&lt;p&gt;客户端或服务端关闭连接可以发送一个带有包含一个特殊控制序列数据的控制帧来开启关闭握手。接收到此帧后，另一方会发送一个结束帧作为响应。先前的一方会关闭连接。关闭连接后收到的任何其他数据都会被丢掉。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[React Fiber 架构]]></title><description><![CDATA[介绍 React Fiber 是当前开发中的最新版 React…]]></description><link>https://www.keisei.top/react-fiber-architecture/</link><guid isPermaLink="false">https://www.keisei.top/react-fiber-architecture/</guid><pubDate>Fri, 22 Nov 2019 15:08:00 GMT</pubDate><content:encoded>&lt;h2&gt;介绍&lt;/h2&gt;
 &lt;hr&gt;
 &lt;p&gt;React Fiber 是当前开发中的最新版 React 的核心算法的实现。它的主要目标是提高动画、布局、手势等操作的响应速度。最大的功能就是增强渲染：有能力将渲染工作分割成多块，并将它们分散到多个帧中去渲染。&lt;/p&gt;
 &lt;p&gt;其他关键功能包括有能力暂停、渲染，有新的更新时可以重复使用；有能力对不同的更新增加优先级；新的并发模式。&lt;/p&gt;
@@ -1668,7 +1668,7 @@ Server: (process complete message) Happy new year to you too!&lt;/code&gt;&lt;/p
 &lt;li&gt;协程是什么，如何用来实现 context 和 layout 的&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;参考&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/acdlite/react-fiber-architecture/&quot;&gt;https://github.com/acdlite/react-fiber-architecture/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[JavaScript 引擎基础：Shapes 和 Inline Caches]]></title><description><![CDATA[JavaScript 引擎管道 当加载到我们所写的 JavaScript 代码，JavaScript 引擎开始解析源代码，并把它转换成抽象语法树（AST）。基于 AST，解释器开始工作并转换成字节码。此时引擎开始真正执行我们的 JavaScript 代码。 js engine…]]></description><link>https://www.keisei.top/V8-shapes-and-inline-cache/</link><guid isPermaLink="false">https://www.keisei.top/V8-shapes-and-inline-cache/</guid><pubDate>Mon, 18 Nov 2019 22:51:00 GMT</pubDate><content:encoded>&lt;h2&gt;JavaScript 引擎管道&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/acdlite/react-fiber-architecture/&quot;&gt;https://github.com/acdlite/react-fiber-architecture/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[JavaScript 引擎基础：Shapes 和 Inline Caches]]></title><description><![CDATA[JavaScript 引擎管道 当加载到我们所写的 JavaScript 代码，JavaScript 引擎开始解析源代码，并把它转换成抽象语法树（AST）。基于 AST，解释器开始工作并转换成字节码。此时引擎开始真正执行我们的 JavaScript 代码。 js engine…]]></description><link>https://www.keisei.top/V8-shapes-and-inline-cache/</link><guid isPermaLink="false">https://www.keisei.top/V8-shapes-and-inline-cache/</guid><pubDate>Mon, 18 Nov 2019 14:51:00 GMT</pubDate><content:encoded>&lt;h2&gt;JavaScript 引擎管道&lt;/h2&gt;
 &lt;p&gt;当加载到我们所写的 JavaScript 代码，JavaScript 引擎开始解析源代码，并把它转换成抽象语法树（AST）。基于 AST，解释器开始工作并转换成字节码。此时引擎开始真正执行我们的 JavaScript 代码。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/55263e94b3250c77560ffe9770630a34/js-engine-pipeline.svg&quot; alt=&quot;js engine pipeline&quot;&gt;&lt;/p&gt;
 &lt;p&gt;为了让代码运行得更快，字节码可以与分析数据一起发送到优化编译器，基于分析到的数据做出一些假设，然后编译出高度优化的机器码。&lt;/p&gt;
@@ -1747,7 +1747,7 @@ object&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;y &lt;span c
 &lt;p&gt;这种 shape 形式在引擎中称为过渡链（transition chains）感觉这里还是原生比较直观。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/b32af721e8b02099051effa12ced05ac/shape-chain-1.svg&quot; alt=&quot;shape chain 1&quot;&gt;&lt;/p&gt;
 &lt;p&gt;对象 &lt;code class=&quot;language-text&quot;&gt;o&lt;/code&gt; 开始时没有任何属性，所以最初指向空 shape。第二步将值为 &lt;code class=&quot;language-text&quot;&gt;5&lt;/code&gt; 的 &lt;code class=&quot;language-text&quot;&gt;x&lt;/code&gt; 属性添加到对象 &lt;code class=&quot;language-text&quot;&gt;o&lt;/code&gt; 时，JavaScript 引擎会过渡到一个包含属性 &lt;code class=&quot;language-text&quot;&gt;x&lt;/code&gt; 的 shape，并且值 &lt;code class=&quot;language-text&quot;&gt;5&lt;/code&gt; 会添加到 &lt;code class=&quot;language-text&quot;&gt;JSObject&lt;/code&gt; 偏移量 &lt;code class=&quot;language-text&quot;&gt;0&lt;/code&gt; 的位置。同理，当新增 &lt;code class=&quot;language-text&quot;&gt;y&lt;/code&gt; 属性时，引擎会过渡到包含 &lt;code class=&quot;language-text&quot;&gt;x&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;y&lt;/code&gt; 的另一个 shape，并将 &lt;code class=&quot;language-text&quot;&gt;6&lt;/code&gt; 添加到 &lt;code class=&quot;language-text&quot;&gt;JSObject&lt;/code&gt; 偏移量 &lt;code class=&quot;language-text&quot;&gt;1&lt;/code&gt; 的位置。&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;注意：属性添加的顺序会影响shape。如 { x: 4undefined y: 5 } 和 { y: 5undefined x: 4 } 的 shape 不同。&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;注意：属性添加的顺序会影响shape。如 { x: 4, y: 5 } 和 { y: 5, x: 4 } 的 shape 不同。&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;我们不需要为每个 &lt;code class=&quot;language-text&quot;&gt;Shape&lt;/code&gt; 保存全部的属性。相反，每个 &lt;code class=&quot;language-text&quot;&gt;Shape&lt;/code&gt; 只需要知道它自己新的属性。例如，我们不需要在最后一个 &lt;code class=&quot;language-text&quot;&gt;Shape&lt;/code&gt; 中存储 &lt;code class=&quot;language-text&quot;&gt;x&lt;/code&gt; 属性，因为它可以在之前的链上找到。为了达到这个目的，每个 &lt;code class=&quot;language-text&quot;&gt;Shape&lt;/code&gt; 需要指回之前的 shape ：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/84acac33e689906b5eafed489f5fe68f/shape-chain-2.svg&quot; alt=&quot;shape chain 2&quot;&gt;&lt;/p&gt;
 &lt;p&gt;当代码中访问 &lt;code class=&quot;language-text&quot;&gt;o.x&lt;/code&gt; 时，引擎会向上遍历 transition chain 直到找到拥有 &lt;code class=&quot;language-text&quot;&gt;x&lt;/code&gt; 属性的 &lt;code class=&quot;language-text&quot;&gt;Shape&lt;/code&gt; 。&lt;/p&gt;
@@ -1807,7 +1807,7 @@ point&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;z &lt;span cl
 &lt;ul&gt;
 &lt;li&gt;总是按同一种方式初始化对象，这样就不会产生多种不同的 shape；&lt;/li&gt;
 &lt;li&gt;不要试图修改数组的属性信息，否则存储和操作会降低性能。&lt;/li&gt;
-&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[React源码中导致V8性能断崖下滑的真相]]></title><description><![CDATA[JavaScript 类型 JavaScript 的值总共具有 8 种不同的类型： 可以通过  关键字来校验值的类型。 尽管  有着它自身的一种类型，但  却返回  而不是  。为了理解原因，我们首先把所有的类型分为两组： object (即  类型) primitives…]]></description><link>https://www.keisei.top/V8-performance-cliff/</link><guid isPermaLink="false">https://www.keisei.top/V8-performance-cliff/</guid><pubDate>Thu, 14 Nov 2019 22:42:00 GMT</pubDate><content:encoded>&lt;h2&gt;JavaScript 类型&lt;/h2&gt;
+&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[React源码中导致V8性能断崖下滑的真相]]></title><description><![CDATA[JavaScript 类型 JavaScript 的值总共具有 8 种不同的类型： 可以通过  关键字来校验值的类型。 尽管  有着它自身的一种类型，但  却返回  而不是  。为了理解原因，我们首先把所有的类型分为两组： object (即  类型) primitives…]]></description><link>https://www.keisei.top/V8-performance-cliff/</link><guid isPermaLink="false">https://www.keisei.top/V8-performance-cliff/</guid><pubDate>Thu, 14 Nov 2019 14:42:00 GMT</pubDate><content:encoded>&lt;h2&gt;JavaScript 类型&lt;/h2&gt;
 &lt;p&gt;JavaScript 的值总共具有 8 种不同的类型：&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;Number&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; String&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; Symbol&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; BigInt&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; Boolean&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; Undefined&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; Null&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; Object&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;可以通过 &lt;code class=&quot;language-text&quot;&gt;typeof&lt;/code&gt; 关键字来校验值的类型。&lt;/p&gt;
@@ -1984,7 +1984,7 @@ o&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;y &lt;span class=
 &lt;p&gt;&lt;img src=&quot;/909307edf284801f22671924a8ec2426/repro-shape-setup.svg&quot; alt=&quot;repro shape setup&quot;&gt;&lt;/p&gt;
 &lt;p&gt;两个属性为 &lt;code class=&quot;language-text&quot;&gt;Smi&lt;/code&gt; 表示，对象 &lt;code class=&quot;language-text&quot;&gt;o&lt;/code&gt; 指向最终过渡到 non-extensible 的 shape。&lt;/p&gt;
 &lt;p&gt;现在我们将 &lt;code class=&quot;language-text&quot;&gt;y&lt;/code&gt; 更新为 &lt;code class=&quot;language-text&quot;&gt;Double&lt;/code&gt; 表示，意味着我们需要从头开始找到分离的 shape &lt;code class=&quot;language-text&quot;&gt;x&lt;/code&gt;，但是 V8 出现了分歧，分离的 shape 是可扩展的，但是当前的 shape 被标记为非扩展的，V8 不知道如何正确进行过渡，实际上创建了一个独立的 shape。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/530393c2bda11d260c7770f2c628d46c/orphaned-shape.svg&quot; alt=&quot;orphaned shape&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/1eda5891848b0642cf5994353013aa14/orphaned-shape.svg&quot; alt=&quot;orphaned shape&quot;&gt;&lt;/p&gt;
 &lt;p&gt;可以想象当有很多这种对象时，会多糟糕。React 核心代码就产生了这一问题，&lt;code class=&quot;language-text&quot;&gt;FiberNode&lt;/code&gt; 有几个开启 profile 操作时记录时间戳的字段。&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;FiberNode&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;token function&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
