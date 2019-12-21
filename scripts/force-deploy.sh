@@ -1,11 +1,13 @@
-#!/bin/sh
+#!/usr/bin/bash
 
 git config user.email "keisei.jia@gmail.com";
 git config user.name "keisei77";
+echo "start git process";
 git fetch origin;
 git checkout gh-pages;
-git fetch origin gh-pages;
-rm -rf public/*;
+git pull;
+git rm -rf .;
+git clean -fxd;
 git add -u;
 git commit -m ":package: force update";
 git push --force origin gh-pages;
