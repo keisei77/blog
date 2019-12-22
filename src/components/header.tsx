@@ -1,6 +1,4 @@
 import React from 'react';
-import { Box, Grid } from '@material-ui/core';
-import HomeIcon from '@material-ui/icons/Home';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
 
@@ -16,6 +14,8 @@ const StyledHeader = styled.header<{ isScrolled: boolean }>`
   position: sticky;
   top: 0;
   z-index: 10;
+  padding: 1rem;
+  cursor: pointer;
   transition: background 0.1s ease-in-out;
 `;
 
@@ -29,29 +29,19 @@ function Header(props: HeaderProps) {
 
   return (
     <StyledHeader isScrolled={isScrolled}>
-      <Box p={2}>
-        <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-        >
-          <Box>
-            <StyledLink
-              isScrolled={isScrolled}
-              style={{
-                display: `flex`,
-                alignItems: `center`,
-                boxShadow: `none`,
-                textDecoration: `none`,
-              }}
-              to={`/`}
-            >
-              <HomeIcon />
-              <Box ml={0.5}>{title}</Box>
-            </StyledLink>
-          </Box>
-          {/* <Box>
+      <StyledLink
+        isScrolled={isScrolled}
+        style={{
+          display: `flex`,
+          alignItems: `center`,
+          boxShadow: `none`,
+          textDecoration: `none`,
+        }}
+        to={`/`}
+      >
+        {title}
+      </StyledLink>
+      {/* <Box>
             <StyledLink isScrolled={isScrolled} to="/tags">
               tags
             </StyledLink>
@@ -62,8 +52,6 @@ function Header(props: HeaderProps) {
               about
             </StyledLink>
           </Box> */}
-        </Grid>
-      </Box>
     </StyledHeader>
   );
 }
