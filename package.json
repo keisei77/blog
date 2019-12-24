@@ -63,7 +63,7 @@
     "start": "gatsby build",
     "serve": "gatsby serve",
     "type-check": "tsc --noEmit",
-    "predeploy": "npm run clean && npm run build && cp CNAME public/CNAME",
+    "predeploy": "yarn run clean && yarn run build && cp CNAME public/CNAME",
     "deploy": "gh-pages -d public"
   },
   "eslintConfig": {
