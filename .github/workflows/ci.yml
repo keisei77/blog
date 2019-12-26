@@ -9,10 +9,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Force deploy
-        run: |
-          sh ./scripts/force-deploy.sh
-
       - name: Build and Deploy
         uses: JamesIves/github-pages-deploy-action@master
         env:
@@ -20,4 +16,4 @@ jobs:
           BASE_BRANCH: master # The branch the action should deploy from.
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: public # The folder the action should deploy.
-          BUILD_SCRIPT: npm install && npm run predeploy # The build script the action should run prior to deploying.
+          BUILD_SCRIPT: sh ./scripts/force-deploy.sh && npm install && npm run predeploy # The build script the action should run prior to deploying.
