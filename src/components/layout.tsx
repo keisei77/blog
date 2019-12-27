@@ -10,6 +10,10 @@ interface LayoutProps {
 }
 
 const StyledMain = styled.main`
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+
   @media screen and (min-width: 1200px) {
     width: 65%;
   }
@@ -17,6 +21,12 @@ const StyledMain = styled.main`
 
 const StyledFooter = styled.footer`
   padding: 0 1rem 1rem;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media screen and (min-width: 1200px) {
+    width: 65%;
+  }
 `;
 
 function Layout(props: LayoutProps) {
@@ -40,20 +50,11 @@ function Layout(props: LayoutProps) {
     return () => {
       window.removeEventListener('scroll', throttledScroll);
     };
-  }, [!!mainRef.current]);
+  }, [throttledScroll]);
   return (
     <div style={{ height: '100%' }}>
       <Header isScrolled={isScrolled} title={title} />
-      <StyledMain
-        ref={mainRef}
-        style={{
-          marginLeft: `auto`,
-          marginRight: `auto`,
-          padding: '0 1rem',
-        }}
-      >
-        {children}
-      </StyledMain>
+      <StyledMain ref={mainRef}>{children}</StyledMain>
       <StyledFooter>
         © {new Date().getFullYear()}, Built with
         {` `}
