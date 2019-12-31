@@ -18,7 +18,64 @@
 <li>容器时发行和测试应用的单元</li>
 <li>准备就绪后，将应用程序作为容器或编排的服务部署到生产环境。无论生产环境是本地数据中心，云厂商，还是两者的结合，它们的工作原理都是相同的。</li>
 </ul>
-<h2>Docker 引擎</h2></section><hr/><footer><div><div>前端开发者一枚，喜欢看电影，游戏，篮球，更喜欢写代码。偶尔做做公益，学习新技术。</div><div><a href="mailto:keisei.jia@gmail.com">keisei.jia@gmail.com</a></div><div><a href="https://github.com/keisei77" target="_blank" rel="noopener noreferrer">https://github.com/keisei77</a></div></div></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" href="/minipack/">← <!-- -->迷你打包工具</a></li><li></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2019<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
+<h2>Docker 引擎</h2>
+<p>Docker 引擎是一个拥有下面主要功能的客户端程序：</p>
+<ul>
+<li>一种长期运行的称为守护进程的程序服务（<code class="language-text">dockerd</code> 命令）</li>
+<li>REST API，指定程序可以用来与守护进程通信并指示其操作的接口</li>
+<li>命令行接口（CLI）客户端（<code class="language-text">docker</code> 命令）</li>
+</ul>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 492px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/3185f40a56d6a22b714b444d515be3f0/275e0/engine-components-flow.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 78.25203252032522%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAIAAACZeshMAAAACXBIWXMAAAsSAAALEgHS3X78AAACb0lEQVQoz6VSS2sTURSebf+ACxFRqJuiII0bH4ioG7FmIehCUKi10iyiibGBxioiLlTsQrqoi1orqS3RmrbUIgiiglBBtAttazOTkBdhksxMJjOTuTNzH/FOhsQ83Hk393G+79zzfecw1f9YTOMEETEghphYtQNpAiFMgIWteggT0k42LGyYSJT1smboJmog6AIWotnKqqFWaMBGtpMBxLoJeUGjoOb0dl5o36QyoKkRsatoJ1sQm4goFTMvKLygmrREjKsYYwiLoloQ1bJmSqphQoxwR9l15UiSlIqq8ZL+6aewsJrbSCuyrFKqrAKIcIthVADVAR1L6rFVTgtF03eXM2Pvc8PzqfEPfEGB9J2KoRIc5yiLoRxgQEHWDQs5Yj5ulC9Pc9cjidCb1I3ZpG8ucSXMjkbTomrzS6ohK0BSADWP0S1MN17UgGlbWtJQ4FXSMxPvexg7Nsodv504GmLPjsX6p9m5rwIlC4pRLFUKklZSgF02qHVIpWkw+rJVHprh3I9Yl487fY9z3/994lbc5WPdj2N3ltKaDmmFim6WNAORmmGEkEJBzmQFQwfLa8LFydiRkfhe77c9nvmDwejuq4u9/vXDI+y1lwleqBQLUjYn0olocRvXGvAjpV14yvb6N7f3z+4afL5j4EX30NTOgbcHAlwwknR635iAv2TniXo2HEn3eNeYvvFtl6Zcgddd5ye6zoX3+TYXvov2H03D09Jnp/m/svqpBzHm5GTg2ecELx8KRpgzizfDObPWyCZux5A4sUTRHJzY6vGu7PcvdXvePVnJ61Y78x9kB+Fg8jJcz1SAZd9ItUo6kH8AkflRD4xPhZkAAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="engine components flow"
+        title="engine components flow"
+        src="/static/3185f40a56d6a22b714b444d515be3f0/275e0/engine-components-flow.png"
+        srcset="/static/3185f40a56d6a22b714b444d515be3f0/00d96/engine-components-flow.png 148w,
+/static/3185f40a56d6a22b714b444d515be3f0/0b23c/engine-components-flow.png 295w,
+/static/3185f40a56d6a22b714b444d515be3f0/275e0/engine-components-flow.png 492w"
+        sizes="(max-width: 492px) 100vw, 492px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>CLI 使用 Docker REST API 通过脚本或直接 CLI 命令行来控制 Docker 守护进程或与 Docker 守护进程进行通信。许多其他 Docker 应用都使用底层 API 和 CLI。</p>
+<p>守护进程创建和管理 Docker 对象，例如镜像，容器，网络，和卷。</p>
+<blockquote>
+<p>注意：Docker 是基于开源的 Apache 2.0 许可</p>
+</blockquote>
+<p>更多信息查看下面的 <a href="#docker-architecture">Docker 架构</a>。</p>
+<h2>我们能用 Docker 来做什么</h2>
+<h3>快速一致地发布应用程序</h3>
+<p>Docker 允许开发者使用提供了应用程序和服务的本地容器在标准化环境下工作，从而简化开发过程。容器非常适合持续集成/持续发布（CI/CD）的工作流。</p>
+<p>考虑下面的场景：</p>
+<ul>
+<li>开发者在本地编写代码并通过 Docker 容器来与同事共享</li>
+<li>他们使用 Docker 将应用推送到测试环境并执行自动、手动的测试</li>
+<li>当开发者发现了问题，他们可以在开发环境修复问题并重新发布到测试环境进行测试和验证</li>
+<li>当测试完成，将修复后的程序推送给用户就像将更新的镜像推送到生产环境一样简单</li>
+</ul>
+<h3>响应式部署和扩容</h3>
+<p>Docker 基于容器的平台允许高度的移植性。Docker 容器可以在开发者自身的电脑上，在数据中心的物理或虚拟机上，在云厂商上或混合的环境下运行。</p>
+<p>Docker 的可移植性和轻量的本质在真实环境下亦可以动态管理工作负载，根据商业需要进行扩容或回收应用。</p>
+<h3>在同一个硬件上运行更多工作负载</h3>
+<p>Docker 是轻量的、快速的。它为基于管理程序的虚拟机提供了可行的，经济划算的替代方案，所以我们可以拥有更多算力来实现我们的商业目标。Docker 非常适合高密度环境和中小型部署需要更少资源做更多事情的场景。</p>
+<h2><a name="docker-architecture"></a>Docker 架构</h2></section><hr/><footer><div><div>前端开发者一枚，喜欢看电影，游戏，篮球，更喜欢写代码。偶尔做做公益，学习新技术。</div><div><a href="mailto:keisei.jia@gmail.com">keisei.jia@gmail.com</a></div><div><a href="https://github.com/keisei77" target="_blank" rel="noopener noreferrer">https://github.com/keisei77</a></div></div></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" href="/minipack/">← <!-- -->迷你打包工具</a></li><li></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2019<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   
   
   if(true) {
