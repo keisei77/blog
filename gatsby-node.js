@@ -19,6 +19,7 @@ exports.createPages = async ({ graphql, actions }) => {
               }
               frontmatter {
                 title
+                tags
               }
             }
           }
@@ -41,6 +42,7 @@ exports.createPages = async ({ graphql, actions }) => {
       path: post.node.fields.slug,
       component: blogPost,
       context: {
+        tags: post.node.frontmatter.tags,
         slug: post.node.fields.slug,
         previous,
         next,

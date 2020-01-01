@@ -11,11 +11,6 @@ import { useStaticQuery, graphql, Link } from 'gatsby';
 const Articles = () => {
   const data = useStaticQuery(graphql`
     query {
-      site {
-        siteMetadata {
-          title
-        }
-      }
       allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
         edges {
           node {
