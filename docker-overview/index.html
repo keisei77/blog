@@ -75,7 +75,58 @@
 <p>Docker 的可移植性和轻量的本质在真实环境下亦可以动态管理工作负载，根据商业需要进行扩容或回收应用。</p>
 <h3>在同一个硬件上运行更多工作负载</h3>
 <p>Docker 是轻量的、快速的。它为基于管理程序的虚拟机提供了可行的，经济划算的替代方案，所以我们可以拥有更多算力来实现我们的商业目标。Docker 非常适合高密度环境和中小型部署需要更少资源做更多事情的场景。</p>
-<h2><a name="docker-architecture"></a>Docker 架构</h2></section><hr/><footer><div><div>前端开发者一枚，喜欢看电影，游戏，篮球，更喜欢写代码。偶尔做做公益，学习新技术。</div><div><a href="mailto:keisei.jia@gmail.com">keisei.jia@gmail.com</a></div><div><a href="https://github.com/keisei77" target="_blank" rel="noopener noreferrer">https://github.com/keisei77</a></div></div></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" href="/minipack/">← <!-- -->迷你打包工具</a></li><li></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2019<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
+<h2><a name="docker-architecture"></a>Docker 架构</h2>
+<p>Docker 采用客户端-服务端架构。Docker 客户端与做大量构建，运行，分发 Docker 容器工作的 Docker 守护进程通信。Docker 客户端和守护进程可以在同一系统运行，或 Docker 客户端连接一个远程的 Docker 守护进程。Docker 客户端和守护进程通过基于 UNIX 套接字或 网络接口的 REST API 通信。</p>
+<p><img src="/b595b80b1dc39db2af4ffd6f0e8e8f55/architecture.svg" alt="architecture"></p>
+<h3>Docker 守护进程</h3>
+<p>Docker 守护进程（<code class="language-text">dockerd</code>）会监听 Docker API 请求并管理 Docker 镜像，容器，网络，卷等对象。一个守护进程也能够与其他守护进程通信来管理 Docker 服务。</p>
+<h3>Docker 客户端</h3>
+<p>Docker 客户端（<code class="language-text">docker</code>）是 Docker 用户与 Docker 主要的交互方式。当使用如 <code class="language-text">docker run</code> 等命令时，客户端发送这些命令至 <code class="language-text">dockerd</code> 来执行。 <code class="language-text">docker</code> 命令使用 Docker API。Docker 客户端可以与多个守护进程通信。</p>
+<h3>Docker 注册源</h3>
+<p>Docker 注册源保存了 Docker 镜像。Docker Hub 是公开的任何人可以使用的源，Docker 默认去 Docker Hub 寻找镜像。我们也可以使用隐私源。</p>
+<p>当使用 <code class="language-text">docker pull</code> 或 <code class="language-text">docker run</code> 命令时，这些依赖的镜像会从配置的源拉取。当使用 <code class="language-text">docker push</code> 命令，镜像会推送到配置的源。</p>
+<h3>Docker 对象</h3>
+<p>当使用 Docker 时，我们创建并使用镜像，容器，网络，卷，插件等对象。下面是部分对象的简单介绍。</p>
+<h4>镜像</h4>
+<p>镜像是一种只读的模板，通过指令来创建 Docker 容器。通常，一个镜像基于另外的镜像，并在上面增加一些自定义的特性。例如，我们可以基于 <code class="language-text">ubuntu</code> 镜像，安装 Apache web 服务器和应用程序，并配置能让应用执行的配置项来创建一个新的镜像。</p>
+<p>我们可以创建自己的镜像，或使用其他人创建发布的镜像。为了创建自己的镜像，可以创建通过一些简单语法定义创建，执行镜像步骤的 <em>Dockerfile</em> 。在 Dockerfile 中的每条指令都会在镜像中创建一个层级。当更新 Dockerfile 并重新创建镜像时，只有改变的那些层才会重新创建。这就是与其他虚拟化技术相比能够保持镜像轻量，小型，快速的原因。</p>
+<h4>容器</h4>
+<p>一个容器是一个可运行的镜像的实例。我们可以使用 Docker API 或 CLI 创建，启动，停止，移动或删除容器。我们可以把容器与一个或多个网络，存储连接，甚至可以基于当前的状态创建新的镜像。</p>
+<p>默认情况下，一个容器与其他容器和它的宿主机都高度的隔离。我们可以控制容器的网络，存储，或其他容器、宿主机的底层子系统的隔离程度。</p>
+<p>一个容器由其镜像以及在创建或启动时为其提供的任何配置选项定义。当一个容器被移除时，任何没有存储在持久化存储中的改变的状态会消失。</p>
+<h5><code class="language-text">docker run</code> 命令的例子</h5>
+<p>下面的命令运行一个 <code class="language-text">ubuntu</code> 容器，附加交互的命令行会话，并执行 <code class="language-text">/bin/bash</code>。</p>
+<div class="gatsby-highlight" data-language="shell"><pre class="language-shell"><code class="language-shell">docker run -i -t ubuntu /bin/bash</code></pre></div>
+<p>当执行这条命令时，以下是内部发生的过程（假设使用了默认的源配置）：</p>
+<ol>
+<li>如果本地没有 <code class="language-text">ubuntu</code> 镜像，Docker 会从配置的源拉取，需要手动执行 <code class="language-text">docker pull ubuntu</code>。</li>
+<li>Docker 创建了一个新的容器，就像手动执行了 <code class="language-text">docker container create</code> 命令。</li>
+<li>Docker 分配了一个可读写的文件系统到容器作为最后一层。这允许一个运行的容器在其内部文件系统创建，修改文件和目录。</li>
+<li>Docker 创建网络接口来连接容器到默认的网络（如果没有指定任何的网络选项）。这会分配一个 IP 地址给容器。默认情况下，容器可以使用宿主机的网络连接来连接外部网络。</li>
+<li>Docker 开启容器并执行 <code class="language-text">/bin/bash</code>。因为容器运行时可交互，并且附在终端上（由于设置了<code class="language-text">-i</code> 和 <code class="language-text">-t</code> 标识），可以输入指令得到返回的输出结果。</li>
+<li>当输入 <code class="language-text">exit</code> 来结束 <code class="language-text">/bin/bash</code> 命令时，容器会暂停但并不会移除。可以再次启动或移除。</li>
+</ol>
+<h4>服务</h4>
+<p>服务允许我们通过多个 Docker 守护进程（多个 <em>manager</em> 和 <em>worker</em> 组成的集群）来扩展容器。集群中的每个成员都是一个 Docker 守护进程，这些进程都使用 Docker API 通信。一个服务允许定义期望的状态，例如任何时候都必须保证可用的服务副本的数量。默认情况下，服务在所有 worker 节点都是负载均衡的。对于消费者，Docker 服务表现为单个应用。Docker 引擎在 Docker 1.12 及以上版本支持集群模式。</p>
+<h2>底层技术</h2>
+<p>Docker 是使用 Go 语言实现的，并采用了 Linux 内核的许多特性来提供它的功能。</p>
+<h3>命名空间</h3>
+<p>Docker 使用了 <code class="language-text">namespaces</code> 的技术来提供称为<em>容器</em>的隔离的工作环境。当运行一个容器时，Docker 为该容器创建了一系列命名空间。</p>
+<p>这些命名空间提供了一个隔离层。容器的每部分都在独立的命名空间下运行，它们的访问权限都被限制在该命名空间下。</p>
+<p>Docker 引擎使用以下 Linux 中的命名空间：</p>
+<ul>
+<li><code class="language-text">pid</code> <strong>namespace</strong>: 进程隔离（PID: 进程 ID）</li>
+<li><code class="language-text">net</code> <strong>namespace</strong>: 管理网络接口（NET: 网络）</li>
+<li><code class="language-text">ipc</code> <strong>namespace</strong>: 管理访问 IPC 资源（IPC: 进程间通信）</li>
+<li><code class="language-text">mnt</code> <strong>namespace</strong>: 管理文件系统挂载点（MNT: 挂在）</li>
+<li><code class="language-text">uts</code> <strong>namespace</strong>: 隔离内核和版本标识（UTS: Unix 分时系统）</li>
+</ul>
+<h3>控制组</h3>
+<p>Docker 引擎在 Linux 系统也会依赖称为控制组（<code class="language-text">cgroups</code>）的技术。一个 cgroup 限制了一个应用指定的资源集合。控制组允许 Docker 引擎分享可用的硬件资源给容器，并有选择地实行限制和约束。例如，你可以限制指定容器的可用内存大小。</p>
+<h3>统一文件系统</h3>
+<p>统一文件系统（UnionFS），是通过创建层级进行操作的文件系统，使其非常轻便快速。Docker 引擎使用 UnionFS 为容器提供构建模块。Docker 引擎可以使用多种 UnionFS 变种，如 AUSF，btrfs，vfs，DeviceMapper。</p>
+<h3>容器格式化</h3>
+<p>Docker 引擎结合命名空间，控制组，统一文件系统包装成一个容器包装称为一个容器格式化。默认的容器格式化是 <code class="language-text">libcontainer</code>。</p></section><hr/><footer><div><div>前端开发者一枚，喜欢看电影，游戏，篮球，更喜欢写代码。偶尔做做公益，学习新技术。</div><div><a href="mailto:keisei.jia@gmail.com">keisei.jia@gmail.com</a></div><div><a href="https://github.com/keisei77" target="_blank" rel="noopener noreferrer">https://github.com/keisei77</a></div></div></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li><a rel="prev" href="/minipack/">← <!-- -->迷你打包工具</a></li><li></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   
   
   if(true) {
