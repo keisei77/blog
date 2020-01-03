@@ -1,5 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Link } from 'gatsby';
 import styled from 'styled-components';
 
@@ -16,31 +15,43 @@ const StyledLink = styled(Link)`
   line-height: 1rem;
   transition: opacity 0.1s ease-in-out;
   background: #a1c4fd;
+  margin-top: 0.5rem;
   &:hover {
     opacity: 0.85;
   }
 `;
 
-const StyledPre = styled.pre<{ tagsLength: number }>`
+const StyledPre = styled.pre<{ tagsLength: number; showBorder: boolean }>`
   display: ${props => (props.tagsLength ? 'flex' : 'none')};
   align-items: center;
-  border-top: 1px solid #a1c4fd;
-  padding-top: 1rem;
+  flex-wrap: wrap;
+  border-top: ${props => (props.showBorder ? '1px solid #a1c4fd' : 'none')};
+  padding-top: 0.5rem;
+`;
+
+const StyledLabel = styled.label<{ showLabel: boolean }>`
+  margin-top: 0.5rem;
+  display: ${props => (props.showLabel ? 'flex' : 'none')};
 `;
 
 interface TagProps {
-  slug: string;
   tags: string[];
+  style?: {
+    showBorder: boolean;
+    showLabel: boolean;
+  };
 }
 
 const Tag = (props: TagProps) => {
-  const { slug, tags = [] } = props;
+  const { style = { showBorder: true, showLabel: true }, tags = [] } = props;
   return (
-    <StyledPre tagsLength={tags.length}>
-      <span>标签：</span>
+    <StyledPre showBorder={style.showBorder} tagsLength={tags.length}>
+      <StyledLabel showLabel={style.showLabel}>标签：</StyledLabel>
       {/* TODO: 这里应该跳转到tag详情页，该页显示相关tag的article列表 */}
       {tags.map((tag: string) => (
-        <StyledLink to={slug}>{tag}</StyledLink>
+        <StyledLink key={tag} to={`/tags/${tag}`}>
+          {tag}
+        </StyledLink>
       ))}
     </StyledPre>
   );
