@@ -17,6 +17,14 @@ const StyledHeader = styled.header<{ isScrolled: boolean }>`
   padding: 1rem;
   cursor: pointer;
   transition: background 0.1s ease-in-out;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StyledNav = styled.nav`
+  display: flex;
+  margin: unset;
+  padding: unset;
 `;
 
 const StyledLink = styled(Link)<{ isScrolled: boolean }>`
@@ -24,34 +32,33 @@ const StyledLink = styled(Link)<{ isScrolled: boolean }>`
   transition: color 0.1s ease-in-out;
 `;
 
+const StyledMenu = styled(StyledLink)`
+  padding: 0 8px;
+
+  &:last-child {
+    padding-right: 0;
+  }
+`;
+
 function Header(props: HeaderProps) {
   const { title, isScrolled } = props;
 
   return (
     <StyledHeader isScrolled={isScrolled}>
-      <StyledLink
-        isScrolled={isScrolled}
-        style={{
-          display: `flex`,
-          alignItems: `center`,
-          boxShadow: `none`,
-          textDecoration: `none`,
-        }}
-        to={`/`}
-      >
+      <StyledLink isScrolled={isScrolled} to={`/`}>
         {title}
       </StyledLink>
-      {/* <Box>
-            <StyledLink isScrolled={isScrolled} to="/tags">
-              tags
-            </StyledLink>
-            <StyledLink isScrolled={isScrolled} to="/timeline">
-              timeline
-            </StyledLink>
-            <StyledLink isScrolled={isScrolled} to="/about">
-              about
-            </StyledLink>
-          </Box> */}
+      <StyledNav>
+        <StyledMenu isScrolled={isScrolled} to="/tags">
+          标签
+        </StyledMenu>
+        <StyledMenu isScrolled={isScrolled} to="/timeline">
+          归档
+        </StyledMenu>
+        <StyledMenu isScrolled={isScrolled} to="/about">
+          关于
+        </StyledMenu>
+      </StyledNav>
     </StyledHeader>
   );
 }
