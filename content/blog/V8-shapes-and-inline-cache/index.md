@@ -263,3 +263,7 @@ const array = ['#jsconfeu'];
 
 - 总是按同一种方式初始化对象，这样就不会产生多种不同的 shape；
 - 不要试图修改数组的属性信息，否则存储和操作会降低性能。
+
+## 参考
+
+https://mathiasbynens.be/notes/shapes-ics

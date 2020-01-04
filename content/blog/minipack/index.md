@@ -170,3 +170,7 @@ const result = bundle(graph);
 
 console.log(result);
 ```
+
+## 参考
+
+https://github.com/ronami/minipack

@@ -6,8 +6,6 @@ tags: ['Promise']
 ---
 
 ```javascript
-// https://www.youtube.com/watch?v=4GpwM8FmVgQ
-
 const states = {
   PENDING: 'pending',
   FULFILLED: 'fulfilled',
@@ -214,3 +212,7 @@ readFile(path.join(__dirname, 'promise.js'), 'utf8')
     console.log('--- All done! ---');
   });
 ```
+
+## 参考
+
+https://www.youtube.com/watch?v=4GpwM8FmVgQ

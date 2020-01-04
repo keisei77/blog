@@ -5,8 +5,6 @@ description: '渲染器进程的内部执行过程'
 tags: ['Renderer process']
 ---
 
-<!-- https://developers.google.com/web/updates/2018/09/inside-browser-part3 -->
-
 ## 简介
 
 前一节我们介绍了[浏览器从地址栏输入 URL](/web-browser-happen-in-navigation) 开始内部是如何工作的。本文来看一下渲染器进程内部是如何工作的，由于该部分涉及到了 web 优化的众多方面，本文尽量以高度概括的方式进行讲解，如需进一步学习可访问 [Web 基础之性能优化](https://developers.google.com/web/fundamentals/performance/why-performance-matters/)。
@@ -124,3 +122,7 @@ CSS 可以使元素浮动至一侧，遮盖溢出的元素，改变文档的方�
 ## 总结
 
 本文主要了解了渲染的流程，从解析到合成的过程。希望在阅读更深入的性能优化时能够有一些帮助。
+
+## 参考
+
+https://developers.google.com/web/updates/2018/09/inside-browser-part3

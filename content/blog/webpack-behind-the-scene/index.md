@@ -198,3 +198,7 @@ class Compilation extends Tapable {
 ## 小结
 
 webpack 的出现使前端工程化迈向了新的台阶，使我们开发更便捷。webpack 提供的能力也促进了社区的发展来完善构建流程。
+
+## 参考
+
+https://medium.com/@imranhsayed/webpack-behind-the-scenes-85333a23c0f6

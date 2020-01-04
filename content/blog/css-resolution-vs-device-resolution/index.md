@@ -55,3 +55,7 @@ CSS 分辨率是在 CSS 样式中用来测量的单位，屏幕设备分辨率�
 ## 写在最后
 
 了解 CSS 分辨率和设备分辨率的区别可以让我们更好地理解响应式，针对不同分辨率提供不同尺寸地图片、视频充分发挥高分辨率地优势，为用户带来更好的体验。
+
+## 参考
+
+https://medium.com/@elad/understanding-the-difference-between-css-resolution-and-device-resolution-28acae23da0b

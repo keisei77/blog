@@ -183,3 +183,7 @@ execFuncArgs`Hi, ${() => console.log('Executed!')}`;
 ## 总结
 
 可以看到，JavaScript 的一个新特性就可以实现一个强大的库，为我们的开发带来更好的体验，我们需要不断去探索去总结去实践 JavaScript 实现更多新的能力。
+
+## 参考
+
+https://mxstbr.blog/2016/11/styled-components-magic-explained/

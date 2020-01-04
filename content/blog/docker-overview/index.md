@@ -148,3 +148,7 @@ Docker 引擎在 Linux 系统也会依赖称为控制组（`cgroups`）的技术
 ### 容器格式化
 
 Docker 引擎结合命名空间，控制组，统一文件系统包装成一个容器包装称为一个容器格式化。默认的容器格式化是 `libcontainer`。
+
+## 参考
+
+https://docs.docker.com/engine/docker-overview/

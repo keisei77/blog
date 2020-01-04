@@ -344,3 +344,7 @@ p.y = 402;
 
 - 总是以同一种方式初始化对象，shape 可以变得高效；
 - 选择对字段类型合适的初始值来帮助 JavaScript 引擎选择表示形式。
+
+## 参考
+
+https://v8.dev/blog/react-cliff

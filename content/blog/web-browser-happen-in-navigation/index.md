@@ -72,3 +72,7 @@ tags: ['Browser process', 'navigation']
 当新的导航与当前渲染的站点不在同一个站点上时，将调用一个单独的渲染进程来处理新的导航，而当前的渲染进程将保留下来以处理诸如卸载之类的事件。
 
 ![unload](unload.png)
+
+## 参考
+
+https://developers.google.com/web/updates/2018/09/inside-browser-part2
