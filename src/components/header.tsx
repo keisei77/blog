@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
+import logo from '../assets/logo.png';
 
 interface HeaderProps {
   title: string;
@@ -8,7 +9,7 @@ interface HeaderProps {
 }
 
 const StyledHeader = styled.header<{ isScrolled: boolean }>`
-  background: ${props => (props.isScrolled ? '#a1c4fd' : '#fff')};
+  background: ${props => (props.isScrolled ? '#74d2ff' : '#fff')};
   box-shadow: ${props =>
     props.isScrolled ? '0px 0px 0.25rem rgba(0, 0, 0, 0.4)' : 'none'};
   position: sticky;
@@ -29,7 +30,15 @@ const StyledNav = styled.nav`
 
 const StyledLink = styled(Link)<{ isScrolled: boolean }>`
   color: ${props => (props.isScrolled ? '#fff' : 'inherit')};
+  display: flex;
+  align-items: center;
   transition: color 0.1s ease-in-out;
+`;
+
+const StyledLogo = styled.img`
+  padding-right: 1rem;
+  height: 2rem;
+  width: 4rem;
 `;
 
 const StyledMenu = styled(StyledLink)`
@@ -46,6 +55,7 @@ function Header(props: HeaderProps) {
   return (
     <StyledHeader isScrolled={isScrolled}>
       <StyledLink isScrolled={isScrolled} to={`/`}>
+        <StyledLogo src={logo} alt="logo" />
         {title}
       </StyledLink>
       <StyledNav>

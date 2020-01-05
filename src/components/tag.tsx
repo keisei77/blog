@@ -14,7 +14,7 @@ const StyledLink = styled(Link)`
   text-overflow: ellipsis;
   line-height: 1rem;
   transition: opacity 0.1s ease-in-out;
-  background: #a1c4fd;
+  background: #74d2ff;
   margin-top: 0.5rem;
   &:hover {
     opacity: 0.85;
@@ -25,7 +25,7 @@ const StyledPre = styled.pre<{ tagsLength: number; showBorder: boolean }>`
   display: ${props => (props.tagsLength ? 'flex' : 'none')};
   align-items: center;
   flex-wrap: wrap;
-  border-top: ${props => (props.showBorder ? '1px solid #a1c4fd' : 'none')};
+  border-top: ${props => (props.showBorder ? '1px solid #74d2ff' : 'none')};
   padding-top: 0.5rem;
 `;
 
