@@ -13,7 +13,7 @@ const StyledMain = styled.main`
   margin-left: auto;
   margin-right: auto;
   padding: 0 1rem;
-  min-height: calc(100vh - 5.25rem);
+  min-height: calc(100vh - 6.125rem);
 
   @media screen and (min-width: 1200px) {
     width: 65%;
