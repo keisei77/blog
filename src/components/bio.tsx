@@ -26,7 +26,11 @@ const Bio = () => {
   const { author, social } = data.site.siteMetadata;
   const { email, github } = social;
   return (
-    <div>
+    <div
+      style={{
+        paddingTop: '1rem',
+      }}
+    >
       <div>
         前端开发者一枚，喜欢看电影，游戏，篮球，更喜欢写代码。偶尔做做公益，学习新技术。
       </div>
