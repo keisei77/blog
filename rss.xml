@@ -1,4 +1,87 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 05 Jan 2020 16:11:44 GMT</lastBuildDate><item><title><![CDATA[JavaScript 装饰器]]></title><link>https://www.keisei.top/understanding-javascript-decorators/</link><guid isPermaLink="false">https://www.keisei.top/understanding-javascript-decorators/</guid><pubDate>Sun, 05 Jan 2020 23:21:00 GMT</pubDate><content:encoded></content:encoded></item><item><title><![CDATA[Docker 简介]]></title><description><![CDATA[简述 Docker 是集开发、发布、执行应用功能的一个开放平台。Docker 能够帮我们将应用和基础设施分离来达到更快的交付。有了 Docker，我们可以像管理基础设施一样管理我们的软件。有了 Docker…]]></description><link>https://www.keisei.top/docker-overview/</link><guid isPermaLink="false">https://www.keisei.top/docker-overview/</guid><pubDate>Mon, 30 Dec 2019 23:33:00 GMT</pubDate><content:encoded>&lt;h2&gt;简述&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 06 Jan 2020 16:13:49 GMT</lastBuildDate><item><title><![CDATA[JavaScript 装饰器]]></title><description><![CDATA[什么是装饰器 装饰器是“装饰函数（或方法）”的一种简称。它是一个通过修改传入的函数或方法的行为并返回一个新函数的函数。 我们可以在任何支持函数为一等公民的语言中实现装饰器，如 JavaScript…]]></description><link>https://www.keisei.top/understanding-javascript-decorators/</link><guid isPermaLink="false">https://www.keisei.top/understanding-javascript-decorators/</guid><pubDate>Sun, 05 Jan 2020 23:21:00 GMT</pubDate><content:encoded>&lt;h2&gt;什么是装饰器&lt;/h2&gt;
+&lt;p&gt;装饰器是“装饰函数（或方法）”的一种简称。它是一个通过修改传入的函数或方法的行为并返回一个新函数的函数。&lt;/p&gt;
+&lt;p&gt;我们可以在任何支持函数为一等公民的语言中实现装饰器，如 JavaScript。我们可以把函数赋值为变量或将它作为参数传递到下一个函数。有一些语言有定义和使用装饰器的特殊语法糖，其中 Python 的代码如下：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;cashify&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;fn&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;wrap&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;$$$$&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        fn&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;$$$$&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; wrap
+
+@cashify
+&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;sayHello&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;hello!&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+sayHello&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# $$$$&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# hello!&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# $$$$&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;我们来看一下以上代码。&lt;code class=&quot;language-text&quot;&gt;cashify&lt;/code&gt; 是一个装饰器：它接受一个函数参数，返回值也是一个函数。我们使用 Python 的 “pie” 语法来装饰我们的 &lt;code class=&quot;language-text&quot;&gt;sayHello&lt;/code&gt; 函数，与下面在 &lt;code class=&quot;language-text&quot;&gt;sayHello&lt;/code&gt; 后面执行的结果本质上是一样的：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;sayHello&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;hello!&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+sayHello &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; cashify&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;sayHello&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;最终的结果是我们在我们所装饰的函数打印内容的前后打印了 &lt;code class=&quot;language-text&quot;&gt;$&lt;/code&gt; 符号。&lt;/p&gt;
+&lt;p&gt;那么在介绍 ECMAScript 的装饰器时为什么使用了 Python 作为例子呢？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Python 装饰器的概念相比 JS 来说更加直接，更好地作为基础来解释。&lt;/li&gt;
+&lt;li&gt;JS 和 TypeScript 都使用了 Python 的 “pie” 语法来装饰类的方法和属性，它们视觉和语义上是相似的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;相对来说 JS 的装饰器有哪些不同呢？&lt;/p&gt;
+&lt;h2&gt;JS 装饰器和属性描述符&lt;/h2&gt;
+&lt;p&gt;传递给 Python 装饰器的任何函数都作为参数装饰，JS 装饰器由于对象在 JS 中的特殊性需要更多的信息。
+对象在 JS 中有属性，并且属性对应各自的值:&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; oatmeal &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  viscosity&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  flavor&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;Brown Sugar Cinnamon&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;对于属性值，每个属性有一些其他背后的信息来定义如何工作的不同方面，被称为属性描述符：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;Object&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getOwnPropertyDescriptor&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;oatmeal&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;viscosity&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;/**
+{
+  configurable: true,
+  enumerable: true,
+  value: 20,
+  writable: true
+}
+*/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;JS 会对属性的相关信息追踪：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;configurable&lt;/code&gt; 决定属性的类型是否可以修改，是否可以从对象中删除。&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;enumerable&lt;/code&gt; 控制在枚举对象的属性（如 &lt;code class=&quot;language-text&quot;&gt;Object.keys(oatmeal)&lt;/code&gt; 或 &lt;code class=&quot;language-text&quot;&gt;for 循环&lt;/code&gt;）时是否可见。&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;writable&lt;/code&gt; 控制能否通过 &lt;code class=&quot;language-text&quot;&gt;=&lt;/code&gt; 操作符来赋值&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;value&lt;/code&gt; 是属性的值，这是我们平时最关心的一个属性。它可以是任何 JS 的类型。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;属性描述符也有另外两个属性，JS 把它们作为“访问描述符”（更常见的名称为：getters 和 setters）来对待：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;get&lt;/code&gt; 是一个返回属性值的函数。&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;set&lt;/code&gt; 是一个接收一个值作为参数的函数，并把该值赋值给当前属性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;没有多余的装饰&lt;/h3&gt;
+&lt;p&gt;JS 从 ES5 开始有了对属性描述符操作的 API。&lt;code class=&quot;language-text&quot;&gt;Object.getOwnPropertyDescriptor&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;Object.defineProperty&lt;/code&gt; 函数。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;Object&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;defineProperty&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;oatmeal&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;viscosity&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  writable&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  value&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;// 当尝试给 oatmeal.viscosity 赋新值时，它静默失败了&lt;/span&gt;
+oatmeal&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;viscosity &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;oatmeal&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;viscosity&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// =&gt; 20&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;我们可以写一个通用的 &lt;code class=&quot;language-text&quot;&gt;decorate&lt;/code&gt; 函数来更新任何对象的任何属性的描述符：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;decorate&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;obj&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; property&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; callback&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; descriptor &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; Object&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getOwnPropertyDescriptor&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;obj&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; property&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  Object&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;defineProperty&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;obj&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; property&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;descriptor&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token function&quot;&gt;decorate&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;oatmeal&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;viscosity&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;desc&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  desc&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;configurable &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  desc&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;writable &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  desc&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;value &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; desc&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Docker 简介]]></title><description><![CDATA[简述 Docker 是集开发、发布、执行应用功能的一个开放平台。Docker 能够帮我们将应用和基础设施分离来达到更快的交付。有了 Docker，我们可以像管理基础设施一样管理我们的软件。有了 Docker…]]></description><link>https://www.keisei.top/docker-overview/</link><guid isPermaLink="false">https://www.keisei.top/docker-overview/</guid><pubDate>Mon, 30 Dec 2019 23:33:00 GMT</pubDate><content:encoded>&lt;h2&gt;简述&lt;/h2&gt;
 &lt;p&gt;Docker 是集开发、发布、执行应用功能的一个开放平台。Docker 能够帮我们将应用和基础设施分离来达到更快的交付。有了 Docker，我们可以像管理基础设施一样管理我们的软件。有了 Docker 快速发布、测试、部署代码的优势，我们可以显著减少从编写代码到在生产环境执行的时间间隔。&lt;/p&gt;
 &lt;h2&gt;Docker 平台&lt;/h2&gt;
 &lt;p&gt;Docker 提供了在松散隔离的环境（被称作容器：container）中打包执行应用的能力。隔离和安全能力允许我们在一台宿主机上同时运行多个容器。容器本身是轻量的，它们不需要管理程序额外的负载，直接在宿主机的内核上运行。这意味着与虚拟机相比，我们可以在给定的硬件组合上运行更多容器。甚至我们可以在实际上是虚拟机的宿主机上运行 Docker 容器。&lt;/p&gt;
