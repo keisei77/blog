@@ -158,67 +158,67 @@
 <div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// node_modules/webpack/lib/Compiler.js</span>
 
 <span class="token keyword">class</span> <span class="token class-name">Compiler</span> <span class="token keyword">extends</span> <span class="token class-name">Tapable</span> <span class="token punctuation">{</span>
-	<span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">context</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-		<span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">this</span><span class="token punctuation">.</span>hooks <span class="token operator">=</span> <span class="token punctuation">{</span>
-			<span class="token comment">/** @type {SyncBailHook&lt;Compilation>} */</span>
-			shouldEmit<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncBailHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compilation"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {AsyncSeriesHook&lt;Stats>} */</span>
-			done<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"stats"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {AsyncSeriesHook&lt;>} */</span>
-			additionalPass<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {AsyncSeriesHook&lt;Compiler>} */</span>
-			beforeRun<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compiler"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {AsyncSeriesHook&lt;Compiler>} */</span>
-			run<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compiler"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {AsyncSeriesHook&lt;Compilation>} */</span>
-			emit<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compilation"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {AsyncSeriesHook&lt;string, Buffer>} */</span>
-			assetEmitted<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"file"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {AsyncSeriesHook&lt;Compilation>} */</span>
-			afterEmit<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compilation"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">context</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>hooks <span class="token operator">=</span> <span class="token punctuation">{</span>
+      <span class="token comment">/** @type {SyncBailHook&lt;Compilation>} */</span>
+      shouldEmit<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncBailHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compilation"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {AsyncSeriesHook&lt;Stats>} */</span>
+      done<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"stats"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {AsyncSeriesHook&lt;>} */</span>
+      additionalPass<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {AsyncSeriesHook&lt;Compiler>} */</span>
+      beforeRun<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compiler"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {AsyncSeriesHook&lt;Compiler>} */</span>
+      run<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compiler"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {AsyncSeriesHook&lt;Compilation>} */</span>
+      emit<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compilation"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {AsyncSeriesHook&lt;string, Buffer>} */</span>
+      assetEmitted<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"file"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {AsyncSeriesHook&lt;Compilation>} */</span>
+      afterEmit<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSeriesHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compilation"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
 
-			<span class="token comment">/** @type {SyncHook&lt;Compilation, CompilationParams>} */</span>
-			thisCompilation<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compilation"</span><span class="token punctuation">,</span> <span class="token string">"params"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {SyncHook&lt;Compilation, CompilationParams>} */</span>
-			compilation<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compilation"</span><span class="token punctuation">,</span> <span class="token string">"params"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {SyncHook&lt;Compilation, CompilationParams>} */</span>
+      thisCompilation<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compilation"</span><span class="token punctuation">,</span> <span class="token string">"params"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {SyncHook&lt;Compilation, CompilationParams>} */</span>
+      compilation<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"compilation"</span><span class="token punctuation">,</span> <span class="token string">"params"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
       <span class="token comment">// ...</span>
-		<span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
     <span class="token comment">//...</span>
-	<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
 <h3>2.编译/依赖图 （Compilation/Dependency Graph）</h3>
 <p>编译器接下来会创建编译对象（Compilation），<code class="language-text">Compilation</code> 是 webpack 的核心，从编译对象开始构建依赖图，提升树并渲染成束（编译器和编译对象都继承自 Tapable 类）。</p>
 <div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// node_modules/webpack/lib/Compilation.js</span>
 
 <span class="token keyword">class</span> <span class="token class-name">Compilation</span> <span class="token keyword">extends</span> <span class="token class-name">Tapable</span> <span class="token punctuation">{</span>
-	<span class="token comment">/**
-	 * Creates an instance of Compilation.
-	 * @param {Compiler} compiler the compiler which created the compilation
-	 */</span>
-	<span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">compiler</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-		<span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">this</span><span class="token punctuation">.</span>hooks <span class="token operator">=</span> <span class="token punctuation">{</span>
-			<span class="token comment">/** @type {SyncHook&lt;Module>} */</span>
-			buildModule<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"module"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {SyncHook&lt;Module>} */</span>
-			rebuildModule<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"module"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {SyncHook&lt;Module, Error>} */</span>
-			failedModule<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"module"</span><span class="token punctuation">,</span> <span class="token string">"error"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {SyncHook&lt;Module>} */</span>
-			succeedModule<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"module"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+ <span class="token comment">/**
+   * Creates an instance of Compilation.
+   * @param {Compiler} compiler the compiler which created the compilation
+   */</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">compiler</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>hooks <span class="token operator">=</span> <span class="token punctuation">{</span>
+      <span class="token comment">/** @type {SyncHook&lt;Module>} */</span>
+      buildModule<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"module"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {SyncHook&lt;Module>} */</span>
+      rebuildModule<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"module"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {SyncHook&lt;Module, Error>} */</span>
+      failedModule<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"module"</span><span class="token punctuation">,</span> <span class="token string">"error"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {SyncHook&lt;Module>} */</span>
+      succeedModule<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"module"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
 
-			<span class="token comment">/** @type {SyncHook&lt;Dependency, string>} */</span>
-			addEntry<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"entry"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {SyncHook&lt;Dependency, string, Error>} */</span>
-			failedEntry<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"entry"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"error"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-			<span class="token comment">/** @type {SyncHook&lt;Dependency, string, Module>} */</span>
-			succeedEntry<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"entry"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"module"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {SyncHook&lt;Dependency, string>} */</span>
+      addEntry<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"entry"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {SyncHook&lt;Dependency, string, Error>} */</span>
+      failedEntry<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"entry"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"error"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">/** @type {SyncHook&lt;Dependency, string, Module>} */</span>
+      succeedEntry<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"entry"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"module"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
 
-			<span class="token comment">/** @type {SyncWaterfallHook&lt;DependencyReference, Dependency, Module>} */</span>
-			dependencyReference<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncWaterfallHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
-				<span class="token string">"dependencyReference"</span><span class="token punctuation">,</span>
-				<span class="token string">"dependency"</span><span class="token punctuation">,</span>
-				<span class="token string">"module"</span>
+      <span class="token comment">/** @type {SyncWaterfallHook&lt;DependencyReference, Dependency, Module>} */</span>
+      dependencyReference<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">SyncWaterfallHook</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+        <span class="token string">"dependencyReference"</span><span class="token punctuation">,</span>
+        <span class="token string">"dependency"</span><span class="token punctuation">,</span>
+        <span class="token string">"module"</span>
       <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
       <span class="token comment">// ...</span>
     <span class="token punctuation">}</span>
