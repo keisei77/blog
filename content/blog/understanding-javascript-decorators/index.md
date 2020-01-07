@@ -118,3 +118,191 @@ decorate(oatmeal, 'viscosity', function(desc) {
   return desc;
 });
 ```
+
+## 装饰器初探
+
+与装饰器提案的第一个主要的不同点是，它只涉及 ECMAScript 类，而不涉及常规对象。我们来新增一些类：
+
+```javascript
+class Porridge {
+  constructor(viscosity = 10) {
+    this.viscosity = viscosity;
+  }
+
+  stir() {
+    if (this.viscosity > 15) {
+      console.log('This is pretty thick stuff.');
+    } else {
+      console.log('Spoon goes round and round.');
+    }
+  }
+}
+
+class Oatmeal extends Porridge {
+  viscosity = 20;
+
+  constructor(flavor) {
+    super();
+    this.flavor = flavor;
+  }
+}
+
+const oatmeal = new Oatmeal('Brown Sugar Cinnamon');
+
+/*
+Oatmeal {
+  flavor: 'Brown Sugar Cinnamon',
+  viscosity: 20
+}/
+```
+
+### 如何写一个装饰器
+
+JS 装饰器函数有 3 个参数：
+
+1. `target` 是实例对象的类。
+2. `key` 是属性名字符串，是我们要装饰的对象。
+3. `descriptor` 属性的描述对象
+
+装饰器函数内部的实现取决于我们想要装饰器来做什么。为了装饰对象的方法或属性，我们需要返回一个新的属性描述符。下面是我们对属性做只读设置：
+
+```javascript
+function readOnly(target, key, descriptor) {
+  return {
+    ...descriptor,
+    writable: false,
+  };
+}
+
+class Oatmeal extends Porridge {
+  @readOnly viscosity = 20;
+
+  constructor(flavor) {
+    super();
+    this.flavor = flavor;
+  }
+}
+```
+
+### 处理 API 异常
+
+我们向服务器请求数据是可能会出现异常，当与网络通信时假设都遵循以下约定：
+
+1. 在页面上显示属性 `networkStatus` 为 loading 的样式
+2. 发送 API 请求
+3. 处理结果
+   - 如果成功，根据响应更新状态
+   - 如果失败，`apiError` 属性值为接收到的异常内容
+4. 将 `networkStatus` 状态设置为 idle
+
+常规写法：
+
+```javascript
+class WidgetStore {
+  async getWidget(id) {
+    this.setNetworkStatus('loading');
+
+    try {
+      const { widget } = await api.getWidget(id);
+      // 更新本地状态：
+      this.addWidget(widget);
+    } catch (err) {
+      this.setApiError(err);
+    } finally {
+      this.setNetworkStatus('idle');
+    }
+  }
+}
+```
+
+以上代码很容易会写出很多模板代码。当我们尝试使用装饰器来处理：
+
+```javascript
+function apiRequest(target, key, descriptor) {
+  const apiAction = async function(...args) {
+    const original = descriptor.value || descriptor.initializer.call(this);
+
+    this.setNetworkStatus('loading');
+
+    try {
+      const result = await original(...args);
+      return result;
+    } catch (e) {
+      this.setApiError(e);
+    } finally {
+      this.setNetworkStatus('idle');
+    }
+  };
+
+  return {
+    ...descriptor,
+    value: apiAction,
+    initializer: undefined,
+  };
+}
+```
+
+我们将刚才的装饰器函数应用到之前的类中：
+
+```javascript
+class WidgetStore {
+  @apiRequest
+  async getWidget(id) {
+    const { widget } = await api.getWidget(id);
+    this.addWidget(widget);
+    return widget;
+  }
+}
+```
+
+我们对异常处理的代码现在移到了装饰器函数中，我们只需要关心实现不同需求。
+
+## 装饰类
+
+除了属性和方法外，我们也可以装饰整个类。我们只需要传入 `target` 参数到装饰器函数即可。来看下面的例子：
+
+```javascript
+function customElement(name) {
+  return function (target) {
+    customElements.define(name, target);
+  }
+}
+
+@customElement('intro-message');
+class IntroMessage extends HTMLElement {
+  constructor() {
+    super();
+
+    const shadow = this.attachShadow({mode: 'open'});
+    this.wrapper = this.createElement('div', 'intro-message');
+    this.header = this.createElement('h1', 'intro-message__title');
+    this.content = this.createElement('div', 'intro-message__text');
+    this.header.textContent = this.getAttribute('header');
+    this.content.innerHTML = this.innerHTML;
+
+    shadow.appendChild(this.wrapper);
+    this.wrapper.appendChild(this.header);
+    this.wrapper.appendChild(this.content);
+  }
+
+  createElement(tag, className) {
+    const elem = document.createElement(tag);
+    elem.classList.add(className);
+    return elem;
+  }
+}
+```
+
+在 HTML 中加载以上代码，我们可以这样使用：
+
+```html
+<intro-message header="welcome to Decorators">
+  <p>Something something content...</p>
+</intro-message>
+```
+
+![custom tag](custom-tag.png)
+
+## 参考
+
+https://www.simplethread.com/understanding-js-decorators/
