@@ -239,4 +239,4 @@ _**host component**_
 
 ## 参考
 
-https://github.com/acdlite/react-fiber-architecture/
+<https://github.com/acdlite/react-fiber-architecture/>

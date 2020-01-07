@@ -215,4 +215,4 @@ readFile(path.join(__dirname, 'promise.js'), 'utf8')
 
 ## 参考
 
-https://www.youtube.com/watch?v=4GpwM8FmVgQ
+<https://www.youtube.com/watch?v=4GpwM8FmVgQ>

@@ -305,4 +305,4 @@ class IntroMessage extends HTMLElement {
 
 ## 参考
 
-https://www.simplethread.com/understanding-js-decorators/
+<https://www.simplethread.com/understanding-js-decorators/>

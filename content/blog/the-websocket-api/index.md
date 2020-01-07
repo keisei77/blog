@@ -303,4 +303,4 @@ FIN 和 opcode 字段在一起将发送的一条信息拆分为多个单独的�
 
 ## 参考
 
-https://developer.mozilla.org/en-US/docs/Web/API/Websockets_API
+<https://developer.mozilla.org/en-US/docs/Web/API/Websockets_API>

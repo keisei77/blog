@@ -173,4 +173,4 @@ console.log(result);
 
 ## 参考
 
-https://github.com/ronami/minipack
+<https://github.com/ronami/minipack>

@@ -100,34 +100,34 @@ const webpack = (options, callback) => {
 // node_modules/webpack/lib/Compiler.js
 
 class Compiler extends Tapable {
-	constructor(context) {
-		super();
-		this.hooks = {
-			/** @type {SyncBailHook<Compilation>} */
-			shouldEmit: new SyncBailHook(["compilation"]),
-			/** @type {AsyncSeriesHook<Stats>} */
-			done: new AsyncSeriesHook(["stats"]),
-			/** @type {AsyncSeriesHook<>} */
-			additionalPass: new AsyncSeriesHook([]),
-			/** @type {AsyncSeriesHook<Compiler>} */
-			beforeRun: new AsyncSeriesHook(["compiler"]),
-			/** @type {AsyncSeriesHook<Compiler>} */
-			run: new AsyncSeriesHook(["compiler"]),
-			/** @type {AsyncSeriesHook<Compilation>} */
-			emit: new AsyncSeriesHook(["compilation"]),
-			/** @type {AsyncSeriesHook<string, Buffer>} */
-			assetEmitted: new AsyncSeriesHook(["file", "content"]),
-			/** @type {AsyncSeriesHook<Compilation>} */
-			afterEmit: new AsyncSeriesHook(["compilation"]),
+  constructor(context) {
+    super();
+    this.hooks = {
+      /** @type {SyncBailHook<Compilation>} */
+      shouldEmit: new SyncBailHook(["compilation"]),
+      /** @type {AsyncSeriesHook<Stats>} */
+      done: new AsyncSeriesHook(["stats"]),
+      /** @type {AsyncSeriesHook<>} */
+      additionalPass: new AsyncSeriesHook([]),
+      /** @type {AsyncSeriesHook<Compiler>} */
+      beforeRun: new AsyncSeriesHook(["compiler"]),
+      /** @type {AsyncSeriesHook<Compiler>} */
+      run: new AsyncSeriesHook(["compiler"]),
+      /** @type {AsyncSeriesHook<Compilation>} */
+      emit: new AsyncSeriesHook(["compilation"]),
+      /** @type {AsyncSeriesHook<string, Buffer>} */
+      assetEmitted: new AsyncSeriesHook(["file", "content"]),
+      /** @type {AsyncSeriesHook<Compilation>} */
+      afterEmit: new AsyncSeriesHook(["compilation"]),
 
-			/** @type {SyncHook<Compilation, CompilationParams>} */
-			thisCompilation: new SyncHook(["compilation", "params"]),
-			/** @type {SyncHook<Compilation, CompilationParams>} */
-			compilation: new SyncHook(["compilation", "params"]),
+      /** @type {SyncHook<Compilation, CompilationParams>} */
+      thisCompilation: new SyncHook(["compilation", "params"]),
+      /** @type {SyncHook<Compilation, CompilationParams>} */
+      compilation: new SyncHook(["compilation", "params"]),
       // ...
-		};
+    };
     //...
-	};
+  };
 ```
 
 ### 2.编译/依赖图 （Compilation/Dependency Graph）
@@ -138,34 +138,34 @@ class Compiler extends Tapable {
 // node_modules/webpack/lib/Compilation.js
 
 class Compilation extends Tapable {
-	/**
-	 * Creates an instance of Compilation.
-	 * @param {Compiler} compiler the compiler which created the compilation
-	 */
-	constructor(compiler) {
-		super();
-		this.hooks = {
-			/** @type {SyncHook<Module>} */
-			buildModule: new SyncHook(["module"]),
-			/** @type {SyncHook<Module>} */
-			rebuildModule: new SyncHook(["module"]),
-			/** @type {SyncHook<Module, Error>} */
-			failedModule: new SyncHook(["module", "error"]),
-			/** @type {SyncHook<Module>} */
-			succeedModule: new SyncHook(["module"]),
+ /**
+   * Creates an instance of Compilation.
+   * @param {Compiler} compiler the compiler which created the compilation
+   */
+  constructor(compiler) {
+    super();
+    this.hooks = {
+      /** @type {SyncHook<Module>} */
+      buildModule: new SyncHook(["module"]),
+      /** @type {SyncHook<Module>} */
+      rebuildModule: new SyncHook(["module"]),
+      /** @type {SyncHook<Module, Error>} */
+      failedModule: new SyncHook(["module", "error"]),
+      /** @type {SyncHook<Module>} */
+      succeedModule: new SyncHook(["module"]),
 
-			/** @type {SyncHook<Dependency, string>} */
-			addEntry: new SyncHook(["entry", "name"]),
-			/** @type {SyncHook<Dependency, string, Error>} */
-			failedEntry: new SyncHook(["entry", "name", "error"]),
-			/** @type {SyncHook<Dependency, string, Module>} */
-			succeedEntry: new SyncHook(["entry", "name", "module"]),
+      /** @type {SyncHook<Dependency, string>} */
+      addEntry: new SyncHook(["entry", "name"]),
+      /** @type {SyncHook<Dependency, string, Error>} */
+      failedEntry: new SyncHook(["entry", "name", "error"]),
+      /** @type {SyncHook<Dependency, string, Module>} */
+      succeedEntry: new SyncHook(["entry", "name", "module"]),
 
-			/** @type {SyncWaterfallHook<DependencyReference, Dependency, Module>} */
-			dependencyReference: new SyncWaterfallHook([
-				"dependencyReference",
-				"dependency",
-				"module"
+      /** @type {SyncWaterfallHook<DependencyReference, Dependency, Module>} */
+      dependencyReference: new SyncWaterfallHook([
+        "dependencyReference",
+        "dependency",
+        "module"
       ]),
       // ...
     }
@@ -201,4 +201,4 @@ webpack 的出现使前端工程化迈向了新的台阶，使我们开发更便
 
 ## 参考
 
-https://medium.com/@imranhsayed/webpack-behind-the-scenes-85333a23c0f6
+<https://medium.com/@imranhsayed/webpack-behind-the-scenes-85333a23c0f6>
