@@ -1,4 +1,61 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 07 Jan 2020 16:45:12 GMT</lastBuildDate><item><title><![CDATA[JavaScript 装饰器]]></title><description><![CDATA[什么是装饰器 装饰器是“装饰函数（或方法）”的一种简称。它是一个通过修改传入的函数或方法的行为并返回一个新函数的函数。 我们可以在任何支持函数为一等公民的语言中实现装饰器，如 JavaScript…]]></description><link>https://www.keisei.top/understanding-javascript-decorators/</link><guid isPermaLink="false">https://www.keisei.top/understanding-javascript-decorators/</guid><pubDate>Sun, 05 Jan 2020 23:21:00 GMT</pubDate><content:encoded>&lt;h2&gt;什么是装饰器&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 08 Jan 2020 16:14:57 GMT</lastBuildDate><item><title><![CDATA[浅析 React Hooks]]></title><description><![CDATA[React Hooks 在 React 16.7 版本发布后，在社区掀起了一股新的浪潮，真的是谁用谁都说真香。刚使用 Hooks 时难免会对该机制的原理感到神奇，在遇到问题时，由于它背后复杂的调用栈我们很难进行调试，所以有必要更深层次了解 React Hooks…]]></description><link>https://www.keisei.top/unveil-react-hooks-system/</link><guid isPermaLink="false">https://www.keisei.top/unveil-react-hooks-system/</guid><pubDate>Wed, 08 Jan 2020 23:26:00 GMT</pubDate><content:encoded>&lt;p&gt;React Hooks 在 React 16.7 版本发布后，在社区掀起了一股新的浪潮，真的是谁用谁都说真香。刚使用 Hooks 时难免会对该机制的原理感到神奇，在遇到问题时，由于它背后复杂的调用栈我们很难进行调试，所以有必要更深层次了解 React Hooks 系统，这样我们遇到问题可以快速定位甚至提前避免。今天我们就来看一下 React 是如何实现的？&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/614488308537ef9bd8f60457869947e3/3dead/react-hooks-representation.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 61.98830409356725%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAAAsSAAALEgHS3X78AAADGElEQVQoz41RC0hTURi+m7k5TVNTVCh1EysV6SXYAyUIyqRMc5uiqCwtRVPnA0wwE8oUUckkH4WYVlIpOt3u5szNu9mcblPm3J27alNnGJj5oocP6nS3MEIoPPBxfr7/+98QtIun4zMO6GCGt47PJO5CzPTUdYV5oJyL7rrOUHctl07VcOk0LY9BxZNQUZjhicMfx0mUH+WF8qNp+E9Df/twMKl/2TRIyw23USE5tqiywmFUfs/+C3rdCkznWc0jmTZ6XspeDE60QWE6WcePJhvbg0kLLT6kudZAkp7PoGhhJgUTXKPgE1DwhLgdQYFCjYAgM0hF8pl+IDNIFus4Naf/NU3t2Ljly1G19XMdRvrv2IOz3QlKI1I+NNP/iId1uHHyC2i8irIr64gocK7ttfe2Tjj+pkr6Hjb2TXRxinhJLiYu+7HUo7BeTAJgHUqvFHtBUu1SrmRsjS1SL7O2Az/1Cjk/RlTg+5AcLCMipT1E24PTFl2qvoZejX6+RzMiYDcwqSZtQmGLz3ZcarnYBxrQr26pZ7fAwPjKakp2sRvOk43czgGgHgFApQCfRT2GQy5HbXHermNA8UQ8ujLVo57hxN8PMXVOjs6qDlDMAOfhqVV7dpXED+INfXRBtEYvkcZAWwKL1qZKa5K+O4tSRPtNMTi4gohrtjsQoG0tkknhphiDZSXCLE8T1/TWkPROt7Ih16/O13aOx5mFMoNYKJ+V4EdBvj7l1pw1VcbhuGPVhEZZOeOVsi6/Wf4w+W5rqtlf+kJx/Fn35O1GwWT2g2aVLxRUdIsgN0jS1bP9lcpppJiHVLvtPFpefYH5z+2I9s1uowfntkcFQACYudjSPld6If9UZCE/IK5M6von6IQG+FsOA+czC8Aq4wOwTdKv293ANvax1YsWJj8nJsKyMzXWEc5kOfLS4u25MREOwvDL+5tScp3gtAwHbhrbsSk5x8mcrHh6zSppYjP95uTmhURsw4+FbR5mYVtHWBNbJtu814aCEsJgQAhRHniJaCQHQcLwMIog8ioVWEIE1fljRPU5P+LPgxDhF+XhixWhsoYwAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;react hooks representation&quot;
+        title=&quot;react hooks representation&quot;
+        src=&quot;/static/614488308537ef9bd8f60457869947e3/799d3/react-hooks-representation.png&quot;
+        srcset=&quot;/static/614488308537ef9bd8f60457869947e3/00d96/react-hooks-representation.png 148w,
+/static/614488308537ef9bd8f60457869947e3/0b23c/react-hooks-representation.png 295w,
+/static/614488308537ef9bd8f60457869947e3/799d3/react-hooks-representation.png 590w,
+/static/614488308537ef9bd8f60457869947e3/3dead/react-hooks-representation.png 684w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;center&gt;React hooks 粗略概要&lt;/center&gt;
+&lt;p&gt;首先让我们来了解一下确保 hooks 在 React 作用域内被调用的机制，因为如果没有在正确的上下文执行 hooks 是没有意义的：&lt;/p&gt;
+&lt;h3&gt;The dispatcher&lt;/h3&gt;
+&lt;p&gt;dispatcher 是一个包含 hooks 函数的共享的对象。它在 ReactDOM 渲染的时期动态地被分配或被清除，并保证用户在 React 组件外不能访问 hooks（&lt;a href=&quot;https://github.com/facebook/react/blob/master/packages/react-reconciler/src/ReactFiberHooks.js#L62&quot;&gt;源码实现&lt;/a&gt;）。&lt;/p&gt;
+&lt;p&gt;dispatcher 在每个和每次 hook 调用时通过 &lt;code class=&quot;language-text&quot;&gt;resolveDispatcher()&lt;/code&gt; 函数来处理（&lt;a href=&quot;https://github.com/facebook/react/blob/19f6fe170ce920d7183a5620f4e218334c8bac62/packages/react/src/ReactHooks.js#L21&quot;&gt;源码实现&lt;/a&gt;）。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; currentDispatcher&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; dispatcherWithHooks &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token comment&quot;&gt;/* ... */&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;resolveDispatcher&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;currentDispatcher&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; currentDispatcher&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Hooks can&apos;t be called&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;useXXX&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;args&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; dispatcher &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;resolveDispatcher&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; dispatcher&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;useXXX&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;args&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;renderRoot&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  currentDispatcher &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; dispatcherWithHooks&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token function&quot;&gt;performWork&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  currentDispatcher &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;center&gt;Dispatcher 简单实现&lt;/center&gt;</content:encoded></item><item><title><![CDATA[JavaScript 装饰器]]></title><description><![CDATA[什么是装饰器 装饰器是“装饰函数（或方法）”的一种简称。它是一个通过修改传入的函数或方法的行为并返回一个新函数的函数。 我们可以在任何支持函数为一等公民的语言中实现装饰器，如 JavaScript…]]></description><link>https://www.keisei.top/understanding-javascript-decorators/</link><guid isPermaLink="false">https://www.keisei.top/understanding-javascript-decorators/</guid><pubDate>Sun, 05 Jan 2020 23:21:00 GMT</pubDate><content:encoded>&lt;h2&gt;什么是装饰器&lt;/h2&gt;
 &lt;p&gt;装饰器是“装饰函数（或方法）”的一种简称。它是一个通过修改传入的函数或方法的行为并返回一个新函数的函数。&lt;/p&gt;
 &lt;p&gt;我们可以在任何支持函数为一等公民的语言中实现装饰器，如 JavaScript。我们可以把函数赋值为变量或将它作为参数传递到下一个函数。有一些语言有定义和使用装饰器的特殊语法糖，其中 Python 的代码如下：&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;cashify&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;fn&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
