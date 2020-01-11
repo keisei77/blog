@@ -1,6 +1,49 @@
 const path = require(`path`);
 const { createFilePath } = require(`gatsby-source-filesystem`);
 
+const createTagPages = (createPage, posts) => {
+  const allTagsTemplate = path.resolve('./src/templates/allTags.tsx');
+  const singleTagTemplate = path.resolve('./src/templates/singleTag.tsx');
+
+  const postsByTag = {};
+
+  posts.forEach(post => {
+    const { node } = post;
+    if (node.frontmatter.tags) {
+      node.frontmatter.tags.forEach(tag => {
+        if (!postsByTag[tag]) {
+          postsByTag[tag] = [];
+        }
+
+        postsByTag[tag].push(post);
+      });
+    }
+  });
+
+  const tags = Object.keys(postsByTag);
+
+  createPage({
+    path: '/tags',
+    component: allTagsTemplate,
+    context: {
+      tags: tags.sort(),
+    },
+  });
+
+  tags.forEach(tagName => {
+    const posts = postsByTag[tagName];
+
+    createPage({
+      path: `/tags/${tagName}`,
+      component: singleTagTemplate,
+      context: {
+        posts,
+        tagName,
+      },
+    });
+  });
+};
+
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
 
@@ -14,10 +57,13 @@ exports.createPages = async ({ graphql, actions }) => {
         ) {
           edges {
             node {
+              excerpt
               fields {
                 slug
               }
               frontmatter {
+                date(formatString: "MMMM DD, YYYY")
+                description
                 title
                 tags
               }
@@ -34,6 +80,8 @@ exports.createPages = async ({ graphql, actions }) => {
 
   // Create blog posts pages.
   const posts = result.data.allMarkdownRemark.edges;
+
+  createTagPages(createPage, posts);
   posts.forEach((post, index) => {
     const previous = index === 0 ? null : posts[index - 1].node;
     const next = index === posts.length - 1 ? null : posts[index + 1].node;
