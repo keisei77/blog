@@ -20,8 +20,14 @@ const StyledHeader = styled.header<{ isScrolled: boolean }>`
   padding: 1rem;
   cursor: pointer;
   transition: background 0.1s ease-in-out;
+`;
+
+const StyledHeaderContainer = styled.span`
   display: flex;
   justify-content: space-between;
+  @media screen and (min-width: 1200px) {
+    margin: 0 calc(17.5% - 0.5rem);
+  }
 `;
 
 const StyledNav = styled.nav`
@@ -56,21 +62,23 @@ function Header(props: HeaderProps) {
 
   return (
     <StyledHeader isScrolled={isScrolled}>
-      <StyledLink isScrolled={isScrolled} to={`/`}>
-        <StyledLogo src={logo} alt="logo" />
-        {title}
-      </StyledLink>
-      <StyledNav>
-        <StyledMenu isScrolled={isScrolled} to="/tags">
-          标签
-        </StyledMenu>
-        {/* <StyledMenu isScrolled={isScrolled} to="/timeline">
+      <StyledHeaderContainer>
+        <StyledLink isScrolled={isScrolled} to={`/`}>
+          <StyledLogo src={logo} alt="logo" />
+          {title}
+        </StyledLink>
+        <StyledNav>
+          <StyledMenu isScrolled={isScrolled} to="/tags">
+            标签
+          </StyledMenu>
+          {/* <StyledMenu isScrolled={isScrolled} to="/timeline">
           归档
         </StyledMenu> */}
-        <StyledMenu isScrolled={isScrolled} to="/about">
-          关于
-        </StyledMenu>
-      </StyledNav>
+          <StyledMenu isScrolled={isScrolled} to="/about">
+            关于
+          </StyledMenu>
+        </StyledNav>
+      </StyledHeaderContainer>
     </StyledHeader>
   );
 }
