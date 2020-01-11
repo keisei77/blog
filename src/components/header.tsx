@@ -19,6 +19,8 @@ const StyledHeader = styled.header<{ isScrolled: boolean }>`
   z-index: 10;
   padding: 1rem;
   cursor: pointer;
+  width: 100vw;
+  box-sizing: border-box;
   transition: background 0.1s ease-in-out;
 `;
 
