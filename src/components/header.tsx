@@ -12,8 +12,10 @@ const StyledHeader = styled.header<{ isScrolled: boolean }>`
   background: ${props => (props.isScrolled ? '#74d2ff' : '#fff')};
   box-shadow: ${props =>
     props.isScrolled ? '0px 0px 0.25rem rgba(0, 0, 0, 0.4)' : 'none'};
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 10;
   padding: 1rem;
   cursor: pointer;

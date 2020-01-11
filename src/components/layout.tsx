@@ -2,17 +2,16 @@ import React, { useRef, useEffect, useState, ReactElement } from 'react';
 import Header from './header';
 import throttle from 'lodash/throttle';
 import styled from 'styled-components';
+import { useStaticQuery, graphql } from 'gatsby';
 
 interface LayoutProps {
-  title: string;
-  location: string;
   children: ReactElement;
 }
 
 const StyledMain = styled.main`
   margin-left: auto;
   margin-right: auto;
-  padding: 0 1rem;
+  padding: 4rem 1rem 0;
   min-height: calc(100% - 6.125rem);
 
   @media screen and (min-width: 1200px) {
@@ -31,17 +30,28 @@ const StyledFooter = styled.footer`
 `;
 
 function Layout(props: LayoutProps) {
-  const { title, children } = props;
+  const { children } = props;
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const mainRef = useRef<HTMLElement>(null);
 
   const throttledScroll = throttle((event: Event) => {
-    if (event?.target?.documentElement?.scrollTop) {
+    if ((event?.target as any).documentElement?.scrollTop) {
       setIsScrolled(true);
     } else {
       setIsScrolled(false);
     }
   }, 100);
+  const data = useStaticQuery(graphql`
+    query {
+      site {
+        siteMetadata {
+          title
+        }
+      }
+    }
+  `);
+
+  const title = data.site.siteMetadata.title;
 
   useEffect(() => {
     if (!mainRef.current) {

@@ -8,28 +8,9 @@
 import React from 'react';
 import { useStaticQuery, graphql, Link } from 'gatsby';
 
-const Articles = () => {
-  const data = useStaticQuery(graphql`
-    query {
-      allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
-        edges {
-          node {
-            excerpt
-            fields {
-              slug
-            }
-            frontmatter {
-              date(formatString: "MMMM DD, YYYY")
-              title
-              description
-            }
-          }
-        }
-      }
-    }
-  `);
+const Articles = (props: any) => {
+  const { posts } = props;
 
-  const posts = data.allMarkdownRemark.edges;
   return posts.map(({ node }: { node: any }) => {
     const title = node.frontmatter.title || node.fields.slug;
     return (
