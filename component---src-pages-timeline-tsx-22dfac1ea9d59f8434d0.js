@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[8],{h4kB:function(e,t,a){"use strict";a.r(t),a.d(t,"pageQuery",(function(){return o}));var n=a("q1tI"),i=a.n(n),r=a("9Dj+"),l=a("H8eV"),o="1097489062";t.default=function(e){var t=e.data.site.siteMetadata.title;return i.a.createElement(r.a,{location:e.location,title:t},i.a.createElement(i.a.Fragment,null,i.a.createElement(l.a,{title:"Keisei's Blog"})))}}}]);
-//# sourceMappingURL=component---src-pages-timeline-tsx-22dfac1ea9d59f8434d0.js.map
