@@ -10,7 +10,7 @@ const BlogPostTemplate = (props: any) => {
   const siteTitle = props.data.site.siteMetadata.title;
   const { slug, tags, previous, next } = props.pageContext;
   return (
-    <Layout location={props.location} title={siteTitle}>
+    <Layout>
       <>
         <SEO
           title={post.frontmatter.title}
@@ -49,14 +49,24 @@ const BlogPostTemplate = (props: any) => {
               padding: 0,
             }}
           >
-            <li>
+            <li
+              style={{
+                flexBasis: '50%',
+                textAlign: 'left',
+              }}
+            >
               {previous && (
                 <Link to={previous.fields.slug} rel="prev">
                   ← {previous.frontmatter.title}
                 </Link>
               )}
             </li>
-            <li>
+            <li
+              style={{
+                flexBasis: '50%',
+                textAlign: 'right',
+              }}
+            >
               {next && (
                 <Link to={next.fields.slug} rel="next">
                   {next.frontmatter.title} →

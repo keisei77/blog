@@ -64,9 +64,9 @@ function Header(props: HeaderProps) {
         <StyledMenu isScrolled={isScrolled} to="/tags">
           标签
         </StyledMenu>
-        <StyledMenu isScrolled={isScrolled} to="/timeline">
+        {/* <StyledMenu isScrolled={isScrolled} to="/timeline">
           归档
-        </StyledMenu>
+        </StyledMenu> */}
         <StyledMenu isScrolled={isScrolled} to="/about">
           关于
         </StyledMenu>
