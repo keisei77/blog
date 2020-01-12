@@ -2,7 +2,7 @@
 title: 浅析 React Hooks
 date: '2020-01-08 23:26'
 description: '本文对目前大热的 React Hooks 源码进行简单剖析。'
-tags: ['React Hooks']
+tags: ['React', 'React Hooks']
 ---
 
 React Hooks 在 React 16.7 版本发布后，在社区掀起了一股新的浪潮，真的是谁用谁都说真香。刚使用 Hooks 时难免会对该机制的原理感到神奇，在遇到问题时，由于它背后复杂的调用栈我们很难进行调试，所以有必要更深层次了解 React Hooks 系统，这样我们遇到问题可以快速定位甚至提前避免。今天我们就来看一下 React 是如何实现的？
