@@ -170,3 +170,130 @@ applyMiddlewareByMonkeypatching(store, [logger, crashReporter]);
 ```
 
 然而，这仍然是猴子补丁，我们内部隐藏了实现并没有改变这个事实。
+
+### 尝试 5：移除猴子补丁
+
+为什么我们要覆写 `dispatch`？当然可以延后执行，但另一个原因是：每个中间件可以访问并调用前一个包装过的 `store.dispatch`：
+
+```javascript
+function logger(store) {
+  // 必须指向前一个中间件返回的函数
+  const next = store.dispatch;
+
+  return function dispatchAndLog(action) {
+    console.log('dispatching', action);
+    let result = next(action);
+    console.log('next state', store.getState());
+    return result;
+  };
+}
+```
+
+这本质就是链式中间件！
+
+如果 `applyMiddlewareByMonkeypatching` 没有在处理完第一个中间件后立即赋值 `store.dispatch`，`store.dispatch` 会保持指向原始的 `dispatch` 函数。那么第二个中间件也会绑定原始的 `dispatch` 函数。
+
+但是也有不同的链式调用方式。中间件可以接受 `next()` dispatch 函数作为参数，而不是从 `store` 实例中读取。
+
+```javascript
+function logger(store) {
+  return function wrapDispatchToAddLogging(next) {
+    return function dispatchAndLog(action) {
+      console.log('dispatching', action);
+      let result = next(action);
+      console.log('next state', store.getState());
+      return result;
+    };
+  };
+}
+```
+
+这个层级看起来比较深，ES6 的箭头函数看起来更清爽：
+
+```javascript
+const logger = store => next => action => {
+  console.log('dispatching', action);
+  let result = next(action);
+  console.log('next state', store.getState());
+  return result;
+};
+
+const crashReporter = store => next => action => {
+  try {
+    return next(action);
+  } catch (err) {
+    console.error('Caught an exception!', err);
+    Raven.captureException(err, {
+      extra: {
+        action,
+        state: store.getState(),
+      },
+    });
+    throw err;
+  }
+};
+```
+
+这就是 Redux 中间件的真实形态。
+
+现在中间件接收 `next()` dispatch 函数，并返回一个 dispatch 函数，该函数又充当左侧中间件 `next()`，以此类推。它仍然可以访问某些 store 的方法，如 `getState()`，因此 `store` 作为顶级参数仍然可用。
+
+### 尝试 6：简单使用中间件
+
+我们可以将 `applyMiddleware()` 替换 `applyMiddlewareByMonkeypatching()`，它包装了 `dispatch()` 函数，并返回 store 的副本：
+
+```javascript
+// 注意：这不是Redux 真实的实现
+function applyMiddleware(store, middlewares) {
+  middlewares = middlewares.slice();
+  middlewares.reverse();
+  let dispatch = store.dispatch;
+  middlewares.forEach(middleware => (dispatch = middleware(store)(dispatch)));
+  return Object.assign({}, store, { dispatch });
+}
+```
+
+### 最终版本
+
+```javascript
+const logger = store => next => action => {
+  console.log('dispatching', action);
+  let result = next(action);
+  console.log('next state', store.getState());
+  return result;
+};
+
+const crashReporter = store => next => action => {
+  try {
+    return next(action);
+  } catch (err) {
+    console.error('Caught an exception!', err);
+    Raven.captureException(err, {
+      extra: {
+        action,
+        state: store.getState(),
+      },
+    });
+    throw err;
+  }
+};
+```
+
+以下是我们如何在Redux store中应用：
+
+```javascript
+import {createStore, combineReducers, applyMiddleware} from 'redux'
+
+const todoApp = combineReducers(reducers)
+const store = createStore(
+  todoApp,
+  // applyMiddleware() 告诉 createStore() 如何处理中间件
+  applyMiddleware(logger, crashReporter)
+)
+```
+
+现在任何被分发的action都会经过 `logger` 和 `crashReporter` 处理：
+
+```
+store.dispatch(addTodo('Use Redux'))
+```
