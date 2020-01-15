@@ -297,3 +297,7 @@ const store = createStore(
 ```
 store.dispatch(addTodo('Use Redux'))
 ```
+
+## 参考
+
+<https://redux.js.org/advanced/middleware/>
