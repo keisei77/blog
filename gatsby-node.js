@@ -31,7 +31,7 @@ const createTagPages = (createPage, posts) => {
     path: '/tags',
     component: allTagsTemplate,
     context: {
-      tags: tags.sort((a, b) => a.label - b.label),
+      tags: tags.sort((a, b) => a.label < b.label),
     },
   });
 
