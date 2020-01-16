@@ -34,8 +34,13 @@ const StyledLabel = styled.label<{ showLabel: boolean }>`
   display: ${props => (props.showLabel ? 'flex' : 'none')};
 `;
 
+interface TagWrapper {
+  label: string;
+  count: number;
+}
+
 interface TagProps {
-  tags: string[];
+  tags: TagWrapper[] | string[];
   style?: {
     showBorder: boolean;
     showLabel: boolean;
@@ -47,12 +52,22 @@ const Tag = (props: TagProps) => {
   return (
     <StyledPre showBorder={style.showBorder} tagsLength={tags.length}>
       <StyledLabel showLabel={style.showLabel}>标签：</StyledLabel>
-      {/* TODO: 这里应该跳转到tag详情页，该页显示相关tag的article列表 */}
-      {tags.map((tag: string) => (
-        <StyledLink key={tag} to={`/tags/${tag}`}>
-          {tag}
-        </StyledLink>
-      ))}
+      {(tags as any).map((tag: TagWrapper | string) => {
+        let label = null;
+        let count = null;
+        if (typeof tag === 'string') {
+          label = tag;
+        } else {
+          label = tag.label;
+          count = tag.count;
+        }
+
+        return (
+          <StyledLink key={label} to={`/tags/${label}`}>
+            {label}{count && {' '} + {count}}
+          </StyledLink>
+        );
+      })}
     </StyledPre>
   );
 };

@@ -20,13 +20,18 @@ const createTagPages = (createPage, posts) => {
     }
   });
 
-  const tags = Object.keys(postsByTag);
+  const tags = Object.keys(postsByTag).map(tag => {
+    return {
+      label: tag,
+      count: postsByTag[tag].length
+    }
+  });
 
   createPage({
     path: '/tags',
     component: allTagsTemplate,
     context: {
-      tags: tags.sort(),
+      tags: tags.sort((a, b) => a.label - b.label),
     },
   });
 
