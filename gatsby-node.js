@@ -23,8 +23,8 @@ const createTagPages = (createPage, posts) => {
   const tags = Object.keys(postsByTag).map(tag => {
     return {
       label: tag,
-      count: postsByTag[tag].length
-    }
+      count: postsByTag[tag].length,
+    };
   });
 
   createPage({
@@ -35,15 +35,15 @@ const createTagPages = (createPage, posts) => {
     },
   });
 
-  tags.forEach(tagName => {
-    const posts = postsByTag[tagName];
+  tags.forEach(tagWrapper => {
+    const posts = postsByTag[tagWrapper.label];
 
     createPage({
-      path: `/tags/${tagName}`,
+      path: `/tags/${tagWrapper.label}`,
       component: singleTagTemplate,
       context: {
         posts,
-        tagName,
+        tagName: tagWrapper.label,
       },
     });
   });

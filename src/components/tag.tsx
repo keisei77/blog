@@ -64,7 +64,8 @@ const Tag = (props: TagProps) => {
 
         return (
           <StyledLink key={label} to={`/tags/${label}`}>
-            {label}{count && {' '} + {count}}
+            {label}
+            {count && ` (${count})`}
           </StyledLink>
         );
       })}
