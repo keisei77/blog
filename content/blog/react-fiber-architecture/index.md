@@ -18,7 +18,7 @@ React Fiber 是当前开发中的最新版 React 的核心算法的实现。它�
 在继续本文之前建议首先了解如下内容：
 
 - [React Components, Elements, and Instances](https://facebook.github.io/react/blog/2015/12/18/react-components-elements-and-instances.html) 掌握 React 中的一些基本术语
-- [Reconciliation](https://facebook.github.io/react/docs/reconciliation.html) 对 React 和解算法的概括性描述
+- [Reconciliation](https://facebook.github.io/react/docs/reconciliation.html) 对 React 协调算法的概括性描述
 - [React Basic Theoretical Concepts](https://github.com/reactjs/react-basic) React 基本的理论性的概念描述。
 - [React Design Principles](https://facebook.github.io/react/contributing/design-principles.html) React 的设计准则很好的解释了 React Fiber 的出现。
 
@@ -28,7 +28,7 @@ React Fiber 是当前开发中的最新版 React 的核心算法的实现。它�
 
 在我们继续深入以前先来回顾一些新的概念。
 
-### 什么是和解（Reconciliation）
+### 什么是协调（Reconciliation）
 
 **_reconciliation_**
 
@@ -49,15 +49,15 @@ Reconciliation 是已经被人熟知的虚拟 DOM 背后的算法。从一个高
 - 不同组件类型被认为是生成了不同的树。React 不会去 diff，而是直接将这部分旧节点替换掉。
 - 列表是通过 keys 来做 diff 的。Keys 应该是稳定的，可预见的，唯一的。
 
-### 和解与渲染
+### 协调与渲染
 
 DOM 只是 React 能渲染的一种渲染环境。其他主要的原生系统 IOS 和 Android 也可以通过 React Native 来进行渲染。
 
-React 能支持多环境渲染的原因是，它被设计为和解和渲染过程分离。和解器计算树的哪部分被改变了，渲染器再根据得到的信息去真正渲染应用。
+React 能支持多环境渲染的原因是，它被设计为协调和渲染过程分离。协调器计算树的哪部分被改变了，渲染器再根据得到的信息去真正渲染应用。
 
-分离意味着 React DOM 和 React Native 有各自的渲染器但是可以共享 React 核心提供的和解器。
+分离意味着 React DOM 和 React Native 有各自的渲染器但是可以共享 React 核心提供的协调器。
 
-Fiber 重新实现了和解器，它原则上不关心渲染， 但渲染器仍然需要做出改变来支持并利用新的架构。
+Fiber 重新实现了协调器，它原则上不关心渲染， 但渲染器仍然需要做出改变来支持并利用新的架构。
 
 ### 调度
 
@@ -140,7 +140,7 @@ fiber 的 type 描述了它对应的组件。对于合成组件，type 是一个
 
 从概念上来说，type 是在执行时被栈帧追踪的函数（如在 `v = f(d)` 中）。
 
-与 type 一起的 key，被用来在和解过程中决定 fiber 是否可以再利用。
+与 type 一起的 key，被用来在协调过程中决定 fiber 是否可以再利用。
 
 #### `child` 和 `sibling`
 
