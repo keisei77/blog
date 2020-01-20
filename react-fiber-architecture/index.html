@@ -30,14 +30,14 @@
 <p>在继续本文之前建议首先了解如下内容：</p>
 <ul>
 <li><a href="https://facebook.github.io/react/blog/2015/12/18/react-components-elements-and-instances.html">React Components, Elements, and Instances</a> 掌握 React 中的一些基本术语</li>
-<li><a href="https://facebook.github.io/react/docs/reconciliation.html">Reconciliation</a> 对 React 和解算法的概括性描述</li>
+<li><a href="https://facebook.github.io/react/docs/reconciliation.html">Reconciliation</a> 对 React 协调算法的概括性描述</li>
 <li><a href="https://github.com/reactjs/react-basic">React Basic Theoretical Concepts</a> React 基本的理论性的概念描述。</li>
 <li><a href="https://facebook.github.io/react/contributing/design-principles.html">React Design Principles</a> React 的设计准则很好的解释了 React Fiber 的出现。</li>
 </ul>
 <h2>回顾</h2>
 <hr>
 <p>在我们继续深入以前先来回顾一些新的概念。</p>
-<h3>什么是和解（Reconciliation）</h3>
+<h3>什么是协调（Reconciliation）</h3>
 <p><strong><em>reconciliation</em></strong></p>
 <p>    这是 React 用来对两棵树 diff 来决定要更新哪部分的算法。</p>
 <p><strong><em>update</em></strong></p>
@@ -50,11 +50,11 @@
 <li>不同组件类型被认为是生成了不同的树。React 不会去 diff，而是直接将这部分旧节点替换掉。</li>
 <li>列表是通过 keys 来做 diff 的。Keys 应该是稳定的，可预见的，唯一的。</li>
 </ul>
-<h3>和解与渲染</h3>
+<h3>协调与渲染</h3>
 <p>DOM 只是 React 能渲染的一种渲染环境。其他主要的原生系统 IOS 和 Android 也可以通过 React Native 来进行渲染。</p>
-<p>React 能支持多环境渲染的原因是，它被设计为和解和渲染过程分离。和解器计算树的哪部分被改变了，渲染器再根据得到的信息去真正渲染应用。</p>
-<p>分离意味着 React DOM 和 React Native 有各自的渲染器但是可以共享 React 核心提供的和解器。</p>
-<p>Fiber 重新实现了和解器，它原则上不关心渲染， 但渲染器仍然需要做出改变来支持并利用新的架构。</p>
+<p>React 能支持多环境渲染的原因是，它被设计为协调和渲染过程分离。协调器计算树的哪部分被改变了，渲染器再根据得到的信息去真正渲染应用。</p>
+<p>分离意味着 React DOM 和 React Native 有各自的渲染器但是可以共享 React 核心提供的协调器。</p>
+<p>Fiber 重新实现了协调器，它原则上不关心渲染， 但渲染器仍然需要做出改变来支持并利用新的架构。</p>
 <h3>调度</h3>
 <p><strong><em>scheduling</em></strong></p>
 <p>    决定何时执行工作的过程</p>
@@ -103,7 +103,7 @@
 <p>fiber 的 type 和 key 对 React 元素起着同样的作用（实际上，fiber 从一个元素创建时，这两个属性直接被复制过来）。</p>
 <p>fiber 的 type 描述了它对应的组件。对于合成组件，type 是一个函数或者类组件本身。对于原生元素（<code class="language-text">div</code>, <code class="language-text">span</code> 等），type 是一个字符串。</p>
 <p>从概念上来说，type 是在执行时被栈帧追踪的函数（如在 <code class="language-text">v = f(d)</code> 中）。</p>
-<p>与 type 一起的 key，被用来在和解过程中决定 fiber 是否可以再利用。</p>
+<p>与 type 一起的 key，被用来在协调过程中决定 fiber 是否可以再利用。</p>
 <h4><code class="language-text">child</code> 和 <code class="language-text">sibling</code></h4>
 <p>这两个字段指向其他的 fibers，描述一个 fiber 的递归树结构。</p>
 <p>child 字段对应组件 <code class="language-text">render</code> 方法的返回值。</p>

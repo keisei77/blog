@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 19 Jan 2020 14:32:55 GMT</lastBuildDate><item><title><![CDATA[虚拟DOM和diff算法在React中的工作方式]]></title><description><![CDATA[写了这么久的 React，你或许对虚拟 DOM 是怎么工作的感到好奇，本文将通过解读部分  和  源码来尝试作详细的解释。在开始前，你是否考虑过为什么我们不是直接对 DOM 进行修改？  接下来的章节将总结一下 DOM 是如何被创建的，并给出为什么 React…]]></description><link>https://www.keisei.top/react-virtual-dom-and-diff/</link><guid isPermaLink="false">https://www.keisei.top/react-virtual-dom-and-diff/</guid><pubDate>Sun, 19 Jan 2020 22:31:00 GMT</pubDate><content:encoded>&lt;p&gt;写了这么久的 React，你或许对虚拟 DOM 是怎么工作的感到好奇，本文将通过解读部分 &lt;code class=&quot;language-text&quot;&gt;React&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;React DOM&lt;/code&gt; 源码来尝试作详细的解释。在开始前，你是否考虑过为什么我们不是直接对 DOM 进行修改？&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 20 Jan 2020 13:42:46 GMT</lastBuildDate><item><title><![CDATA[虚拟DOM和diff算法在React中的工作方式]]></title><description><![CDATA[写了这么久的 React，你或许对虚拟 DOM 是怎么工作的感到好奇，本文将通过解读部分  和  源码来尝试作详细的解释。在开始前，你是否考虑过为什么我们不是直接对 DOM 进行修改？  接下来的章节将总结一下 DOM 是如何被创建的，并给出为什么 React…]]></description><link>https://www.keisei.top/react-virtual-dom-and-diff/</link><guid isPermaLink="false">https://www.keisei.top/react-virtual-dom-and-diff/</guid><pubDate>Sun, 19 Jan 2020 22:31:00 GMT</pubDate><content:encoded>&lt;p&gt;写了这么久的 React，你或许对虚拟 DOM 是怎么工作的感到好奇，本文将通过解读部分 &lt;code class=&quot;language-text&quot;&gt;React&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;React DOM&lt;/code&gt; 源码来尝试作详细的解释。在开始前，你是否考虑过为什么我们不是直接对 DOM 进行修改？&lt;/p&gt;
 &lt;p&gt;&lt;span
       class=&quot;gatsby-resp-image-wrapper&quot;
       style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
@@ -2877,14 +2877,14 @@ Server: (process complete message) Happy new year to you too!&lt;/code&gt;&lt;/p
 &lt;p&gt;在继续本文之前建议首先了解如下内容：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://facebook.github.io/react/blog/2015/12/18/react-components-elements-and-instances.html&quot;&gt;React Components, Elements, and Instances&lt;/a&gt; 掌握 React 中的一些基本术语&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://facebook.github.io/react/docs/reconciliation.html&quot;&gt;Reconciliation&lt;/a&gt; 对 React 和解算法的概括性描述&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://facebook.github.io/react/docs/reconciliation.html&quot;&gt;Reconciliation&lt;/a&gt; 对 React 协调算法的概括性描述&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/reactjs/react-basic&quot;&gt;React Basic Theoretical Concepts&lt;/a&gt; React 基本的理论性的概念描述。&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://facebook.github.io/react/contributing/design-principles.html&quot;&gt;React Design Principles&lt;/a&gt; React 的设计准则很好的解释了 React Fiber 的出现。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;回顾&lt;/h2&gt;
 &lt;hr&gt;
 &lt;p&gt;在我们继续深入以前先来回顾一些新的概念。&lt;/p&gt;
-&lt;h3&gt;什么是和解（Reconciliation）&lt;/h3&gt;
+&lt;h3&gt;什么是协调（Reconciliation）&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;reconciliation&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;    这是 React 用来对两棵树 diff 来决定要更新哪部分的算法。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;update&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
@@ -2897,11 +2897,11 @@ Server: (process complete message) Happy new year to you too!&lt;/code&gt;&lt;/p
 &lt;li&gt;不同组件类型被认为是生成了不同的树。React 不会去 diff，而是直接将这部分旧节点替换掉。&lt;/li&gt;
 &lt;li&gt;列表是通过 keys 来做 diff 的。Keys 应该是稳定的，可预见的，唯一的。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;和解与渲染&lt;/h3&gt;
+&lt;h3&gt;协调与渲染&lt;/h3&gt;
 &lt;p&gt;DOM 只是 React 能渲染的一种渲染环境。其他主要的原生系统 IOS 和 Android 也可以通过 React Native 来进行渲染。&lt;/p&gt;
-&lt;p&gt;React 能支持多环境渲染的原因是，它被设计为和解和渲染过程分离。和解器计算树的哪部分被改变了，渲染器再根据得到的信息去真正渲染应用。&lt;/p&gt;
-&lt;p&gt;分离意味着 React DOM 和 React Native 有各自的渲染器但是可以共享 React 核心提供的和解器。&lt;/p&gt;
-&lt;p&gt;Fiber 重新实现了和解器，它原则上不关心渲染， 但渲染器仍然需要做出改变来支持并利用新的架构。&lt;/p&gt;
+&lt;p&gt;React 能支持多环境渲染的原因是，它被设计为协调和渲染过程分离。协调器计算树的哪部分被改变了，渲染器再根据得到的信息去真正渲染应用。&lt;/p&gt;
+&lt;p&gt;分离意味着 React DOM 和 React Native 有各自的渲染器但是可以共享 React 核心提供的协调器。&lt;/p&gt;
+&lt;p&gt;Fiber 重新实现了协调器，它原则上不关心渲染， 但渲染器仍然需要做出改变来支持并利用新的架构。&lt;/p&gt;
 &lt;h3&gt;调度&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;scheduling&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;    决定何时执行工作的过程&lt;/p&gt;
@@ -2950,7 +2950,7 @@ Server: (process complete message) Happy new year to you too!&lt;/code&gt;&lt;/p
 &lt;p&gt;fiber 的 type 和 key 对 React 元素起着同样的作用（实际上，fiber 从一个元素创建时，这两个属性直接被复制过来）。&lt;/p&gt;
 &lt;p&gt;fiber 的 type 描述了它对应的组件。对于合成组件，type 是一个函数或者类组件本身。对于原生元素（&lt;code class=&quot;language-text&quot;&gt;div&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;span&lt;/code&gt; 等），type 是一个字符串。&lt;/p&gt;
 &lt;p&gt;从概念上来说，type 是在执行时被栈帧追踪的函数（如在 &lt;code class=&quot;language-text&quot;&gt;v = f(d)&lt;/code&gt; 中）。&lt;/p&gt;
-&lt;p&gt;与 type 一起的 key，被用来在和解过程中决定 fiber 是否可以再利用。&lt;/p&gt;
+&lt;p&gt;与 type 一起的 key，被用来在协调过程中决定 fiber 是否可以再利用。&lt;/p&gt;
 &lt;h4&gt;&lt;code class=&quot;language-text&quot;&gt;child&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;sibling&lt;/code&gt;&lt;/h4&gt;
 &lt;p&gt;这两个字段指向其他的 fibers，描述一个 fiber 的递归树结构。&lt;/p&gt;
 &lt;p&gt;child 字段对应组件 &lt;code class=&quot;language-text&quot;&gt;render&lt;/code&gt; 方法的返回值。&lt;/p&gt;
