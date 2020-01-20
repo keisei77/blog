@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 20 Jan 2020 13:42:46 GMT</lastBuildDate><item><title><![CDATA[虚拟DOM和diff算法在React中的工作方式]]></title><description><![CDATA[写了这么久的 React，你或许对虚拟 DOM 是怎么工作的感到好奇，本文将通过解读部分  和  源码来尝试作详细的解释。在开始前，你是否考虑过为什么我们不是直接对 DOM 进行修改？  接下来的章节将总结一下 DOM 是如何被创建的，并给出为什么 React…]]></description><link>https://www.keisei.top/react-virtual-dom-and-diff/</link><guid isPermaLink="false">https://www.keisei.top/react-virtual-dom-and-diff/</guid><pubDate>Sun, 19 Jan 2020 22:31:00 GMT</pubDate><content:encoded>&lt;p&gt;写了这么久的 React，你或许对虚拟 DOM 是怎么工作的感到好奇，本文将通过解读部分 &lt;code class=&quot;language-text&quot;&gt;React&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;React DOM&lt;/code&gt; 源码来尝试作详细的解释。在开始前，你是否考虑过为什么我们不是直接对 DOM 进行修改？&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 20 Jan 2020 14:38:08 GMT</lastBuildDate><item><title><![CDATA[虚拟DOM和diff算法在React中的工作方式]]></title><description><![CDATA[写了这么久的 React，你或许对虚拟 DOM 是怎么工作的感到好奇，本文将通过解读部分  和  源码来尝试作详细的解释。在开始前，你是否考虑过为什么我们不是直接对 DOM 进行修改？  接下来的章节将总结一下 DOM 是如何被创建的，并给出为什么 React…]]></description><link>https://www.keisei.top/react-virtual-dom-and-diff/</link><guid isPermaLink="false">https://www.keisei.top/react-virtual-dom-and-diff/</guid><pubDate>Sun, 19 Jan 2020 22:31:00 GMT</pubDate><content:encoded>&lt;p&gt;写了这么久的 React，你或许对虚拟 DOM 是怎么工作的感到好奇，本文将通过解读部分 &lt;code class=&quot;language-text&quot;&gt;React&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;React DOM&lt;/code&gt; 源码来尝试作详细的解释。在开始前，你是否考虑过为什么我们不是直接对 DOM 进行修改？&lt;/p&gt;
 &lt;p&gt;&lt;span
       class=&quot;gatsby-resp-image-wrapper&quot;
       style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
@@ -293,7 +293,290 @@ dirtyComponents&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt
 &lt;/blockquote&gt;
 &lt;ol start=&quot;4&quot;&gt;
 &lt;li&gt;现在，&lt;strong&gt;Calculator&lt;/strong&gt; 组件被标记为脏值。&lt;/li&gt;
-&lt;/ol&gt;</content:encoded></item><item><title><![CDATA[了解中间件]]></title><description><![CDATA[最近在看 Redux 文档，了解了 redux 的工作原理，发现 action 只能同步被 dispatch，那有没有办法执行异步调用呢？答案是通过中间件来实现。之前简单了解过 Node.js 服务端框架 Express 和 Koa…]]></description><link>https://www.keisei.top/understanding-the-middleware/</link><guid isPermaLink="false">https://www.keisei.top/understanding-the-middleware/</guid><pubDate>Sun, 12 Jan 2020 22:07:00 GMT</pubDate><content:encoded>&lt;p&gt;最近在看 Redux 文档，了解了 redux 的工作原理，发现 action 只能同步被 dispatch，那有没有办法执行异步调用呢？答案是通过中间件来实现。之前简单了解过 Node.js 服务端框架 &lt;a href=&quot;http://expressjs.com/&quot;&gt;Express&lt;/a&gt; 和 &lt;a href=&quot;http://koajs.com/&quot;&gt;Koa&lt;/a&gt;，它们的机制也依赖中间件这一概念，通过在接受请求和发送响应之间增加代码做额外的处理工作。比如，Express 和 Koa 中间件可以增加 CORS 头，记录日志，压缩等等。中间件最重要的特点是它可以链式组合。可以在一个项目中使用多个独立的第三方中间件。&lt;/p&gt;
+&lt;/ol&gt;
+&lt;h3&gt;遍历组件的生命周期&lt;/h3&gt;
+&lt;p&gt;现在组件被标记为脏值，下一步是更新虚拟 DOM 并使用 diff 算法来做协调（reconciliation），最终更新真正的 DOM。&lt;/p&gt;
+&lt;p&gt;在 React 中，我们的 Calculator 组件的数据格式：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 285px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/4491dc548f08eb284a346c1e7be3af4d/0f1af/calculator-data.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 138.24561403508773%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAIAAADuuAg3AAAACXBIWXMAAAsSAAALEgHS3X78AAADMklEQVQ4y4VU25baOBCc//+8PCQ7y4DBtoQly7rffGVLmCSTDDOro2MEuFTd1dX9IoQghPRDLwbRsW4/YDPO9vOVXYUUHe+UEoNfXb5hbeVxexnHrJQWVLALI0dC3uj11LGa01NH3yive/zCzqx+bYZOSJ4VCYufbjt4/0hDNhdnG29rp47GkxBY0jRFkZNI2FmOU5y3PGfqR5ke4G3bpnHyPPT/DKrSprWG2b4Simnr122P75P1Mk0TZzz2SddGn3UQYRiG4+FIWpJTnOcZVy/LWrLcL/p1ABh/I+fAo+u8u/rhIPXFqJP2XcDvVVWdz2dr7XPmcte6mcbKSvPvwjJr9LzMj/u3+9pffX9+xywVmOVRgRORq8pY4iJLrvHZjfRKm6ZBLtsHAQCeei4CiyCHWsjcti7a2JybjnTI/Hg8Hg4H4Luu6/v+b+ZhkGDWFw2YpS65xHvetE3d1oAxxpCzMcY5F0L4A7yuawwx9hGhFqnOOprEOWeso/QqpUQ5Pi3VrgRg8qQQuXiV3Tc+TpM2NqX0673tWcULeF1WwEqdwQzNah3j7O32VOEnpSoxA1zw1rY2+snb5Sf2U/zOvBni1LmAYdIiOLGIBZ6BHBAZz69yBrN8U8D3P4Q86eGgIHuMEZ3ovf8qbOQMKhDeBRvQJLirqNAYy13WMV1DFvH20SR72PYeNroKzCVgWiSAz6Ff0imcTKzdmpe/wahzignpQWrA+u9CHnXxKTwDFYmxGk2qVTMYYZ60JOu4uwbkjN4Q/0rww+f3rZ10LW2ry/nS1i1pw88FOaDUy7IsRpvQx6L2faMfgUTBTOvcEFpCYTeYvG5qOLyua8w8Sil8/ci5gCsNb5ZqvQ64yBBfVJSYcbcv1Z7XIEpXIdUiUqWcm5zbHfYw5vZh/R6AZYa8ldoiZlMXnyOQ5JNSsuccFrw9bnpWZ8+8rAoAMHd1UA5fkUJwOcblf7yNmIHEGMEkMrU1ldXYJyMxWBrvmJ/SmFlILCxp/g1e1gXKZ5UDD56FOCQnPDlR1nJM3yQTdpQJdphMhs+Wd1Ypk0RrPbox24zn6MdS+Z6hqtbZ9/28vRuD+/oPXZZCBym7D1QAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;calculator data&quot;
+        title=&quot;calculator data&quot;
+        src=&quot;/static/4491dc548f08eb284a346c1e7be3af4d/0f1af/calculator-data.png&quot;
+        srcset=&quot;/static/4491dc548f08eb284a346c1e7be3af4d/00d96/calculator-data.png 148w,
+/static/4491dc548f08eb284a346c1e7be3af4d/0f1af/calculator-data.png 285w&quot;
+        sizes=&quot;(max-width: 285px) 100vw, 285px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;下一步更新组件：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;这是通过 React 执行批量更新来完成的。&lt;/li&gt;
+&lt;li&gt;在批量更新时，它会检查哪些组件被标记为脏值并开始更新。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;flushBatchedUpdates&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;dirtyComponents&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;length &lt;span class=&quot;token operator&quot;&gt;||&lt;/span&gt; asapEnqueued&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;dirtyComponents&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;length&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;var&lt;/span&gt; transaction &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; ReactUpdatesFlushTransaction&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getPooled&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      transaction&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;perform&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;runBatchedUpdate&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; transaction&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;下一步，它会检查是否存在进行中的需要更新的状态，或者有一个 &lt;strong&gt;&lt;em&gt;forceUpdate&lt;/em&gt;&lt;/strong&gt; 被调用。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;_pendingStateQueue &lt;span class=&quot;token operator&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;_pendingForceUpdate&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;updateComponent&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+    transaction&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;_currentElement&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;_currentElement&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;_context&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;_context
+  &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 236px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/427c95929f06e16a09805582aa0b4d56/2ac26/pending-state-queue.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 22.033898305084744%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAECAIAAAABPYjBAAAACXBIWXMAAAsSAAALEgHS3X78AAAAlklEQVQI132L2RKCMAxF/f/f88XBBcpYKBWbNE1py4BaQHn0ZJ2b3IO1FgGDDigsN97WzoqcZG5gSsTasmZypJRq23br0zS9Vw55gyeoQlPjOqGbQqlrBxKGPmTFP4ZIyXsmIgAwK/M8f825OHAv+8hJdlLcRVmXfvBZf+X4y2LefpIbTYHmjFjRGNPpGKpL3K/L/LGbP9Db5MZFUleuAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;pending state queue&quot;
+        title=&quot;pending state queue&quot;
+        src=&quot;/static/427c95929f06e16a09805582aa0b4d56/2ac26/pending-state-queue.png&quot;
+        srcset=&quot;/static/427c95929f06e16a09805582aa0b4d56/00d96/pending-state-queue.png 148w,
+/static/427c95929f06e16a09805582aa0b4d56/2ac26/pending-state-queue.png 236w&quot;
+        sizes=&quot;(max-width: 236px) 100vw, 236px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;在我们的例子中， &lt;strong&gt;&lt;em&gt;this.\&lt;/em&gt;pendingStateQueue_&lt;/strong&gt; 持有我们新的 output 值。&lt;/p&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;首先它会检查我们是否声明了 &lt;a href=&quot;https://facebook.github.io/react/docs/react-component.html#componentwillreceiveprops&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;componentWillReceiveProps()&lt;/code&gt;&lt;/a&gt;，如果声明了，那么可以通过传入的新的 &lt;strong&gt;props&lt;/strong&gt; 来更新 &lt;strong&gt;state&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;下一步检查是否声明了 &lt;a href=&quot;https://facebook.github.io/react/docs/react-component.html#shouldcomponentupdate&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;shouldComponentUpdate()&lt;/code&gt;&lt;/a&gt;，我们可以检查 &lt;strong&gt;state&lt;/strong&gt; 或 &lt;strong&gt;props&lt;/strong&gt; 是否变化了来决定组件是否需要重新渲染。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;当你知道什么情况下不需要组件重新渲染时使用，可以提高组件的性能。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;6.下一步是执行 &lt;a href=&quot;https://facebook.github.io/react/docs/react-component.html#componentwillupdate&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;componentWillUpdate()&lt;/code&gt;&lt;/a&gt;， &lt;a href=&quot;https://facebook.github.io/react/docs/react-component.html#render&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;render()&lt;/code&gt;&lt;/a&gt; 和 &lt;a href=&quot;https://facebook.github.io/react/docs/react-component.html#componentdidupdate&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;componentDidUpdate&lt;/code&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;ol start=&quot;7&quot;&gt;
+&lt;li&gt;我们来详细看一下 &lt;strong&gt;&lt;em&gt;render()&lt;/em&gt;&lt;/strong&gt; 内部的执行：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;render 是虚拟 DOM 重新构建和 diff 执行的地方。
+在我们的例子中，所有在当前组件内部的元素在虚拟 DOM 中都会重新构建。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/e229c27fe81bb40185f5a44369b4f46c/2cc4f/virtual-dom-updating.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 69.49152542372882%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAIAAACgpqunAAAACXBIWXMAAAsSAAALEgHS3X78AAAClUlEQVQoz3VSW0sbQRjd1/4VH/sblLb0Ua3ikyAE8tKgIgRBBTF4AQlKbAQlBgQFLzQmVEUKYlM13kESNRIhNrddk53Z3cnOzO5mZzuJ0kKxB2Z3duc73/nO2RVEUYQQAg6EZJVDyZXVt9PFNwO/vl0UdCDKAMrgdQimaToctu0AwBByHGZQI/Gg7d+pABHToM7/IRBC+K2m67mVlaerK7q8LH14b3wJ8Jcj2/DjfMG1oUDd4k1tm/0DgVLqMMaV+ZHtOOburjI4iNfXOXnlFH5eK87+UInByQ6rL15k/1WmDeU6n89eq2nDw2Jnp+LxOERPP5m+aPb7XbV+1Cj4U/lCNgixIKyWy5hSglA+Hk9tbuZPT1Wx9JgtnWTgfUFBEOgcGFcRIvVcXloIMBQqdXVVenpoMqlw2Y4ONDaG4/FSR2f5U5ud+Gnd3lRcLkuSeDWORuX+fvacMfesnp2Jfj9YWqrxj5VISGtr1cNDI5erbG1VvkZosWTJAO3sMIy5V/z4qB4cUPvFt4CSycrsLAiFnFqNP+uEsMZIpmUZDQWekNIYVZufB4uLMBAotrdXPR4bIQFzL/f3vCWxbcqYTqnFGA9XtyzyTGZM0TS+0/b28P6+fnSUm54G4bBNiIDOz9WbGxyLlXw+ODNjplLayYnO/QeDos9HNjbI6mphfFzhmgsLRb8fh8NIlg3DqHsuNTfLra1ab++DywWGh6tDQ+V373Svtzwykunu1gMBZW4u43ark5NwdPTO7damprCmWc9p42zWkSSekHZxQdJpHhvL520AuBft8tK8vpaj0adYjB4fS5FIORJRt7eVZBKlUmY6LRiW9fqP28gPTkxkmppQMCh5vZmWFti45tvaMgMDt319vwEmUczZhGckBgAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;virtual dom updating&quot;
+        title=&quot;virtual dom updating&quot;
+        src=&quot;/static/e229c27fe81bb40185f5a44369b4f46c/799d3/virtual-dom-updating.png&quot;
+        srcset=&quot;/static/e229c27fe81bb40185f5a44369b4f46c/00d96/virtual-dom-updating.png 148w,
+/static/e229c27fe81bb40185f5a44369b4f46c/0b23c/virtual-dom-updating.png 295w,
+/static/e229c27fe81bb40185f5a44369b4f46c/799d3/virtual-dom-updating.png 590w,
+/static/e229c27fe81bb40185f5a44369b4f46c/2cc4f/virtual-dom-updating.png 826w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;它会检查前一个和下一个渲染过的元素是同一类型和 key，随后对类型和 key 的匹配进行协调。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;var&lt;/span&gt; prevRenderedElement &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;_renderedComponent&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;_currentElement&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;var&lt;/span&gt; nextRenderedElement &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;_instance&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// Calculator.render() 方法被调用&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这就是我们组件的 render 方法被调用的地方。即 &lt;code class=&quot;language-text&quot;&gt;Calculator.render()&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;和解的过程通常是经历如下步骤：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/5c7876a7db015a9253bbc118f2de9942/026e8/reconciliation-process.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 139.3313667649951%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAIAAADuuAg3AAAACXBIWXMAAAsSAAALEgHS3X78AAAE3UlEQVQ4y11UW29TRxA+P6tPfaiQ+lBVqlS1UvtSqQ9V1T6BRAVUBChqoVwElFtakQINNMRJuNlNQhKSloTmQhzbsZ34Ft/t+O6z57KXs3vOdtYGQhmtpTnj+WZnvplZTUpZtFsj2cVYIyc9mUCVrFEDhVJ6Kjwea+akK7Nod6y8TBiVjvi1MHck6esyC4Aa/K6X5/dt/LzezcquPb4xPZN4LrnXRfpgyL9ZzUgm/fnVj16cb6Eut8jJxMSXm781iP4SzKVLpfAIcQg2HUxMZArqSs9fWW9QBA4l1FhrpATkIOW5dOCb8BBitgLXScuhjnRdx7IGEuMHk6M7pZ2jmyMT+X+lzZlwJBODyScfrp6NdgtgORwb+Xj9QsVuK/Dg5lI5l+eMccs6nPrj2+3ByE78QHz4VvqpYI7DHUjsTmnp8/DV7XZROvJOZelSfpoIpsD3H4dbrTojxGNsOFy8tpyhlpkyKh3H4q64m3v2oLjCPZd5Io9qL+opwLSpeTYTmKqFNRQNVep1alsCk3OT9e8ftIiOpOeBE+POo/Df/q0l9SHlk2roWPSeJCJSS7/7/NBP26Oa7IsQwrZHN8yhZeTYtucJsEFuJ2K+i9uBvkvNaCc7ZVDyXf29sccXgxENqILAnhAepX0nF2PPVcRanHwVvfFdYgR0dbnwPKbsDd055qtPrKKXNwPYJQT+UQdu7oExpycSE5d2pvo+u2Y73iyAUmjT9wfLFxdae2AP49c3yx74tXg9CuK72bHNBcmcSrN7/a/4P9GKtudBiORcKZB/T3kLvNHO3i+sgIIw/3O1vZ6398CuK6xuByNEMcadDnUc+koIJR5xBrZ8H6ycKVpN5dwL9wZYuIJybpgMxDSpYTic9w/0TDre5dzM1/Hf67iruHNVNlqPSRWmgfVYp0gphqqUkTHFguNAF1UVnHscpuZ/5Wi9Fih6hnLz7ywOBBspuMR9VYkLIRhzKYWjAoECvYBx7JGyB/aVlz8JXoq1c5L3uPa8vYr6fVaKp9IFegwDlL2aYcYoZWpmgPa3xHvboApxXa0PcyhrmJ2ZQgg2hADhDrcJ8AZLBaSzyzvTwWbGIex8KrDVLkCsRmijNDurwLZtU0wKrepIbF4QhnXd84AzWEigmesG+mLt6sPcimEYn639slCOSCEzwfVIIKBB6rg3W0B+yqimzZrE9koOj4SIjkU/51B9B3EMSrCWxlxtsiiVeDqtWQTPp9c7SHdt9qwY+SF6X6DOycn6vsF2YlcFbZnsylztWdKoI3Jlrv48rR4mWEFhWZppW8uJsGGZELhgNlfzEVkpzryoXZhtNU3VD9PiN2eLi7F2V2c3Z0vL270hQYZASLMZWakmXOiWWk2px7czw8M4k5GmztstqeuR7NbA1JwvuLaYDB6bWhjbWGOdpqg3YH80eBkPbNwuNnfT5RzyWDeZLN0dpoVcbwZVzb7s4qHwjVORe6ej48ejt07HxxoY9bdFq7bq05k12Pv9odvnE34YKUbFZoUFy04FqbQfVdf3R+6cS/qhYQejI2dS/v6Lr8CTMePTIfQ0hc4kfdeSTxi2t0udIw+rB8aroys1zrDDHNu0XC7gEBt7b0yMNhk3912rLiRNQ6IGNcGUrRk/zppHp83AJpKCwdgpgabDQwzr8Qb4Pzad6zej5SOnAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;reconciliation process&quot;
+        title=&quot;reconciliation process&quot;
+        src=&quot;/static/5c7876a7db015a9253bbc118f2de9942/799d3/reconciliation-process.png&quot;
+        srcset=&quot;/static/5c7876a7db015a9253bbc118f2de9942/00d96/reconciliation-process.png 148w,
+/static/5c7876a7db015a9253bbc118f2de9942/0b23c/reconciliation-process.png 295w,
+/static/5c7876a7db015a9253bbc118f2de9942/799d3/reconciliation-process.png 590w,
+/static/5c7876a7db015a9253bbc118f2de9942/2a3d6/reconciliation-process.png 885w,
+/static/5c7876a7db015a9253bbc118f2de9942/026e8/reconciliation-process.png 1017w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;红色的虚线表示对于下一个子组件或子组件的后代都重复执行这些协调步骤&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;上面的流程图就是通过虚拟 DOM 更新真实 DOM 的过程。&lt;/p&gt;
+&lt;p&gt;所以在我们的例子中，协调的结果如下：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 260px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/272554ad013f2f522a901aa6faa896eb/54dde/reconciliation-result.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 104.23076923076924%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAIAAADJt1n/AAAACXBIWXMAAAsSAAALEgHS3X78AAAB5klEQVQ4y5VUi46bMBDk/z8wOrVHGhIIYBt7/X5Dl0srRW1ylxsZgw2zOx6vaZRWnHI7m5JysuBYn6x0tnCeGEsz8RPx3oa1rtt/aHLOKSQ9aTMrINdre6BjPxPx/n7tOnod1PCDO+23R2jwiilabeQZOAPClve3du6nvj+zhSQf3KyTj0/JQghgIE8QtA8hmEGri1zXdfsKOxkkCMJFy40w1lq4gDjxlNK6rTd8RuaCCyYwm9cOIXsJZ1FyeSmzVJKNlP9cnHKllJpqiWX7WvUHudaKO+GFM1TXUm8vds1/2z58JL653bTVEj07wytq/yX74J2yikqsFJRhozXBuIgbbGywpRbsc8mppHsJzX2kRS3a6ZDCsAzt1OJwhHGECaPMMCMZH8paHpOVUm3bHo/HYRi89+jFS7L/kL0KOaBIYUU7txNMVLEzu4CVPnpM+xkZLKSacs0dPR/6A5I72v0iJ1wwxsIevcDQT8gAXdcRSnB5+BE6hw6VD/ExR1wFTj41TFpFFmLdnoEpJp00HktW7D7V/cg+lY2BJUjvPCYUFk6kW/SCix/FiNuGXmB7TMYy8trri7TMfLtIoot4MGQPOeVbrL1i73CbfEDGn4mhRvUyxbR9B01OSV6AvhEn3Ss/gHv8Bl5qymvVzqY8AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;reconciliation result&quot;
+        title=&quot;reconciliation result&quot;
+        src=&quot;/static/272554ad013f2f522a901aa6faa896eb/54dde/reconciliation-result.png&quot;
+        srcset=&quot;/static/272554ad013f2f522a901aa6faa896eb/00d96/reconciliation-result.png 148w,
+/static/272554ad013f2f522a901aa6faa896eb/54dde/reconciliation-result.png 260w&quot;
+        sizes=&quot;(max-width: 260px) 100vw, 260px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;我们将步骤分解来看一下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;协调开始于组件的主 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;div class=&amp;quot;container&amp;quot;&amp;gt;&lt;/code&gt; 节点。&lt;/li&gt;
+&lt;li&gt;它的子节点中包含 &lt;strong&gt;Output&lt;/strong&gt;，所以 react 会对子节点协调。&lt;/li&gt;
+&lt;li&gt;现在子节点有了自己的子节点 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;hr&amp;gt;&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;h2&amp;gt;&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;react 开始协调 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;hr&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;下一步 react 协调 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;h2&amp;gt;&lt;/code&gt;，由于它的子节点是 &lt;strong&gt;Output&lt;/strong&gt;：来自 &lt;strong&gt;state&lt;/strong&gt; 的文本内容，所以它会对两者进行协调。&lt;/li&gt;
+&lt;li&gt;首次 &lt;strong&gt;Output&lt;/strong&gt;：文本开始协调，由于没有变化，所以 DOM 不需要更新&lt;/li&gt;
+&lt;li&gt;后来来自 &lt;strong&gt;state&lt;/strong&gt; 的 &lt;strong&gt;output&lt;/strong&gt; 得到了一个新值，react 开始协调并更新真实的 DOM。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;渲染真实 DOM&lt;/h3&gt;
+&lt;p&gt;在协调过程中，只有我们的 &lt;strong&gt;Output&lt;/strong&gt; 部分如在页面上闪烁绘制的一样发生了变化。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 518px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/38e2282df894c8a93a006209aef05c9b/9eb08/paint-flashing.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 52.70270270270271%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAAA90lEQVQoz6WQS2+DMBCE/f//T2/NIRwIUQBH4RUqioOggSAHBMTEEK8pfajqoQ1IGX2HPezMjha5e5+QMI7j5C3xPM9/CRzHPRBS180wDFLK4X+h9UbHGKdZFkXRWtM2uqmqK1M36LmcNjN2aduW0nPXd3B39Q/zSlNt29INc+/7TfNRFWAMkXJGEAIh6roWQnyVhF+aNvuvYUjIKcs5vzLG2k+NA+d82vxkLixntzUwpVSCBAHfzLlMLwW7tmNz3nEBor/1P4wvvA9SdopiL+3Me8YLN3NzyI/8mHbpHJB1sLYBjqskOAVpk1ZQFX1R3so5oOEBvQMY4ncu9BnnQQAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;paint flashing&quot;
+        title=&quot;paint flashing&quot;
+        src=&quot;/static/38e2282df894c8a93a006209aef05c9b/9eb08/paint-flashing.png&quot;
+        srcset=&quot;/static/38e2282df894c8a93a006209aef05c9b/00d96/paint-flashing.png 148w,
+/static/38e2282df894c8a93a006209aef05c9b/0b23c/paint-flashing.png 295w,
+/static/38e2282df894c8a93a006209aef05c9b/9eb08/paint-flashing.png 518w&quot;
+        sizes=&quot;(max-width: 518px) 100vw, 518px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;center&gt;只有output被重新绘制&lt;/center&gt;
+&lt;p&gt;在真实 DOM 中的更新：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/7164951a80f4c007755d05771b874233/299c1/actual-dom-update.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 69.16354556803995%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAIAAACgpqunAAAACXBIWXMAAAsSAAALEgHS3X78AAACg0lEQVQoz4VSW08TQRjdP+Bf8Cf46AMI8qAJL8YHL9GQ+GBMNF4STSDRxERDonhBKBApPABGoKAE5B4RRQoNpaiAVVpuLdCml+0ue5uZnZm9uttiTBTieZh88+U7Od+ZM4z9G1YeToE1s8irHnqo+tehbWLLPhDMX3fNsFmJBNf4hU0xuws4ERDd+g/Z0RQl2STAt6yd9OYaZ5HTvDsql7fmKnyKpBr5mf3IZn5fXXcmjN4lcq1PbJ5Tnf6bRXB7gK+fVhwjLnlP5l/lwmlaV/uVY03smU6IqJkQ9UcjialVZV9Zl2xatuNLAqquURXT4FpucH57KS7woryZkb9tgzgLZAVQShyoKoII/yHX+dHxpnR5K7ewBa/0cCWeVOWw9CECij2p0ib2/SqOZPCptt04R53pwTC82OVomYVdmJkYuTeUq/cDDppjK6huShiLkBineWel5oCywelZRW8PQYW4e69nYXcIE6TvKa9k6OMJriUgFUxhBAppU+waccPTdKDITuENwoZJ5RU7dOF7zY2Yl6Uig3Vzi8OsjA0KLQ2pULFM3TIogQLFbmCmYSiSYNvk7ZLcPoe/WJ9rU55Wrk0yZWYtq8ZSuwNh/GA4/fyjEM3QnzvCBqs2zijVY9meZdK1iGvG055psWNeeTGRbplTRQgpdZ+NKX4pne4Qz3WBkvrE2U5QOYLKmoVbQ+iSTzham7wzSm6+A2UNyfM+fLlXKvUkK3pwmkcayZN5ZEvEjmbp+AoKxKmATF61JWyFtvB4RF3Yof1fc51BfjKK+kLs6xDXF06ss8nN9E5CZJmD/q2Rj+Opnx5+Ap7N0OpP8Egtrgr8OBG9X7RcUxXpvh5u/wUF2dxROBy9qAAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;actual dom update&quot;
+        title=&quot;actual dom update&quot;
+        src=&quot;/static/7164951a80f4c007755d05771b874233/799d3/actual-dom-update.png&quot;
+        srcset=&quot;/static/7164951a80f4c007755d05771b874233/00d96/actual-dom-update.png 148w,
+/static/7164951a80f4c007755d05771b874233/0b23c/actual-dom-update.png 295w,
+/static/7164951a80f4c007755d05771b874233/799d3/actual-dom-update.png 590w,
+/static/7164951a80f4c007755d05771b874233/299c1/actual-dom-update.png 801w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;总结&lt;/h2&gt;
+&lt;p&gt;尽管例子比较简单，希望它能够给到我们一个基本的对于 react 底层执行的理解。&lt;/p&gt;
+&lt;p&gt;React 的协调过程：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将前一个内部实例和下一个内部实例作比较&lt;/li&gt;
+&lt;li&gt;更新实质是 JavaScript 对象的组件树结构的内部实例&lt;/li&gt;
+&lt;li&gt;只有当前组件以及子代组件真正发生变化才会更新真实的 DOM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://medium.com/@gethylgeorge/how-virtual-dom-and-diffing-works-in-react-6fc805f9f84e&quot;&gt;https://medium.com/@gethylgeorge/how-virtual-dom-and-diffing-works-in-react-6fc805f9f84e&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[了解中间件]]></title><description><![CDATA[最近在看 Redux 文档，了解了 redux 的工作原理，发现 action 只能同步被 dispatch，那有没有办法执行异步调用呢？答案是通过中间件来实现。之前简单了解过 Node.js 服务端框架 Express 和 Koa…]]></description><link>https://www.keisei.top/understanding-the-middleware/</link><guid isPermaLink="false">https://www.keisei.top/understanding-the-middleware/</guid><pubDate>Sun, 12 Jan 2020 22:07:00 GMT</pubDate><content:encoded>&lt;p&gt;最近在看 Redux 文档，了解了 redux 的工作原理，发现 action 只能同步被 dispatch，那有没有办法执行异步调用呢？答案是通过中间件来实现。之前简单了解过 Node.js 服务端框架 &lt;a href=&quot;http://expressjs.com/&quot;&gt;Express&lt;/a&gt; 和 &lt;a href=&quot;http://koajs.com/&quot;&gt;Koa&lt;/a&gt;，它们的机制也依赖中间件这一概念，通过在接受请求和发送响应之间增加代码做额外的处理工作。比如，Express 和 Koa 中间件可以增加 CORS 头，记录日志，压缩等等。中间件最重要的特点是它可以链式组合。可以在一个项目中使用多个独立的第三方中间件。&lt;/p&gt;
 &lt;p&gt;Redux 中间件解决了不同于 Express 和 Koa 的问题，但从概念上讲是相似的。它在分发 action 和抵达 reducer 之间提供了一个第三方切入点。我们可以用 Redux 中间件记录日志，上报崩溃异常，请求异步 API，路由切换等等。&lt;/p&gt;
 &lt;h2&gt;理解中间件&lt;/h2&gt;
 &lt;p&gt;中间件可以做很多事情，包括执行异步 API 请求，但理解它是如何演进而来的非常重要。我们将以记录日志和上报异常为例来思考使用中间件的过程。&lt;/p&gt;

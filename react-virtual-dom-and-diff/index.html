@@ -317,7 +317,290 @@ dirtyComponents<span class="token punctuation">.</span><span class="token functi
 </blockquote>
 <ol start="4">
 <li>现在，<strong>Calculator</strong> 组件被标记为脏值。</li>
-</ol></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/React">React</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/React diff">React diff</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Virtual DOM">Virtual DOM</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/understanding-the-middleware/">了解中间件<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
+</ol>
+<h3>遍历组件的生命周期</h3>
+<p>现在组件被标记为脏值，下一步是更新虚拟 DOM 并使用 diff 算法来做协调（reconciliation），最终更新真正的 DOM。</p>
+<p>在 React 中，我们的 Calculator 组件的数据格式：</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 285px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/4491dc548f08eb284a346c1e7be3af4d/0f1af/calculator-data.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 138.24561403508773%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAIAAADuuAg3AAAACXBIWXMAAAsSAAALEgHS3X78AAADMklEQVQ4y4VU25baOBCc//+8PCQ7y4DBtoQly7rffGVLmCSTDDOro2MEuFTd1dX9IoQghPRDLwbRsW4/YDPO9vOVXYUUHe+UEoNfXb5hbeVxexnHrJQWVLALI0dC3uj11LGa01NH3yive/zCzqx+bYZOSJ4VCYufbjt4/0hDNhdnG29rp47GkxBY0jRFkZNI2FmOU5y3PGfqR5ke4G3bpnHyPPT/DKrSprWG2b4Simnr122P75P1Mk0TZzz2SddGn3UQYRiG4+FIWpJTnOcZVy/LWrLcL/p1ABh/I+fAo+u8u/rhIPXFqJP2XcDvVVWdz2dr7XPmcte6mcbKSvPvwjJr9LzMj/u3+9pffX9+xywVmOVRgRORq8pY4iJLrvHZjfRKm6ZBLtsHAQCeei4CiyCHWsjcti7a2JybjnTI/Hg8Hg4H4Luu6/v+b+ZhkGDWFw2YpS65xHvetE3d1oAxxpCzMcY5F0L4A7yuawwx9hGhFqnOOprEOWeso/QqpUQ5Pi3VrgRg8qQQuXiV3Tc+TpM2NqX0673tWcULeF1WwEqdwQzNah3j7O32VOEnpSoxA1zw1rY2+snb5Sf2U/zOvBni1LmAYdIiOLGIBZ6BHBAZz69yBrN8U8D3P4Q86eGgIHuMEZ3ovf8qbOQMKhDeBRvQJLirqNAYy13WMV1DFvH20SR72PYeNroKzCVgWiSAz6Ff0imcTKzdmpe/wahzignpQWrA+u9CHnXxKTwDFYmxGk2qVTMYYZ60JOu4uwbkjN4Q/0rww+f3rZ10LW2ry/nS1i1pw88FOaDUy7IsRpvQx6L2faMfgUTBTOvcEFpCYTeYvG5qOLyua8w8Sil8/ci5gCsNb5ZqvQ64yBBfVJSYcbcv1Z7XIEpXIdUiUqWcm5zbHfYw5vZh/R6AZYa8ldoiZlMXnyOQ5JNSsuccFrw9bnpWZ8+8rAoAMHd1UA5fkUJwOcblf7yNmIHEGMEkMrU1ldXYJyMxWBrvmJ/SmFlILCxp/g1e1gXKZ5UDD56FOCQnPDlR1nJM3yQTdpQJdphMhs+Wd1Ypk0RrPbox24zn6MdS+Z6hqtbZ9/28vRuD+/oPXZZCBym7D1QAAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="calculator data"
+        title="calculator data"
+        src="/static/4491dc548f08eb284a346c1e7be3af4d/0f1af/calculator-data.png"
+        srcset="/static/4491dc548f08eb284a346c1e7be3af4d/00d96/calculator-data.png 148w,
+/static/4491dc548f08eb284a346c1e7be3af4d/0f1af/calculator-data.png 285w"
+        sizes="(max-width: 285px) 100vw, 285px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>下一步更新组件：</p>
+<ol>
+<li>这是通过 React 执行批量更新来完成的。</li>
+<li>在批量更新时，它会检查哪些组件被标记为脏值并开始更新。</li>
+</ol>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">var</span> <span class="token function-variable function">flushBatchedUpdates</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>dirtyComponents<span class="token punctuation">.</span>length <span class="token operator">||</span> asapEnqueued<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>dirtyComponents<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">var</span> transaction <span class="token operator">=</span> ReactUpdatesFlushTransaction<span class="token punctuation">.</span><span class="token function">getPooled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      transaction<span class="token punctuation">.</span><span class="token function">perform</span><span class="token punctuation">(</span>runBatchedUpdate<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> transaction<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
+<ol start="3">
+<li>下一步，它会检查是否存在进行中的需要更新的状态，或者有一个 <strong><em>forceUpdate</em></strong> 被调用。</li>
+</ol>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>_pendingStateQueue <span class="token operator">!==</span> <span class="token keyword">null</span> <span class="token operator">||</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_pendingForceUpdate<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updateComponent</span><span class="token punctuation">(</span>
+    transaction<span class="token punctuation">,</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>_currentElement<span class="token punctuation">,</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>_currentElement<span class="token punctuation">,</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>_context<span class="token punctuation">,</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>_context
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 236px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/427c95929f06e16a09805582aa0b4d56/2ac26/pending-state-queue.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 22.033898305084744%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAECAIAAAABPYjBAAAACXBIWXMAAAsSAAALEgHS3X78AAAAlklEQVQI132L2RKCMAxF/f/f88XBBcpYKBWbNE1py4BaQHn0ZJ2b3IO1FgGDDigsN97WzoqcZG5gSsTasmZypJRq23br0zS9Vw55gyeoQlPjOqGbQqlrBxKGPmTFP4ZIyXsmIgAwK/M8f825OHAv+8hJdlLcRVmXfvBZf+X4y2LefpIbTYHmjFjRGNPpGKpL3K/L/LGbP9Db5MZFUleuAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="pending state queue"
+        title="pending state queue"
+        src="/static/427c95929f06e16a09805582aa0b4d56/2ac26/pending-state-queue.png"
+        srcset="/static/427c95929f06e16a09805582aa0b4d56/00d96/pending-state-queue.png 148w,
+/static/427c95929f06e16a09805582aa0b4d56/2ac26/pending-state-queue.png 236w"
+        sizes="(max-width: 236px) 100vw, 236px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>在我们的例子中， <strong><em>this.\</em>pendingStateQueue_</strong> 持有我们新的 output 值。</p>
+<ol start="4">
+<li>首先它会检查我们是否声明了 <a href="https://facebook.github.io/react/docs/react-component.html#componentwillreceiveprops"><code class="language-text">componentWillReceiveProps()</code></a>，如果声明了，那么可以通过传入的新的 <strong>props</strong> 来更新 <strong>state</strong>。</li>
+<li>下一步检查是否声明了 <a href="https://facebook.github.io/react/docs/react-component.html#shouldcomponentupdate"><code class="language-text">shouldComponentUpdate()</code></a>，我们可以检查 <strong>state</strong> 或 <strong>props</strong> 是否变化了来决定组件是否需要重新渲染。</li>
+</ol>
+<blockquote>
+<p>当你知道什么情况下不需要组件重新渲染时使用，可以提高组件的性能。</p>
+</blockquote>
+<p>6.下一步是执行 <a href="https://facebook.github.io/react/docs/react-component.html#componentwillupdate"><code class="language-text">componentWillUpdate()</code></a>， <a href="https://facebook.github.io/react/docs/react-component.html#render"><code class="language-text">render()</code></a> 和 <a href="https://facebook.github.io/react/docs/react-component.html#componentdidupdate"><code class="language-text">componentDidUpdate</code></a>。</p>
+<ol start="7">
+<li>我们来详细看一下 <strong><em>render()</em></strong> 内部的执行：</li>
+</ol>
+<p>render 是虚拟 DOM 重新构建和 diff 执行的地方。
+在我们的例子中，所有在当前组件内部的元素在虚拟 DOM 中都会重新构建。</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/e229c27fe81bb40185f5a44369b4f46c/2cc4f/virtual-dom-updating.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 69.49152542372882%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAIAAACgpqunAAAACXBIWXMAAAsSAAALEgHS3X78AAAClUlEQVQoz3VSW0sbQRjd1/4VH/sblLb0Ua3ikyAE8tKgIgRBBTF4AQlKbAQlBgQFLzQmVEUKYlM13kESNRIhNrddk53Z3cnOzO5mZzuJ0kKxB2Z3duc73/nO2RVEUYQQAg6EZJVDyZXVt9PFNwO/vl0UdCDKAMrgdQimaToctu0AwBByHGZQI/Gg7d+pABHToM7/IRBC+K2m67mVlaerK7q8LH14b3wJ8Jcj2/DjfMG1oUDd4k1tm/0DgVLqMMaV+ZHtOOburjI4iNfXOXnlFH5eK87+UInByQ6rL15k/1WmDeU6n89eq2nDw2Jnp+LxOERPP5m+aPb7XbV+1Cj4U/lCNgixIKyWy5hSglA+Hk9tbuZPT1Wx9JgtnWTgfUFBEOgcGFcRIvVcXloIMBQqdXVVenpoMqlw2Y4ONDaG4/FSR2f5U5ud+Gnd3lRcLkuSeDWORuX+fvacMfesnp2Jfj9YWqrxj5VISGtr1cNDI5erbG1VvkZosWTJAO3sMIy5V/z4qB4cUPvFt4CSycrsLAiFnFqNP+uEsMZIpmUZDQWekNIYVZufB4uLMBAotrdXPR4bIQFzL/f3vCWxbcqYTqnFGA9XtyzyTGZM0TS+0/b28P6+fnSUm54G4bBNiIDOz9WbGxyLlXw+ODNjplLayYnO/QeDos9HNjbI6mphfFzhmgsLRb8fh8NIlg3DqHsuNTfLra1ab++DywWGh6tDQ+V373Svtzwykunu1gMBZW4u43ark5NwdPTO7damprCmWc9p42zWkSSekHZxQdJpHhvL520AuBft8tK8vpaj0adYjB4fS5FIORJRt7eVZBKlUmY6LRiW9fqP28gPTkxkmppQMCh5vZmWFti45tvaMgMDt319vwEmUczZhGckBgAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="virtual dom updating"
+        title="virtual dom updating"
+        src="/static/e229c27fe81bb40185f5a44369b4f46c/799d3/virtual-dom-updating.png"
+        srcset="/static/e229c27fe81bb40185f5a44369b4f46c/00d96/virtual-dom-updating.png 148w,
+/static/e229c27fe81bb40185f5a44369b4f46c/0b23c/virtual-dom-updating.png 295w,
+/static/e229c27fe81bb40185f5a44369b4f46c/799d3/virtual-dom-updating.png 590w,
+/static/e229c27fe81bb40185f5a44369b4f46c/2cc4f/virtual-dom-updating.png 826w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>它会检查前一个和下一个渲染过的元素是同一类型和 key，随后对类型和 key 的匹配进行协调。</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">var</span> prevRenderedElement <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_renderedComponent<span class="token punctuation">.</span>_currentElement<span class="token punctuation">;</span>
+<span class="token keyword">var</span> nextRenderedElement <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_instance<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Calculator.render() 方法被调用</span></code></pre></div>
+<blockquote>
+<p>这就是我们组件的 render 方法被调用的地方。即 <code class="language-text">Calculator.render()</code></p>
+</blockquote>
+<p>和解的过程通常是经历如下步骤：</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/5c7876a7db015a9253bbc118f2de9942/026e8/reconciliation-process.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 139.3313667649951%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAIAAADuuAg3AAAACXBIWXMAAAsSAAALEgHS3X78AAAE3UlEQVQ4y11UW29TRxA+P6tPfaiQ+lBVqlS1UvtSqQ9V1T6BRAVUBChqoVwElFtakQINNMRJuNlNQhKSloTmQhzbsZ34Ft/t+O6z57KXs3vOdtYGQhmtpTnj+WZnvplZTUpZtFsj2cVYIyc9mUCVrFEDhVJ6Kjwea+akK7Nod6y8TBiVjvi1MHck6esyC4Aa/K6X5/dt/LzezcquPb4xPZN4LrnXRfpgyL9ZzUgm/fnVj16cb6Eut8jJxMSXm781iP4SzKVLpfAIcQg2HUxMZArqSs9fWW9QBA4l1FhrpATkIOW5dOCb8BBitgLXScuhjnRdx7IGEuMHk6M7pZ2jmyMT+X+lzZlwJBODyScfrp6NdgtgORwb+Xj9QsVuK/Dg5lI5l+eMccs6nPrj2+3ByE78QHz4VvqpYI7DHUjsTmnp8/DV7XZROvJOZelSfpoIpsD3H4dbrTojxGNsOFy8tpyhlpkyKh3H4q64m3v2oLjCPZd5Io9qL+opwLSpeTYTmKqFNRQNVep1alsCk3OT9e8ftIiOpOeBE+POo/Df/q0l9SHlk2roWPSeJCJSS7/7/NBP26Oa7IsQwrZHN8yhZeTYtucJsEFuJ2K+i9uBvkvNaCc7ZVDyXf29sccXgxENqILAnhAepX0nF2PPVcRanHwVvfFdYgR0dbnwPKbsDd055qtPrKKXNwPYJQT+UQdu7oExpycSE5d2pvo+u2Y73iyAUmjT9wfLFxdae2AP49c3yx74tXg9CuK72bHNBcmcSrN7/a/4P9GKtudBiORcKZB/T3kLvNHO3i+sgIIw/3O1vZ6398CuK6xuByNEMcadDnUc+koIJR5xBrZ8H6ycKVpN5dwL9wZYuIJybpgMxDSpYTic9w/0TDre5dzM1/Hf67iruHNVNlqPSRWmgfVYp0gphqqUkTHFguNAF1UVnHscpuZ/5Wi9Fih6hnLz7ywOBBspuMR9VYkLIRhzKYWjAoECvYBx7JGyB/aVlz8JXoq1c5L3uPa8vYr6fVaKp9IFegwDlL2aYcYoZWpmgPa3xHvboApxXa0PcyhrmJ2ZQgg2hADhDrcJ8AZLBaSzyzvTwWbGIex8KrDVLkCsRmijNDurwLZtU0wKrepIbF4QhnXd84AzWEigmesG+mLt6sPcimEYn639slCOSCEzwfVIIKBB6rg3W0B+yqimzZrE9koOj4SIjkU/51B9B3EMSrCWxlxtsiiVeDqtWQTPp9c7SHdt9qwY+SF6X6DOycn6vsF2YlcFbZnsylztWdKoI3Jlrv48rR4mWEFhWZppW8uJsGGZELhgNlfzEVkpzryoXZhtNU3VD9PiN2eLi7F2V2c3Z0vL270hQYZASLMZWakmXOiWWk2px7czw8M4k5GmztstqeuR7NbA1JwvuLaYDB6bWhjbWGOdpqg3YH80eBkPbNwuNnfT5RzyWDeZLN0dpoVcbwZVzb7s4qHwjVORe6ej48ejt07HxxoY9bdFq7bq05k12Pv9odvnE34YKUbFZoUFy04FqbQfVdf3R+6cS/qhYQejI2dS/v6Lr8CTMePTIfQ0hc4kfdeSTxi2t0udIw+rB8aroys1zrDDHNu0XC7gEBt7b0yMNhk3912rLiRNQ6IGNcGUrRk/zppHp83AJpKCwdgpgabDQwzr8Qb4Pzad6zej5SOnAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="reconciliation process"
+        title="reconciliation process"
+        src="/static/5c7876a7db015a9253bbc118f2de9942/799d3/reconciliation-process.png"
+        srcset="/static/5c7876a7db015a9253bbc118f2de9942/00d96/reconciliation-process.png 148w,
+/static/5c7876a7db015a9253bbc118f2de9942/0b23c/reconciliation-process.png 295w,
+/static/5c7876a7db015a9253bbc118f2de9942/799d3/reconciliation-process.png 590w,
+/static/5c7876a7db015a9253bbc118f2de9942/2a3d6/reconciliation-process.png 885w,
+/static/5c7876a7db015a9253bbc118f2de9942/026e8/reconciliation-process.png 1017w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<blockquote>
+<p>红色的虚线表示对于下一个子组件或子组件的后代都重复执行这些协调步骤</p>
+</blockquote>
+<p>上面的流程图就是通过虚拟 DOM 更新真实 DOM 的过程。</p>
+<p>所以在我们的例子中，协调的结果如下：</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 260px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/272554ad013f2f522a901aa6faa896eb/54dde/reconciliation-result.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 104.23076923076924%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAIAAADJt1n/AAAACXBIWXMAAAsSAAALEgHS3X78AAAB5klEQVQ4y5VUi46bMBDk/z8wOrVHGhIIYBt7/X5Dl0srRW1ylxsZgw2zOx6vaZRWnHI7m5JysuBYn6x0tnCeGEsz8RPx3oa1rtt/aHLOKSQ9aTMrINdre6BjPxPx/n7tOnod1PCDO+23R2jwiilabeQZOAPClve3du6nvj+zhSQf3KyTj0/JQghgIE8QtA8hmEGri1zXdfsKOxkkCMJFy40w1lq4gDjxlNK6rTd8RuaCCyYwm9cOIXsJZ1FyeSmzVJKNlP9cnHKllJpqiWX7WvUHudaKO+GFM1TXUm8vds1/2z58JL653bTVEj07wytq/yX74J2yikqsFJRhozXBuIgbbGywpRbsc8mppHsJzX2kRS3a6ZDCsAzt1OJwhHGECaPMMCMZH8paHpOVUm3bHo/HYRi89+jFS7L/kL0KOaBIYUU7txNMVLEzu4CVPnpM+xkZLKSacs0dPR/6A5I72v0iJ1wwxsIevcDQT8gAXdcRSnB5+BE6hw6VD/ExR1wFTj41TFpFFmLdnoEpJp00HktW7D7V/cg+lY2BJUjvPCYUFk6kW/SCix/FiNuGXmB7TMYy8trri7TMfLtIoot4MGQPOeVbrL1i73CbfEDGn4mhRvUyxbR9B01OSV6AvhEn3Ss/gHv8Bl5qymvVzqY8AAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="reconciliation result"
+        title="reconciliation result"
+        src="/static/272554ad013f2f522a901aa6faa896eb/54dde/reconciliation-result.png"
+        srcset="/static/272554ad013f2f522a901aa6faa896eb/00d96/reconciliation-result.png 148w,
+/static/272554ad013f2f522a901aa6faa896eb/54dde/reconciliation-result.png 260w"
+        sizes="(max-width: 260px) 100vw, 260px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>我们将步骤分解来看一下：</p>
+<ul>
+<li>协调开始于组件的主 <code class="language-text">&lt;div class=&quot;container&quot;&gt;</code> 节点。</li>
+<li>它的子节点中包含 <strong>Output</strong>，所以 react 会对子节点协调。</li>
+<li>现在子节点有了自己的子节点 <code class="language-text">&lt;hr&gt;</code> 和 <code class="language-text">&lt;h2&gt;</code>。</li>
+<li>react 开始协调 <code class="language-text">&lt;hr&gt;</code></li>
+<li>下一步 react 协调 <code class="language-text">&lt;h2&gt;</code>，由于它的子节点是 <strong>Output</strong>：来自 <strong>state</strong> 的文本内容，所以它会对两者进行协调。</li>
+<li>首次 <strong>Output</strong>：文本开始协调，由于没有变化，所以 DOM 不需要更新</li>
+<li>后来来自 <strong>state</strong> 的 <strong>output</strong> 得到了一个新值，react 开始协调并更新真实的 DOM。</li>
+</ul>
+<h3>渲染真实 DOM</h3>
+<p>在协调过程中，只有我们的 <strong>Output</strong> 部分如在页面上闪烁绘制的一样发生了变化。</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 518px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/38e2282df894c8a93a006209aef05c9b/9eb08/paint-flashing.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 52.70270270270271%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAAA90lEQVQoz6WQS2+DMBCE/f//T2/NIRwIUQBH4RUqioOggSAHBMTEEK8pfajqoQ1IGX2HPezMjha5e5+QMI7j5C3xPM9/CRzHPRBS180wDFLK4X+h9UbHGKdZFkXRWtM2uqmqK1M36LmcNjN2aduW0nPXd3B39Q/zSlNt29INc+/7TfNRFWAMkXJGEAIh6roWQnyVhF+aNvuvYUjIKcs5vzLG2k+NA+d82vxkLixntzUwpVSCBAHfzLlMLwW7tmNz3nEBor/1P4wvvA9SdopiL+3Me8YLN3NzyI/8mHbpHJB1sLYBjqskOAVpk1ZQFX1R3so5oOEBvQMY4ncu9BnnQQAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="paint flashing"
+        title="paint flashing"
+        src="/static/38e2282df894c8a93a006209aef05c9b/9eb08/paint-flashing.png"
+        srcset="/static/38e2282df894c8a93a006209aef05c9b/00d96/paint-flashing.png 148w,
+/static/38e2282df894c8a93a006209aef05c9b/0b23c/paint-flashing.png 295w,
+/static/38e2282df894c8a93a006209aef05c9b/9eb08/paint-flashing.png 518w"
+        sizes="(max-width: 518px) 100vw, 518px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<center>只有output被重新绘制</center>
+<p>在真实 DOM 中的更新：</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/7164951a80f4c007755d05771b874233/299c1/actual-dom-update.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 69.16354556803995%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAIAAACgpqunAAAACXBIWXMAAAsSAAALEgHS3X78AAACg0lEQVQoz4VSW08TQRjdP+Bf8Cf46AMI8qAJL8YHL9GQ+GBMNF4STSDRxERDonhBKBApPABGoKAE5B4RRQoNpaiAVVpuLdCml+0ue5uZnZm9uttiTBTieZh88+U7Od+ZM4z9G1YeToE1s8irHnqo+tehbWLLPhDMX3fNsFmJBNf4hU0xuws4ERDd+g/Z0RQl2STAt6yd9OYaZ5HTvDsql7fmKnyKpBr5mf3IZn5fXXcmjN4lcq1PbJ5Tnf6bRXB7gK+fVhwjLnlP5l/lwmlaV/uVY03smU6IqJkQ9UcjialVZV9Zl2xatuNLAqquURXT4FpucH57KS7woryZkb9tgzgLZAVQShyoKoII/yHX+dHxpnR5K7ewBa/0cCWeVOWw9CECij2p0ib2/SqOZPCptt04R53pwTC82OVomYVdmJkYuTeUq/cDDppjK6huShiLkBineWel5oCywelZRW8PQYW4e69nYXcIE6TvKa9k6OMJriUgFUxhBAppU+waccPTdKDITuENwoZJ5RU7dOF7zY2Yl6Uig3Vzi8OsjA0KLQ2pULFM3TIogQLFbmCmYSiSYNvk7ZLcPoe/WJ9rU55Wrk0yZWYtq8ZSuwNh/GA4/fyjEM3QnzvCBqs2zijVY9meZdK1iGvG055psWNeeTGRbplTRQgpdZ+NKX4pne4Qz3WBkvrE2U5QOYLKmoVbQ+iSTzham7wzSm6+A2UNyfM+fLlXKvUkK3pwmkcayZN5ZEvEjmbp+AoKxKmATF61JWyFtvB4RF3Yof1fc51BfjKK+kLs6xDXF06ss8nN9E5CZJmD/q2Rj+Opnx5+Ap7N0OpP8Egtrgr8OBG9X7RcUxXpvh5u/wUF2dxROBy9qAAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="actual dom update"
+        title="actual dom update"
+        src="/static/7164951a80f4c007755d05771b874233/799d3/actual-dom-update.png"
+        srcset="/static/7164951a80f4c007755d05771b874233/00d96/actual-dom-update.png 148w,
+/static/7164951a80f4c007755d05771b874233/0b23c/actual-dom-update.png 295w,
+/static/7164951a80f4c007755d05771b874233/799d3/actual-dom-update.png 590w,
+/static/7164951a80f4c007755d05771b874233/299c1/actual-dom-update.png 801w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<h2>总结</h2>
+<p>尽管例子比较简单，希望它能够给到我们一个基本的对于 react 底层执行的理解。</p>
+<p>React 的协调过程：</p>
+<ul>
+<li>将前一个内部实例和下一个内部实例作比较</li>
+<li>更新实质是 JavaScript 对象的组件树结构的内部实例</li>
+<li>只有当前组件以及子代组件真正发生变化才会更新真实的 DOM</li>
+</ul>
+<h2>参考</h2>
+<p><a href="https://medium.com/@gethylgeorge/how-virtual-dom-and-diffing-works-in-react-6fc805f9f84e">https://medium.com/@gethylgeorge/how-virtual-dom-and-diffing-works-in-react-6fc805f9f84e</a></p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/React">React</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/React diff">React diff</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Virtual DOM">Virtual DOM</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/understanding-the-middleware/">了解中间件<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   
   
   if(true) {
