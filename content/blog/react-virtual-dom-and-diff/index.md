@@ -165,3 +165,118 @@ dirtyComponents.push(component);
 > 你可能会好奇，为什么 React 不直接将按钮标记为脏值，而是整个组件，那是因为，在调用 setState 时，通过 **this.setState()** 调用的，**this** 在这里指向的是 **Calculator** 组件实例。
 
 4. 现在，**Calculator** 组件被标记为脏值。
+
+### 遍历组件的生命周期
+
+现在组件被标记为脏值，下一步是更新虚拟 DOM 并使用 diff 算法来做协调（reconciliation），最终更新真正的 DOM。
+
+在 React 中，我们的 Calculator 组件的数据格式：
+
+![calculator data](calculator-data.png)
+
+下一步更新组件：
+
+1. 这是通过 React 执行批量更新来完成的。
+2. 在批量更新时，它会检查哪些组件被标记为脏值并开始更新。
+
+```javascript
+var flushBatchedUpdates = function() {
+  while (dirtyComponents.length || asapEnqueued) {
+    if (dirtyComponents.length) {
+      var transaction = ReactUpdatesFlushTransaction.getPooled();
+      transaction.perform(runBatchedUpdate, null, transaction);
+    }
+  }
+};
+```
+
+3. 下一步，它会检查是否存在进行中的需要更新的状态，或者有一个 **_forceUpdate_** 被调用。
+
+```javascript
+if (this._pendingStateQueue !== null || this._pendingForceUpdate) {
+  this.updateComponent(
+    transaction,
+    this._currentElement,
+    this._currentElement,
+    this._context,
+    this._context
+  );
+}
+```
+
+![pending state queue](pending-state-queue.png)
+
+在我们的例子中， **_this.\_pendingStateQueue_** 持有我们新的 output 值。
+
+4. 首先它会检查我们是否声明了 [`componentWillReceiveProps()`](https://facebook.github.io/react/docs/react-component.html#componentwillreceiveprops)，如果声明了，那么可以通过传入的新的 **props** 来更新 **state**。
+
+5. 下一步检查是否声明了 [`shouldComponentUpdate()`](https://facebook.github.io/react/docs/react-component.html#shouldcomponentupdate)，我们可以检查 **state** 或 **props** 是否变化了来决定组件是否需要重新渲染。
+
+> 当你知道什么情况下不需要组件重新渲染时使用，可以提高组件的性能。
+
+6.下一步是执行 [`componentWillUpdate()`](https://facebook.github.io/react/docs/react-component.html#componentwillupdate)， [`render()`](https://facebook.github.io/react/docs/react-component.html#render) 和 [`componentDidUpdate`](https://facebook.github.io/react/docs/react-component.html#componentdidupdate)。
+
+7. 我们来详细看一下 **_render()_** 内部的执行：
+
+render 是虚拟 DOM 重新构建和 diff 执行的地方。
+在我们的例子中，所有在当前组件内部的元素在虚拟 DOM 中都会重新构建。
+
+![virtual dom updating](virtual-dom-updating.png)
+
+它会检查前一个和下一个渲染过的元素是同一类型和 key，随后对类型和 key 的匹配进行协调。
+
+```javascript
+var prevRenderedElement = this._renderedComponent._currentElement;
+var nextRenderedElement = this._instance.render();
+// Calculator.render() 方法被调用
+```
+
+> 这就是我们组件的 render 方法被调用的地方。即 `Calculator.render()`
+
+和解的过程通常是经历如下步骤：
+
+![reconciliation process](reconciliation-process.png)
+
+> 红色的虚线表示对于下一个子组件或子组件的后代都重复执行这些协调步骤
+
+上面的流程图就是通过虚拟 DOM 更新真实 DOM 的过程。
+
+所以在我们的例子中，协调的结果如下：
+
+![reconciliation result](reconciliation-result.png)
+
+我们将步骤分解来看一下：
+
+- 协调开始于组件的主 `<div class="container">` 节点。
+- 它的子节点中包含 **Output**，所以 react 会对子节点协调。
+- 现在子节点有了自己的子节点 `<hr>` 和 `<h2>`。
+- react 开始协调 `<hr>`
+- 下一步 react 协调 `<h2>`，由于它的子节点是 **Output**：来自 **state** 的文本内容，所以它会对两者进行协调。
+- 首次 **Output**：文本开始协调，由于没有变化，所以 DOM 不需要更新
+- 后来来自 **state** 的 **output** 得到了一个新值，react 开始协调并更新真实的 DOM。
+
+### 渲染真实 DOM
+
+在协调过程中，只有我们的 **Output** 部分如在页面上闪烁绘制的一样发生了变化。
+
+![paint flashing](paint-flashing.png)
+
+<center>只有output被重新绘制</center>
+
+在真实 DOM 中的更新：
+
+![actual dom update](actual-dom-update.png)
+
+## 总结
+
+尽管例子比较简单，希望它能够给到我们一个基本的对于 react 底层执行的理解。
+
+React 的协调过程：
+
+- 将前一个内部实例和下一个内部实例作比较
+- 更新实质是 JavaScript 对象的组件树结构的内部实例
+- 只有当前组件以及子代组件真正发生变化才会更新真实的 DOM
+
+## 参考
+
+<https://medium.com/@gethylgeorge/how-virtual-dom-and-diffing-works-in-react-6fc805f9f84e>
