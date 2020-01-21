@@ -49,6 +49,19 @@ interface TagProps {
 
 const Tag = (props: TagProps) => {
   const { style = { showBorder: true, showLabel: true }, tags = [] } = props;
+  (tags as any).sort((a: TagWrapper | string, b: TagWrapper | string) => {
+    let labelA = null;
+    let labelB = null;
+    if (typeof a === 'string' && typeof b === 'string') {
+      labelA = a;
+      labelB = b;
+    } else {
+      labelA = (a as TagWrapper).label;
+      labelB = (b as TagWrapper).label;
+    }
+
+    return labelA.toLowerCase() < labelB.toLowerCase() && -1;
+  });
   return (
     <StyledPre showBorder={style.showBorder} tagsLength={tags.length}>
       <StyledLabel showLabel={style.showLabel}>标签：</StyledLabel>
