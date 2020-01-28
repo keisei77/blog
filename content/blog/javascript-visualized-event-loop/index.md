@@ -2,7 +2,7 @@
 title: JavaScript 可视化之事件循环
 date: '2020-01-25 20:45'
 description: '事件循环以图形化的方式展示，方便理解'
-tags: ['Event Loop']
+tags: ['JavaScript Visualized', 'Event Loop']
 ---
 
 事件循环大概是每个 JavaScript 初学者都会感到困惑的概念。本文将通过可视化的方式来尽量对该概念作详细的解释。
