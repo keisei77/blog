@@ -39,7 +39,7 @@
 <p>当我们遇到变量通过 <code class="language-text">var</code> 关键字声明的代码时，它们简单的返回存储的默认值：<code class="language-text">undefined</code>。然而这通常不是我们所期望的。</p>
 <p><img src="/fe9d78d7bf9419e05ba98a52c9830878/var-hoisting.gif" alt="var hoisting"></p>
 <p>为了防止意外引用了 <code class="language-text">undefined</code> 变量，可以使用 <code class="language-text">const</code> 关键字，当我们访问 <em>未初始化</em> 的值时会抛出 <code class="language-text">ReferenceError</code> ，这被称为<strong>暂时性死区</strong>：不能在变量初始化之前使用。</p>
-<p><img src="tzd.gif" alt="temporal dead zone"></p>
+<p><img src="/03a7c75ddde72507b57c4aa5258c73e4/tdz.gif" alt="temporal dead zone"></p>
 <p>当引擎执行到我们真正声明变量的那行代码时，在内存中的值会被实际的值覆盖。</p>
 <p><img src="/2354299e4170f18beef4657eba909b61/overwritten.gif" alt="overwritten"></p>
 <p>快速回顾：</p>
