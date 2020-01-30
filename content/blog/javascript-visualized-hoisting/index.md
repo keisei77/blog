@@ -35,7 +35,7 @@ ES6 引入了两个定义变量的新关键字：`let` 和 `const`。变量通�
 
 为了防止意外引用了 `undefined` 变量，可以使用 `const` 关键字，当我们访问 _未初始化_ 的值时会抛出 `ReferenceError` ，这被称为**暂时性死区**：不能在变量初始化之前使用。
 
-![temporal dead zone](tzd.gif)
+![temporal dead zone](tdz.gif)
 
 当引擎执行到我们真正声明变量的那行代码时，在内存中的值会被实际的值覆盖。
 
