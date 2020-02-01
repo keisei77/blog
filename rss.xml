@@ -1,4 +1,238 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 30 Jan 2020 22:49:01 GMT</lastBuildDate><item><title><![CDATA[JavaScript 可视化之作用域链]]></title><link>https://www.keisei.top/javascript-visualized-scope/</link><guid isPermaLink="false">https://www.keisei.top/javascript-visualized-scope/</guid><pubDate>Thu, 30 Jan 2020 20:47:00 GMT</pubDate><content:encoded></content:encoded></item><item><title><![CDATA[JavaScript 可视化之变量提升]]></title><description><![CDATA[什么是变量提升？ 从概念的字面意义上说，“变量提升”意味着变量和函数的声明会在物理层面移动到代码的最前面，但这么说并不准确。实际上变量和函数声明在代码里的位置是不会动的，而是在编译阶段被放入内存中。(MDN) 提升的对象是定义的变量或函数（Declarations…]]></description><link>https://www.keisei.top/javascript-visualized-hoisting/</link><guid isPermaLink="false">https://www.keisei.top/javascript-visualized-hoisting/</guid><pubDate>Tue, 28 Jan 2020 10:27:00 GMT</pubDate><content:encoded>&lt;p&gt;什么是变量提升？&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 01 Feb 2020 07:05:28 GMT</lastBuildDate><item><title><![CDATA[JavaScript 可视化之作用域链]]></title><description><![CDATA[本文假设读者已了解执行上下文的基本概念。 我们首先来看以下代码： 我们调用  函数时，返回了一串包含 ,  和  变量的字符串：。但是  函数内并没有声明变量 `city，它是怎么得到的呢？ JavaScript…]]></description><link>https://www.keisei.top/javascript-visualized-scope/</link><guid isPermaLink="false">https://www.keisei.top/javascript-visualized-scope/</guid><pubDate>Sat, 01 Feb 2020 15:02:00 GMT</pubDate><content:encoded>&lt;p&gt;本文假设读者已了解执行上下文的基本概念。&lt;/p&gt;
+&lt;p&gt;我们首先来看以下代码：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; name &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;Lydia&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; age &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;21&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; city &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;San Francisco&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;getPersonInfo&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; name &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;Sarah&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; age &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;22&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;name&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt; is &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;age&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt; and lives in &lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;city&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getPersonInfo&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;我们调用 &lt;code class=&quot;language-text&quot;&gt;getPersonInfo&lt;/code&gt; 函数时，返回了一串包含 &lt;code class=&quot;language-text&quot;&gt;name&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;age&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;city&lt;/code&gt; 变量的字符串：&lt;code class=&quot;language-text&quot;&gt;Sarah is 22 and lives in San Francisco&lt;/code&gt;。但是 &lt;code class=&quot;language-text&quot;&gt;getPersonInfo&lt;/code&gt; 函数内并没有声明变量 `city，它是怎么得到的呢？&lt;/p&gt;
+&lt;p&gt;JavaScript 引擎为不同上下文设置了内存空间。我们有默认的&lt;strong&gt;全局上下文&lt;/strong&gt;（浏览器中为&lt;code class=&quot;language-text&quot;&gt;window&lt;/code&gt;，Node 中为&lt;code class=&quot;language-text&quot;&gt;global&lt;/code&gt;），调用 &lt;code class=&quot;language-text&quot;&gt;getPersonInfo&lt;/code&gt; 函数的&lt;strong&gt;本地上下文&lt;/strong&gt;。每个上下文都有一个作用域链。&lt;/p&gt;
+&lt;p&gt;对于 &lt;code class=&quot;language-text&quot;&gt;getPersonInfo&lt;/code&gt; 函数，作用域链看起来如下：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/5203582e886807af3efd51e6a77e96c3/50fa5/scope-chain.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 50.79545454545455%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAIAAAA7N+mxAAAACXBIWXMAAAsSAAALEgHS3X78AAABLElEQVQoz42Ri07DMAxF9w2D5t02Sds8ljZ9t2OTBv//VZhJHQwmwLIi+crHlm92+H9BKWdcMMYxJjdx9yeGEOKcnE/D62V9uyzOqCRBj2CECPqYTDBJAAIBY2i1lYyNsdY4U4SDusobDG2MMd/UzdCHto3joLWKwXWNH+LBFHocmja6eV5irOug72CgKWPSmVRJIWVaVdYV0arj1J+X4TjUzpbWpN5K72ShBUL4HuacK/W83ydPT0SItqtLlY3zOi/rae7TVJiq6GBt7cmnX9vNhFJYKGAsZFVmuQhlGn3Zeh2droOZJ/+ydsclBi8R+mEY8PAdkIRRKOGhBBGcgHl9F5wrQ4hFUX437Kvb19yqzW2txNT7aWzBUIAfbP4l4M48Y3lGZc7gz2/6O3fBRhm5VzQdAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;scope chain&quot;
+        title=&quot;scope chain&quot;
+        src=&quot;/static/5203582e886807af3efd51e6a77e96c3/799d3/scope-chain.png&quot;
+        srcset=&quot;/static/5203582e886807af3efd51e6a77e96c3/00d96/scope-chain.png 148w,
+/static/5203582e886807af3efd51e6a77e96c3/0b23c/scope-chain.png 295w,
+/static/5203582e886807af3efd51e6a77e96c3/799d3/scope-chain.png 590w,
+/static/5203582e886807af3efd51e6a77e96c3/50fa5/scope-chain.png 880w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;作用域链本质上来说是对对象的引用链，这些对象包含对该执行上下文中可引用的值（和其他作用域）的引用。作用域链在执行上下文创建时一同创建，就是说是在运行时创建的。&lt;/p&gt;
+&lt;p&gt;在本文中对活动对象（activation object）、执行上下文不做过多描述，只来聚焦于作用域。在下面的例子中，执行上下文中的键值对代表作用域链对变量的引用。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/8f8046c3c8f6c9b56e293ff404c6a560/50fa5/scope-reference.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 56.81818181818182%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAABeElEQVQoz6WR227kIAyG5xmaNhwSSIBwMAkQkp3ZqlKlvv9T1cx0dvd+yYdlm/w2whfS95wxIcSInxCcc8xQxghFKNr+bv+Ed0tJ+4FecC8RtrrHkrdadQh4wIdB6Uk3pDGTUnJWUmlkQotJMYkmpuPoIrjFyVkap/gkuRRsYL8hfp3hdk3X25ayW1cbYHkA0WKVnpALE+MSvHcoFrMW0iiGYs5qdEdytfha3FlDKR7APIhxmbVsYuyMYoCweO2Cma3Bctj5jP5ji5+/3McVbid4PPfGB+O9Rr02TzHe5Mxxz+HcAcCScUBxie59bdcuR07Zpx1ydlty6Ocd9KMzF8LZOQKoRSkrrZ2wMx94KZCTL0csdd2PtR5rTjYhKC7w0xmn5INeg8ES3k7oY4YyGjNse8wVUs3bvq1bsE41rHIOX180Mb74OE9CNaSe0Mch42y719eu616edBhhBnlrvBFynzOu/u9Cn9wPHtCn0yD/0EJyGf5jfQMR+VPrNgjn1AAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;scope chain reference&quot;
+        title=&quot;scope chain reference&quot;
+        src=&quot;/static/8f8046c3c8f6c9b56e293ff404c6a560/799d3/scope-reference.png&quot;
+        srcset=&quot;/static/8f8046c3c8f6c9b56e293ff404c6a560/00d96/scope-reference.png 148w,
+/static/8f8046c3c8f6c9b56e293ff404c6a560/0b23c/scope-reference.png 295w,
+/static/8f8046c3c8f6c9b56e293ff404c6a560/799d3/scope-reference.png 590w,
+/static/8f8046c3c8f6c9b56e293ff404c6a560/50fa5/scope-reference.png 880w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;全局执行上下文中的作用域链中有 3 个变量的引用：&lt;code class=&quot;language-text&quot;&gt;name: Lydia&lt;/code&gt;，&lt;code class=&quot;language-text&quot;&gt;age: 21&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;city: San Francisco&lt;/code&gt;。在本地上下文中，我们有两个变量的引用：&lt;code class=&quot;language-text&quot;&gt;name: Sarah&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;age: 22&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;当我们在 &lt;code class=&quot;language-text&quot;&gt;getPersonInfo&lt;/code&gt; 函数中访问这些变量时，引擎会首先去检查本地作用域链。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/e36484bd93fc66d04d92102d8ec603c8/local-scope-chain.gif&quot; alt=&quot;local scope chain&quot;&gt;&lt;/p&gt;
+&lt;p&gt;在本地作用域链中只找到了 &lt;code class=&quot;language-text&quot;&gt;name&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;age&lt;/code&gt;，那么 &lt;code class=&quot;language-text&quot;&gt;city&lt;/code&gt; 应该去哪获取呢？实际上 JavaScript 引擎如果在当前作用域找不到，会跳到上层作用域直至找到或者返回 &lt;code class=&quot;language-text&quot;&gt;ReferenceError&lt;/code&gt;，本例中在全局对象中找到了 &lt;code class=&quot;language-text&quot;&gt;city&lt;/code&gt; 变量。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/979cf578f16964dd453d3089610c71d1/global-scope.gif&quot; alt=&quot;global scope&quot;&gt;&lt;/p&gt;
+&lt;p&gt;在全局上下文中，我们声明了值为 &lt;code class=&quot;language-text&quot;&gt;San Francisco&lt;/code&gt; 的 &lt;code class=&quot;language-text&quot;&gt;city&lt;/code&gt; 变量，&lt;code class=&quot;language-text&quot;&gt;getPersonInfo&lt;/code&gt; 函数得以找到该变量。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;我们可以向外层作用域链但不能向内部去寻找。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/00db91f9265a1e17b41708f56f97a627/50fa5/down-scope.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 42.38636363636364%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAIAAAB2/0i6AAAACXBIWXMAAAsSAAALEgHS3X78AAABB0lEQVQY031R0W7CMAzsR9DGdpLGTtICAjoGaOP/v2xHyiZ4mXWxrORsny6dQwwD0Pf90Ar3FkTOCbsgBDA1+u9bh8MxeDOdZm+Zx/jXByq7Xmjw/GgD1hGYRWszMcdiKfrb90ctCTWJQAKoyy7fb0vNaWjbgL7dp8BlFCLqHEuuWiN9ng9TkmlW3IDJItv97njc3a+LgQrxrc00zts51yoiHfakajnyFnlkm8wxs7Bo2i+nw7KoasmmY1DIQmWWS4mmwbSDfFH1pqIjMtA8eohMOZ8ul/P9q8yTJgx5JD9G8oIFT8Oepq54CfjfbzY+Bvbex8jBQ+Yrp3P/BlwZ2ufROvr9H38AlDQzwZzcwEUAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;down scope&quot;
+        title=&quot;down scope&quot;
+        src=&quot;/static/00db91f9265a1e17b41708f56f97a627/799d3/down-scope.png&quot;
+        srcset=&quot;/static/00db91f9265a1e17b41708f56f97a627/00d96/down-scope.png 148w,
+/static/00db91f9265a1e17b41708f56f97a627/0b23c/down-scope.png 295w,
+/static/00db91f9265a1e17b41708f56f97a627/799d3/down-scope.png 590w,
+/static/00db91f9265a1e17b41708f56f97a627/50fa5/down-scope.png 880w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;或者更高层：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/cfad8ece43ed22e8141eaacdeba0dfe5/50fa5/deep-scope.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 58.86363636363636%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAIAAADtbgqsAAAACXBIWXMAAAsSAAALEgHS3X78AAABjElEQVQoz42S627bMAyF8xCxrpREXaxIcuzEaZvehmHv/1Sj6qRrsf2YcCDYAj9S4uGOcy6k5AAmhMM0CWMEAP/XYn+d7LgQkIL3ttSwXGr0xkVUznLGPhmSEF3s/nuDhVI2YtLDVPDtZQ6aBac04oYNAyMEtAB1k5IfGdknHLB6Eb1tNWcnkweNjlAteRsxeSvuxQTnSgqrhdHiDzxanqwcu8RWmTFmQT+d2vv1XEbPhoGiZSdlSZhCD+hv1sFjcP5DITjKpawZ9gMadV2Pz4/rsWZnNCl6TDGcl3aIG0w3Aa09KrwJPEqt6K0GMddybOU0lTzGFP1hjPRRW/Upcil29BowcG3leRmf1vz4UEtN2miuFAScHy7L5ZLySIZQWe+9Q7RUAJ0E6DCFvs71x3n+ec2/Xo/rqWhQrDeUKQAyP7VqnOuMtcoA1dw6vlXWy5yX83FZy7JO85To5G4z3+/3lIj6Supefx2S7dqnObcaphZbjbTrL7D4DnyfsO4AjQ8N6SZBO3nC/2P9BhV2Uv5JDQSWAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;deep scope&quot;
+        title=&quot;deep scope&quot;
+        src=&quot;/static/cfad8ece43ed22e8141eaacdeba0dfe5/799d3/deep-scope.png&quot;
+        srcset=&quot;/static/cfad8ece43ed22e8141eaacdeba0dfe5/00d96/deep-scope.png 148w,
+/static/cfad8ece43ed22e8141eaacdeba0dfe5/0b23c/deep-scope.png 295w,
+/static/cfad8ece43ed22e8141eaacdeba0dfe5/799d3/deep-scope.png 590w,
+/static/cfad8ece43ed22e8141eaacdeba0dfe5/50fa5/deep-scope.png 880w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;我们再来看下面的例子：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/b4312b87e35376b659bf744ce48d98b9/50fa5/mutated-demo.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 55.68181818181818%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAABWElEQVQoz42S63KDIBCF+wxNFFBAkKvgXWMvk399/3fqokk6+dFOzxzXGZxvjyy8IITyPM/O5+Qsy7MM/VsvQFJKrfeHldbHhzz1TE96/QYjjLmqTWiE0SYEqITRsiTRqMZJ6OZ9rbRQ6smyrnaY4EqrNgReMeMl45xwzmixteEy2WGMsbMWWjT64SYYY2v4o5QMsLWWgwTjoiLAlmQOfoluHe1lcsPgXaOdV4d9o7SRCcaEFBW/zSnPcUEALkryEduvOVzf2+vnME3OOsBqqNbVwD/B6JjKATMGe+6D7bwe5rYf3LjEfvBdb9vW9GNoooUp7HCxw5AMfJZBL8xA5fI2j3NYtm7ZxnmNyzasazNNflnjtPYQfksupSCQRSkpaZEGxjBGUgkhmazBXEp6VCHAaYXxch8YQrgoEnk3tIPb8vqnTqcTOuBjtz9+CMNR4L0mo7vT4q5vUSdOhY3SrFkAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;mutated demo&quot;
+        title=&quot;mutated demo&quot;
+        src=&quot;/static/b4312b87e35376b659bf744ce48d98b9/799d3/mutated-demo.png&quot;
+        srcset=&quot;/static/b4312b87e35376b659bf744ce48d98b9/00d96/mutated-demo.png 148w,
+/static/b4312b87e35376b659bf744ce48d98b9/0b23c/mutated-demo.png 295w,
+/static/b4312b87e35376b659bf744ce48d98b9/799d3/mutated-demo.png 590w,
+/static/b4312b87e35376b659bf744ce48d98b9/50fa5/mutated-demo.png 880w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;和一开始的例子类似，不过有个最大的不同点：我们只在 &lt;code class=&quot;language-text&quot;&gt;getPersonInfo&lt;/code&gt; 函数内部声明了 &lt;code class=&quot;language-text&quot;&gt;city&lt;/code&gt; 变量。我们没有调用 &lt;code class=&quot;language-text&quot;&gt;getPersonInfo&lt;/code&gt; 函数，所以没有本地上下文被创建。我们尝试在全局上下文中获取 &lt;code class=&quot;language-text&quot;&gt;name&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;age&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;city&lt;/code&gt; 变量。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/ffd47f0819df952bae3a7bb5035aa628/reference-error.gif&quot; alt=&quot;reference error&quot;&gt;&lt;/p&gt;
+&lt;p&gt;在全局作用域中找不到 &lt;code class=&quot;language-text&quot;&gt;city&lt;/code&gt; 变量，没有更外层的作用域来查找，抛出了 &lt;code class=&quot;language-text&quot;&gt;ReferenceError&lt;/code&gt;。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;除了全局和本地作用域，还有&lt;strong&gt;块级作用域&lt;/strong&gt;。通过 &lt;code class=&quot;language-text&quot;&gt;let&lt;/code&gt; 或 &lt;code class=&quot;language-text&quot;&gt;const&lt;/code&gt; 关键字声明的变量的作用域在距&lt;code class=&quot;language-text&quot;&gt;{}&lt;/code&gt;最近的内部。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; age &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;21&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;checkAge&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;age &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;21&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; message &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;You cannot drink!&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; message&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; message &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;You can drink!&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; message&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/7c3b8c6148a2aec718dc5403896ed5b3/50fa5/block-scope.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 56.36363636363636%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAABAElEQVQoz4WRi26DIBSG+xCbKK0oyB2Pgrfazu39H2vULI3Lpv3zcUKAj5PACT2TpukZU1ooyaRiXPJK0CdcUFIW8RDa5LR1Ec4Mp3Ojp6A86NpxZ3+I84KSBKFDWZQD2NDqe6/G3rrVt44DcFaR92RfTnGmZDEHWK7d5w1CMG2rQtCtV+Ogq2MZZZkx5eTNzZt56fqxblsRgvReDoN6LVtLvwZYgpt67b32IXZWsXovXstalz3oAcz1o/O9q2sOjaxBNI1gL2VwVRe0sZVd3+lRV6COcnEoY1yQc8VytoU+iIsXctn9qpgM4yRN3xD6l3h17PBLJpvkeR4H2cufrW9HX1AnjViEFAAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;block scope&quot;
+        title=&quot;block scope&quot;
+        src=&quot;/static/7c3b8c6148a2aec718dc5403896ed5b3/799d3/block-scope.png&quot;
+        srcset=&quot;/static/7c3b8c6148a2aec718dc5403896ed5b3/00d96/block-scope.png 148w,
+/static/7c3b8c6148a2aec718dc5403896ed5b3/0b23c/block-scope.png 295w,
+/static/7c3b8c6148a2aec718dc5403896ed5b3/799d3/block-scope.png 590w,
+/static/7c3b8c6148a2aec718dc5403896ed5b3/50fa5/block-scope.png 880w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;我们创建了一个全局作用域，函数作用域和两个块级作用域。我们能够声明两次 &lt;code class=&quot;language-text&quot;&gt;message&lt;/code&gt;，因为该变量的作用域是在大括号内的。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;快速回顾：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;作用域链实际是对我们在当前上下文中访问的值的链式的引用。&lt;/li&gt;
+&lt;li&gt;得益于作用域链向上查找的规则，我们可以使用上层作用域已声明过的变量。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;参考&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://dev.to/lydiahallie/javascript-visualized-scope-chain-13pd&quot;&gt;https://dev.to/lydiahallie/javascript-visualized-scope-chain-13pd&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[JavaScript 可视化之变量提升]]></title><description><![CDATA[什么是变量提升？ 从概念的字面意义上说，“变量提升”意味着变量和函数的声明会在物理层面移动到代码的最前面，但这么说并不准确。实际上变量和函数声明在代码里的位置是不会动的，而是在编译阶段被放入内存中。(MDN) 提升的对象是定义的变量或函数（Declarations…]]></description><link>https://www.keisei.top/javascript-visualized-hoisting/</link><guid isPermaLink="false">https://www.keisei.top/javascript-visualized-hoisting/</guid><pubDate>Tue, 28 Jan 2020 10:27:00 GMT</pubDate><content:encoded>&lt;p&gt;什么是变量提升？&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;从概念的字面意义上说，“变量提升”意味着变量和函数的声明会在物理层面移动到代码的最前面，但这么说并不准确。实际上变量和函数声明在代码里的位置是不会动的，而是在编译阶段被放入内存中。(&lt;a href=&quot;https://developer.mozilla.org/zh-CN/docs/Glossary/Hoisting&quot;&gt;MDN&lt;/a&gt;)&lt;/p&gt;
 &lt;/blockquote&gt;
