@@ -18,5 +18,22 @@ a {
 
   #gatsby-focus-wrapper {
     height: 100%;
+
+    blockquote {
+      background-color: #eeeeee;
+      padding: 0 1rem;
+      margin: 0;
+      display: inline-block;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        background: #595959;
+        width: 4px;
+        left: 0;
+        height: 100%;
+      }
+    }
   }
 }
