@@ -4,3 +4,7 @@ date: '2020-02-05 18:08'
 description: '迭代器和迭代函数以图形化的方式展示，方便理解'
 tags: ['JavaScript Visualized', 'Generator', 'Iterator']
 ---
+
+### 参考
+
+<https://dev.to/lydiahallie/javascript-visualized-generators-and-iterators-e36>
