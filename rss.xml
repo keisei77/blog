@@ -1,4 +1,74 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 07 Feb 2020 12:47:26 GMT</lastBuildDate><item><title><![CDATA[JavaScript 可视化之迭代器和迭代函数]]></title><description><![CDATA[参考 https://dev.to/lydiahallie/javascript-visualized-generators-and-iterators-e36]]></description><link>https://www.keisei.top/javascript-visualized-generator-function/</link><guid isPermaLink="false">https://www.keisei.top/javascript-visualized-generator-function/</guid><pubDate>Wed, 05 Feb 2020 18:08:00 GMT</pubDate><content:encoded>&lt;h3&gt;参考&lt;/h3&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 08 Feb 2020 02:29:12 GMT</lastBuildDate><item><title><![CDATA[JavaScript 可视化之迭代器和迭代函数]]></title><description><![CDATA[generator 函数不同于通常的函数，运行就结束。我们可以任意暂停函数的执行，并在合适时机输出。 通过在  关键字后面添加  创建 generator 函数。 generator 函数与普通函数实际上工作方式完全不同： 调用 generator…]]></description><link>https://www.keisei.top/javascript-visualized-generator-function/</link><guid isPermaLink="false">https://www.keisei.top/javascript-visualized-generator-function/</guid><pubDate>Wed, 05 Feb 2020 18:08:00 GMT</pubDate><content:encoded>&lt;p&gt;generator 函数不同于通常的函数，运行就结束。我们可以任意暂停函数的执行，并在合适时机输出。&lt;/p&gt;
+&lt;p&gt;通过在 &lt;code class=&quot;language-text&quot;&gt;function&lt;/code&gt; 关键字后面添加 &lt;code class=&quot;language-text&quot;&gt;*&lt;/code&gt; 创建 generator 函数。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// function *generatorFunction() {} 这样也是可以的&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;generatorFunction&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;generator 函数与普通函数实际上工作方式完全不同：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;调用 generator 函数返回&lt;strong&gt;生成器对象&lt;/strong&gt;，实际上是一个迭代器&lt;/li&gt;
+&lt;li&gt;我们可以使用 &lt;code class=&quot;language-text&quot;&gt;yield&lt;/code&gt; 关键字来“暂停”执行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/1177388af025abcd4fd2cd7c5ce49089/generator-return-value.gif&quot; alt=&quot;generator return value&quot;&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;genFunc&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;:sparkles:&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;First log!&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;:two_hearts:&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;Second log!&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;Done!&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;当遇到 &lt;code class=&quot;language-text&quot;&gt;yield&lt;/code&gt; 关键字时，generator 函数的执行会暂停。下次我们再运行该函数时，它会记住上次暂停的位置，并从该位置开始执行：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;第一次执行，它在第一行暂停，并 &lt;em&gt;产出&lt;/em&gt; 字符串:sparkles:&lt;/li&gt;
+&lt;li&gt;第二次执行，从上一个 &lt;code class=&quot;language-text&quot;&gt;yield&lt;/code&gt; 关键字的行开始，直到遇到第二个 &lt;code class=&quot;language-text&quot;&gt;yield&lt;/code&gt; 关键字并 &lt;em&gt;产出&lt;/em&gt; :two_hearts:&lt;/li&gt;
+&lt;li&gt;第三次执行，从上一个 &lt;code class=&quot;language-text&quot;&gt;yield&lt;/code&gt; 关键字的行开始，直到遇到 &lt;code class=&quot;language-text&quot;&gt;return&lt;/code&gt; 关键字，并 &lt;em&gt;返回&lt;/em&gt; &lt;code class=&quot;language-text&quot;&gt;Done!&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;当调用 generator 函数返回了生成器对象，我们下次该如何调用呢？生成器对象在原型链上拥有一个 &lt;code class=&quot;language-text&quot;&gt;next&lt;/code&gt; 方法，这个方法是用来迭代生成器对象的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/4065f02ab5025440562a201eb9746d8b/set-variable-to-generator-object.gif&quot; alt=&quot;set variable to generator object&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/580c5d114dac318beb7b5f478a358dc4/call-next.gif&quot; alt=&quot;call next&quot;&gt;&lt;/p&gt;
+&lt;p&gt;调用 &lt;code class=&quot;language-text&quot;&gt;next&lt;/code&gt; 方法返回值为一个对象，包含 &lt;code class=&quot;language-text&quot;&gt;value&lt;/code&gt; 属性和 &lt;code class=&quot;language-text&quot;&gt;done&lt;/code&gt; 属性，&lt;code class=&quot;language-text&quot;&gt;value&lt;/code&gt; 的值就产出的值，&lt;code class=&quot;language-text&quot;&gt;done&lt;/code&gt; 是一个布尔值，只有遇到 &lt;em&gt;return&lt;/em&gt; 时才会置为 &lt;code class=&quot;language-text&quot;&gt;true&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/45a46b8c570a3280f6f8403015ceb9dd/invoke.gif&quot; alt=&quot;invoke all next&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/ef914d69af50f342e1ee3cce50cbb2a8/invoke-after-done.gif&quot; alt=&quot;invoke after done&quot;&gt;&lt;/p&gt;
+&lt;p&gt;当 &lt;code class=&quot;language-text&quot;&gt;done&lt;/code&gt; 为 &lt;code class=&quot;language-text&quot;&gt;true&lt;/code&gt; 时，再次调用 next()，返回的 &lt;code class=&quot;language-text&quot;&gt;value&lt;/code&gt; 会永远为 &lt;code class=&quot;language-text&quot;&gt;undefined&lt;/code&gt;。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;那什么是迭代器呢？它可以在 &lt;code class=&quot;language-text&quot;&gt;for ... of&lt;/code&gt; 循环和扩展运算符中使用。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/65b9e5b7297b53f9902558d82017b99c/spread-operator.gif&quot; alt=&quot;spread operator&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/d8af13fef372e0a5511d913bddb6906b/for-of-loop.gif&quot; alt=&quot;for of loop&quot;&gt;&lt;/p&gt;
+&lt;p&gt;为什么迭代器如 array，string，map 和 set 可以迭代呢？实际上它们都实现了 &lt;em&gt;迭代器协议&lt;/em&gt; ：&lt;code class=&quot;language-text&quot;&gt;[Symbol.iterator]&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/f6b34ef4b42b6cf56085ee7fde6b3c7d/50fa5/iterator-code.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 84.43181818181817%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAAAsSAAALEgHS3X78AAAC7UlEQVQ4y62Ty27TQBSGB6dpGyc0QkgISqvY47l4bMfx3YmTNOLaghAIBAhY8Qaw4iF4DV6ALcqGBRKqBOIloCxAQiwBV4djt0IFRGGBpU/Hkyif/98zIQSv7vEucR1G7uZTci1Pyc1Nj2wUfXLl6jly+3pOJrOQPNq6RzanQ3LtzpjcuHWBpFlA4sQjWT4gXl+QU6snSH2trp0k/+ti3CDk4YP79UII87GU9AXyTNrmXEhzLm06txWdV2tHsbm9v7aVVX+PPEOeI09WV0+0D8qXJTfeTF0PElfAMKKQhhLCyINgwMDFzwp3AMrlMIg5+AMblMMAxeC4DLgwPh871l0/KGxzbrzMlA0Dxb7EvlnGPi0dl5f+gJdhKMoBzjiR9X0YiRKTlpjsK7aohO9Wuh3jV+F2rlQlLCPfhMSn4HkCvD6DKBKAIkhTG1MLiGOJ6WiVcLdKicL33e7R3k9CgcKRciB0WDmODQg8E9y+A36CNYd71fLchiSROBVKRVX9ECGrhAoyibUUg2FoQh7QemYBEnJM59bvDTepBiv/WciEsT12XTgvvTK1BUxHAmaFDbOxDRs4x5huY+oDvke4OPGg71WbcYhQ2HRb+QKo7JUWPp1yWmOJPSg3Ac9ZlQqEsHBSEPYhQs5622PbgUIqTCihiClMEgqjqJpWPYsENyTp4/u06k35a+XCc+GsdMsEKxd5VduGCXJm6sBsomCEtUcjF4ZDBUEg/lJZ0peqj5VF75uFT7b4Hkzs3zMD6e0y3ttFQQ0mLPfP4c5vQvynvN5wPMjx7M0yCuPYqqueySzcZQpRFkA6G0E8ySCZ5vWMihTSUQxKWR/bHf2ng60bxumnnPY+Mbr+VvD1Hcb24IhlIdzYYdKs5wHeIR9Mc+2V3m6tHRQ2kQC5jGwhl/6Rrf3fDKtQP2yNxQWy1Gwe6SwsafpiU+vqDa2zvIA0tJVWQ9OXGlqrrWv6ylGt1Wn/YLmN6K3GYrOpLS41a9d3t71D+on6Rp8AAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;iterator code&quot;
+        title=&quot;iterator code&quot;
+        src=&quot;/static/f6b34ef4b42b6cf56085ee7fde6b3c7d/799d3/iterator-code.png&quot;
+        srcset=&quot;/static/f6b34ef4b42b6cf56085ee7fde6b3c7d/00d96/iterator-code.png 148w,
+/static/f6b34ef4b42b6cf56085ee7fde6b3c7d/0b23c/iterator-code.png 295w,
+/static/f6b34ef4b42b6cf56085ee7fde6b3c7d/799d3/iterator-code.png 590w,
+/static/f6b34ef4b42b6cf56085ee7fde6b3c7d/50fa5/iterator-code.png 880w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/b6cdf7f555289198eea3ace785453216/symbol-iterator.gif&quot; alt=&quot;symbol iterator&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/ea60169eb55a3b1f98e666686f12ad16/pass-value-to-next.gif&quot; alt=&quot;pass value to next&quot;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;生成器一个最大的优势是它们可以&lt;strong&gt;惰性求值&lt;/strong&gt;。这意味着每次调用 &lt;code class=&quot;language-text&quot;&gt;next&lt;/code&gt; 方法才返回值，只在我们需要是才会计算。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/24a2874bfb25cfa43e733bf10705972c/lazy-evaluated.gif&quot; alt=&quot;lazy evaluated&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;参考&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&quot;https://dev.to/lydiahallie/javascript-visualized-generators-and-iterators-e36&quot;&gt;https://dev.to/lydiahallie/javascript-visualized-generators-and-iterators-e36&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[JavaScript 可视化之原型继承]]></title><description><![CDATA[当我们对字符串，数组或对象使用内置的方法或属性如 ，， 等时，这是通过 原型继承（prototypal inheritance…]]></description><link>https://www.keisei.top/javascript-visualized-prototypal-inheritance/</link><guid isPermaLink="false">https://www.keisei.top/javascript-visualized-prototypal-inheritance/</guid><pubDate>Tue, 04 Feb 2020 17:24:00 GMT</pubDate><content:encoded>&lt;p&gt;当我们对字符串，数组或对象使用内置的方法或属性如 &lt;code class=&quot;language-text&quot;&gt;.length&lt;/code&gt;，&lt;code class=&quot;language-text&quot;&gt;.split()&lt;/code&gt;，&lt;code class=&quot;language-text&quot;&gt;.join()&lt;/code&gt; 等时，这是通过 &lt;em&gt;原型继承（prototypal inheritance）&lt;/em&gt; 的方式使得我们可以直接调用。&lt;/p&gt;
 &lt;p&gt;我们经常创建相同类型的多个对象。比方说我们有一个展示宠物狗的网站。对于每个宠物狗，我们需要对应的对象来表示。我们可以通过使用 &lt;code class=&quot;language-text&quot;&gt;new&lt;/code&gt; 关键字调用构造函数来创建 Dog&lt;strong&gt;实例&lt;/strong&gt;。每个 Dog 都有一个 name，breed，color 和 bark 方法。&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;Dog&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;name&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; breed&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
