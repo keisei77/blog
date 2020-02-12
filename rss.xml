@@ -1,4 +1,151 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 11 Feb 2020 14:04:43 GMT</lastBuildDate><item><title><![CDATA[React SSR 初体验]]></title><description><![CDATA[当前已经有很多的文章或会议中谈到了服务端渲染这种技术。而且社区中也出现了许多一站式的React框架，但是真正想要了解服务端渲染还是需要自己动手实现一下比较好。不过首先我们需要了解什么是服务端渲染和客户端渲染。 参考 https://itnext.io/server-side…]]></description><link>https://www.keisei.top/react-ssr/</link><guid isPermaLink="false">https://www.keisei.top/react-ssr/</guid><pubDate>Sun, 09 Feb 2020 20:10:00 GMT</pubDate><content:encoded>&lt;p&gt;当前已经有很多的文章或会议中谈到了服务端渲染这种技术。而且社区中也出现了许多一站式的React框架，但是真正想要了解服务端渲染还是需要自己动手实现一下比较好。不过首先我们需要了解什么是服务端渲染和客户端渲染。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 12 Feb 2020 14:59:11 GMT</lastBuildDate><item><title><![CDATA[React SSR 初体验]]></title><description><![CDATA[当前已经有很多的文章或会议中谈到了服务端渲染这种技术。而且社区中也出现了许多一站式的 React 框架，但是真正想要了解服务端渲染还是需要自己动手实现一下比较好。不过首先我们需要了解什么是服务端渲染和客户端渲染。 JavaScript 革命 浏览器比 5-1…]]></description><link>https://www.keisei.top/react-ssr/</link><guid isPermaLink="false">https://www.keisei.top/react-ssr/</guid><pubDate>Sun, 09 Feb 2020 20:10:00 GMT</pubDate><content:encoded>&lt;p&gt;当前已经有很多的文章或会议中谈到了服务端渲染这种技术。而且社区中也出现了许多一站式的 React 框架，但是真正想要了解服务端渲染还是需要自己动手实现一下比较好。不过首先我们需要了解什么是服务端渲染和客户端渲染。&lt;/p&gt;
+&lt;h3&gt;JavaScript 革命&lt;/h3&gt;
+&lt;p&gt;浏览器比 5-10 年之前更加先进，我们如今通过客户端 JavaScript 来创建整个网站和 web 应用。我们称之为 &lt;strong&gt;“单页面应用（Single Page Application）”&lt;/strong&gt;。这可以使我们创建更加互动性的最新的 web 应用。&lt;/p&gt;
+&lt;p&gt;但这种方式存在一个问题，我们初始化的 HTML 不再含有与该 URL 相关的所有数据/内容。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;html&quot;&gt;&lt;pre class=&quot;language-html&quot;&gt;&lt;code class=&quot;language-html&quot;&gt;&lt;span class=&quot;token doctype&quot;&gt;&amp;lt;!DOCTYPE html&gt;&lt;/span&gt;
+&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;html&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;head&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+    &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;title&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;My SPA APP Title&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;title&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;head&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;body&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+    &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;root&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;div&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+    &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;script&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;text/javascript&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;/bundle.js&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token script&quot;&gt;&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;script&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;body&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;html&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;什么是客户端渲染？（CSR）&lt;/h3&gt;
+&lt;p&gt;在浏览器中渲染应用，通常使用 DOM。&lt;/p&gt;
+&lt;p&gt;服务器渲染的初始化 HTML 只是一个占位符，整个用户界面和数据都在浏览器的所有脚本加载完成之后渲染。&lt;/p&gt;
+&lt;h4&gt;客户端渲染是如何工作的？&lt;/h4&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/582713f0d3e3646517ce9b7b81d2448e/01d6c/csr-work.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 54.63239689181112%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAACFUlEQVQoz3WRy28SQRzH92/x6M1Uo6YakppoEy+eevPgyRg9efF1VC9eWh8xxgMx9VFrBGt5SMUiWGgLyOPQAC2PhZ267G6BXZZ9wczsOMvWtJo4h1++M/l+fvP7zjDkv8seF6itXmnOn9jynq69nTSj54zolPXtrBXzGInzjGOwbZZlWxw3HA6pRggdbqF8ubx098jTG0fDD48ZIU97+WLt63U2eq27Ms24ltm5x/du3+K4VrFYBAD8ATEtSEgr/gvKwgQMnok8m/G/uu9tdV5XQPXjpX048SMV+fTOMg1RkkzT/Gd4W/tlZh5YvlPxJ9Mr3pup2Mt45DlYGsM9DW01esQQD6IepjGmwRwll8zYVX1xwvKdtAIePTjlwCOIRdBA3bpjRfJf/BiT5Z4kCVJHoRsEolp4Rl08PvBPMvuD6R3UbVBVX8tZGnRfkdaBpuXyhc1s/nsildzYLFXZXl8n2MQggfgk47bPs+znQh6IosJxapcPGqRsYgLVPa4cCb5PxT6kk8sbQd966A3g6B12tV/HNnZhUm/zoZ/p3HaZ9Otw0A6PyA60icoN+IpUmS/H7vD5R9nAi9TqXE9pr+1GdjpFyjHueALP5zKZ0WhEdV8d7LaakiBgmxiGsV3KsdVCrZRdWI/OxgNAFBCBCKMDuK+qbLPpHkEIZVnWdd35ZxsjbCOaABOMqXIMnIp5cW9omb8BBrM+KdRPmToAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;csr work&quot;
+        title=&quot;csr work&quot;
+        src=&quot;/static/582713f0d3e3646517ce9b7b81d2448e/799d3/csr-work.png&quot;
+        srcset=&quot;/static/582713f0d3e3646517ce9b7b81d2448e/00d96/csr-work.png 148w,
+/static/582713f0d3e3646517ce9b7b81d2448e/0b23c/csr-work.png 295w,
+/static/582713f0d3e3646517ce9b7b81d2448e/799d3/csr-work.png 590w,
+/static/582713f0d3e3646517ce9b7b81d2448e/2a3d6/csr-work.png 885w,
+/static/582713f0d3e3646517ce9b7b81d2448e/ae92f/csr-work.png 1180w,
+/static/582713f0d3e3646517ce9b7b81d2448e/01d6c/csr-work.png 3346w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;center&gt;常见的客户端渲染模式&lt;/center&gt;
+&lt;p&gt;&lt;strong&gt;优势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;丰富的页面交互&lt;/li&gt;
+&lt;li&gt;初次加载后的快速渲染&lt;/li&gt;
+&lt;li&gt;分块实时更新&lt;/li&gt;
+&lt;li&gt;更有性价比的部署和扩展&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;劣势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SEO 和索引问题&lt;/li&gt;
+&lt;li&gt;bundle.js 加载时间问题&lt;/li&gt;
+&lt;li&gt;旧的设备/慢的网络会有性能问题&lt;/li&gt;
+&lt;li&gt;社交媒体爬虫和分享问题（SMO）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;什么是服务端渲染？（SSR）&lt;/h3&gt;
+&lt;p&gt;页面加载时服务端返回渲染过的一个页面的整个 HTML。&lt;/p&gt;
+&lt;p&gt;对于我们使用的 React 或其他任何 JavaScript 库/框架，服务端渲染是一种在服务器端渲染一个正常的客户端的单页面应用的技术，并返回一个完整的渲染过的页面到浏览器。&lt;/p&gt;
+&lt;h4&gt;服务端渲染是如何工作的？&lt;/h4&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/e30650c36ac88b6af3b705e5f566f2d1/ef11a/ssr-work.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 54.74626865671641%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAACLElEQVQoz3WSz2sTQRTH8zd47aFUxR8prS0FT0Wl+ANp0IsgilUKKqggFg8Wf/Qilh48FE8WCh4UMYFKFVsL1jQmKmnSNknNpj+Smu7u7G6223HX3U3S3Z3sOJM9RA8Ow5s3X+bD9/He+PD/luvSUK1K/b1LPS1fz+xnLvlLNzsyt7t/DJ5cfXhKHOz0kRcAACbL6LpBcoTQ3zB2bO7c6bHmXUP+pplje6S+ttG7N4afjj5/8kgYOEThqanp61evRebCWYZJJBLlcrnO1txajSSVWJTr7mLbm4WeVi7Q9mzo/p3HwyMDl6VbdXhl7eeHideKxBuGqWmq63nW3T1/BHj44B7XsY/t2j15PjB+sXe67yjob/chF6fWFFuTGqXS083DrG5pXgmevpNMyFcuCAeatg63SCf8/NlW6gxLfFVYJknNskyYo7XApaQU9qxp8KqgLXDMd29B4DjfuRccOUhh17EseZ0kYk4v5vJQhRubHAtEVdWJSFoAikWB5yzLJldOgfFwlAuGjGiEwgVRCM7PL+TXDZmtyMWVbDL26dX3j6HCagbbpqOX3ivVlFbGVa1W3s4szH37ElyMzwKZp/AvQ48xy+F0CpkyNkRFzLHpN58jL1OFRfwbODAfquA0cdU5tL0h82khMzEz+yJbTFNYU1WwyUJF8brlINdxsGGjioP++TX1TTRW4+NC3EaYwpZlSaWSWR8vbsypgXgSbyBhC5JphtlJdYc6/QEEFSmC56mgFQAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;ssr work&quot;
+        title=&quot;ssr work&quot;
+        src=&quot;/static/e30650c36ac88b6af3b705e5f566f2d1/799d3/ssr-work.png&quot;
+        srcset=&quot;/static/e30650c36ac88b6af3b705e5f566f2d1/00d96/ssr-work.png 148w,
+/static/e30650c36ac88b6af3b705e5f566f2d1/0b23c/ssr-work.png 295w,
+/static/e30650c36ac88b6af3b705e5f566f2d1/799d3/ssr-work.png 590w,
+/static/e30650c36ac88b6af3b705e5f566f2d1/2a3d6/ssr-work.png 885w,
+/static/e30650c36ac88b6af3b705e5f566f2d1/ae92f/ssr-work.png 1180w,
+/static/e30650c36ac88b6af3b705e5f566f2d1/ef11a/ssr-work.png 3350w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;center&gt;常见的服务端渲染模式&lt;/center&gt;
+&lt;p&gt;&lt;strong&gt;优势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SEO 一致性&lt;/li&gt;
+&lt;li&gt;性能更优，初始化页面加载更快&lt;/li&gt;
+&lt;li&gt;社交媒体爬虫和平台配合良好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;劣势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;频繁的请求&lt;/li&gt;
+&lt;li&gt;很慢的页面渲染（TTFB — 获取第一个字节的时间）&lt;/li&gt;
+&lt;li&gt;复杂的架构（为了统一的方式）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;谷歌是如何索引的？&lt;/h3&gt;
+&lt;p&gt;我们之前提到了单页面应用存在 SEO 的问题。理解谷歌索引系统是如何通过服务端渲染解决此问题很重要，谷歌有两种索引的方式：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/ddbd4e7ef2456bbc08128066fa5c81bf/690a9/google-indexing.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 56.074014481094125%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAACoUlEQVQozyWS2VNSARTG7//T9GZjlpOmoKghoo4bCoq2Wj74YJk5ZdPUQw+NNZM4iYQWuCFXuAhBwqgXuEi4xKIsKpdFL5sg4NJluaGeOQ/ffHN+D2e+D+h0QOxteceOpmMbZm5qGWvaelhrDEcJgshks7nNCfVhkA5rmesIy6xnWZfbraoc0uWAgJxq/aMoGf5AHv1SJRTWQspqjakX2cEzF1huEnj6sc5WrdIXffxEGuVUCXh0qbDdrGaZFQBzXdNkWK4QiSjCOdrCb7rCUK+ykCXmedfRFczfDpEklrpfW2VCebkAvAfKauSLDONqm0kNtOi1T4zrA2bHwzU7VWWuVthokJ0idjZI0dh5xhdP0UB3JeisW3SwVlxM2N6hs7KRrSZY34zAQOPK2jPEOmTafa7f7VK72pX7lfN7VXOem3zv5N/kV1O8gO+tmPW0yNC3iP+Fzj1k3H9pdNaqTTkQoKs2+xDXK8Tdr/W+1h0yIB9Z6KMIsMLxUDcU7wSP7/BCpJ9YI3gwuBrohw8GdN5+vbt1yUpXbQC0RVsfjL43YG+0gT5NkA0FqVOhovHI9c8x0IZPbODXhmPFvEjNTKhLFuxWYmyFr0fjfaDeo8qsAHXBlXuvWeJvEGMMcZgNxorGjsnjyWlL5uQfnkimvpvSpdxk3ki0mBe+O4mVCvykaZQi2qVKXED5DFo25Sv9gZXwQ3mcaP5I/N3SOXZCEPGIVmZctQcIIoVGiUHl+W1O4ta3KHkyXC4IVEz7yTMo0CAKFnCDhWNH+Zx4j/TMgmUI4iLhU5czBc9KPRP7Uc9lZFmjN3NffHZj5LiQe3STG2hbCAI7odRTKPEIPFU60unM5VWWuOwVgUcMeMyUvXCyV5XB04TEluoUnfbKE2gs/R+XmNIBUpT2DAAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;google indexing&quot;
+        title=&quot;google indexing&quot;
+        src=&quot;/static/ddbd4e7ef2456bbc08128066fa5c81bf/799d3/google-indexing.png&quot;
+        srcset=&quot;/static/ddbd4e7ef2456bbc08128066fa5c81bf/00d96/google-indexing.png 148w,
+/static/ddbd4e7ef2456bbc08128066fa5c81bf/0b23c/google-indexing.png 295w,
+/static/ddbd4e7ef2456bbc08128066fa5c81bf/799d3/google-indexing.png 590w,
+/static/ddbd4e7ef2456bbc08128066fa5c81bf/2a3d6/google-indexing.png 885w,
+/static/ddbd4e7ef2456bbc08128066fa5c81bf/ae92f/google-indexing.png 1180w,
+/static/ddbd4e7ef2456bbc08128066fa5c81bf/690a9/google-indexing.png 2486w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
 &lt;h3&gt;参考&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&quot;https://itnext.io/server-side-rendering-with-react-redux-and-react-router-fa5b67d4965e?_branch_match_id=755024804793509077&amp;#x26;gi=cd56fb5a4621&quot;&gt;https://itnext.io/server-side-rendering-with-react-redux-and-react-router-fa5b67d4965e?_branch_match_id=755024804793509077&amp;#x26;gi=cd56fb5a4621&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[JavaScript 可视化之迭代器和迭代函数]]></title><description><![CDATA[generator 函数不同于通常的函数，运行就结束。我们可以任意暂停函数的执行，并在合适时机输出。 通过在  关键字后面添加  创建 generator 函数。 generator 函数与普通函数实际上工作方式完全不同： 调用 generator…]]></description><link>https://www.keisei.top/javascript-visualized-generator-function/</link><guid isPermaLink="false">https://www.keisei.top/javascript-visualized-generator-function/</guid><pubDate>Wed, 05 Feb 2020 18:08:00 GMT</pubDate><content:encoded>&lt;p&gt;generator 函数不同于通常的函数，运行就结束。我们可以任意暂停函数的执行，并在合适时机输出。&lt;/p&gt;
 &lt;p&gt;通过在 &lt;code class=&quot;language-text&quot;&gt;function&lt;/code&gt; 关键字后面添加 &lt;code class=&quot;language-text&quot;&gt;*&lt;/code&gt; 创建 generator 函数。&lt;/p&gt;
