@@ -82,6 +82,29 @@ tags: ['React', 'SSR']
 
 ![google indexing](google-indexing.png)
 
+### 如何实现 SSR？
+
+让我们来看一下 React 如何实现服务端渲染。
+
+#### 方法
+
+- 服务端初始化渲染
+- 展示全内容 HTML
+- JS 执行
+- React 接管/重渲染
+
+#### 挑战
+
+- Node.js 中使用 JSX
+- 服务端使用 Redux
+- 路由
+- 补水
+
+> **补水**
+> 在客户端启动 JavaScript 来复用服务端渲染的 HTML 的 DOM 树和数据。
+
+![react rehydration](react-rehydration.png)
+
 ### 参考
 
 <https://itnext.io/server-side-rendering-with-react-redux-and-react-router-fa5b67d4965e?_branch_match_id=755024804793509077&gi=cd56fb5a4621>
