@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 12 Feb 2020 14:59:11 GMT</lastBuildDate><item><title><![CDATA[React SSR 初体验]]></title><description><![CDATA[当前已经有很多的文章或会议中谈到了服务端渲染这种技术。而且社区中也出现了许多一站式的 React 框架，但是真正想要了解服务端渲染还是需要自己动手实现一下比较好。不过首先我们需要了解什么是服务端渲染和客户端渲染。 JavaScript 革命 浏览器比 5-1…]]></description><link>https://www.keisei.top/react-ssr/</link><guid isPermaLink="false">https://www.keisei.top/react-ssr/</guid><pubDate>Sun, 09 Feb 2020 20:10:00 GMT</pubDate><content:encoded>&lt;p&gt;当前已经有很多的文章或会议中谈到了服务端渲染这种技术。而且社区中也出现了许多一站式的 React 框架，但是真正想要了解服务端渲染还是需要自己动手实现一下比较好。不过首先我们需要了解什么是服务端渲染和客户端渲染。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 13 Feb 2020 02:24:38 GMT</lastBuildDate><item><title><![CDATA[React SSR 初体验]]></title><description><![CDATA[当前已经有很多的文章或会议中谈到了服务端渲染这种技术。而且社区中也出现了许多一站式的 React 框架，但是真正想要了解服务端渲染还是需要自己动手实现一下比较好。不过首先我们需要了解什么是服务端渲染和客户端渲染。 JavaScript 革命 浏览器比 5-1…]]></description><link>https://www.keisei.top/react-ssr/</link><guid isPermaLink="false">https://www.keisei.top/react-ssr/</guid><pubDate>Sun, 09 Feb 2020 20:10:00 GMT</pubDate><content:encoded>&lt;p&gt;当前已经有很多的文章或会议中谈到了服务端渲染这种技术。而且社区中也出现了许多一站式的 React 框架，但是真正想要了解服务端渲染还是需要自己动手实现一下比较好。不过首先我们需要了解什么是服务端渲染和客户端渲染。&lt;/p&gt;
 &lt;h3&gt;JavaScript 革命&lt;/h3&gt;
 &lt;p&gt;浏览器比 5-10 年之前更加先进，我们如今通过客户端 JavaScript 来创建整个网站和 web 应用。我们称之为 &lt;strong&gt;“单页面应用（Single Page Application）”&lt;/strong&gt;。这可以使我们创建更加互动性的最新的 web 应用。&lt;/p&gt;
 &lt;p&gt;但这种方式存在一个问题，我们初始化的 HTML 不再含有与该 URL 相关的所有数据/内容。&lt;/p&gt;
@@ -140,6 +140,58 @@
 /static/ddbd4e7ef2456bbc08128066fa5c81bf/2a3d6/google-indexing.png 885w,
 /static/ddbd4e7ef2456bbc08128066fa5c81bf/ae92f/google-indexing.png 1180w,
 /static/ddbd4e7ef2456bbc08128066fa5c81bf/690a9/google-indexing.png 2486w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h3&gt;如何实现 SSR？&lt;/h3&gt;
+&lt;p&gt;让我们来看一下 React 如何实现服务端渲染。&lt;/p&gt;
+&lt;h4&gt;方法&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;服务端初始化渲染&lt;/li&gt;
+&lt;li&gt;展示全内容 HTML&lt;/li&gt;
+&lt;li&gt;JS 执行&lt;/li&gt;
+&lt;li&gt;React 接管/重渲染&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;挑战&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Node.js 中使用 JSX&lt;/li&gt;
+&lt;li&gt;服务端使用 Redux&lt;/li&gt;
+&lt;li&gt;路由&lt;/li&gt;
+&lt;li&gt;补水&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;补水&lt;/strong&gt;
+在客户端启动 JavaScript 来复用服务端渲染的 HTML 的 DOM 树和数据。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/11eb8e76dccb3e54fb2c633f98fbb424/7b49a/react-rehydration.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 33.73349339735894%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAIAAACHqfpvAAAACXBIWXMAAAsSAAALEgHS3X78AAABRUlEQVQY001QWU7DMBTMITkFN+AAHIFvfjgBEqgflC5URUUUlYpIUBqcpHHdNEsTp46deAkvpUgdjS15mXnzntX8w5h255W+uPbPr5wkr+GotTmFVBoubx6js8uv7iyzXC9IyVuKbiPnjpEuLxPbpVOnPNi10Fr9UyqlwBBHfPSR5UxaYFbmfpm8s9iWpRe6GL0unBcbTebhp8uY0H+RTgDl0wIiGCuO47YIGEqWkcl20VnbffS9oSQq4oLtUB70cvxE16MsGIr4eTlzO6PhFC1AZTHGjj1LSnF/Twb7ZB5RdTBsJAtS/2HrdtNVbxcMqnS8nHn34+EcO60Ylqh4UVImOJeGVdCb0SXXQqiCaiYaAT90A+Pj2gjTGAUhTaWO4nyf4XC1ifBqg8IYm/ZZA2tCKt8TLmqJfoSzrMnagHldm3ZyzS+6/4aRUXq/rQAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;react rehydration&quot;
+        title=&quot;react rehydration&quot;
+        src=&quot;/static/11eb8e76dccb3e54fb2c633f98fbb424/799d3/react-rehydration.png&quot;
+        srcset=&quot;/static/11eb8e76dccb3e54fb2c633f98fbb424/00d96/react-rehydration.png 148w,
+/static/11eb8e76dccb3e54fb2c633f98fbb424/0b23c/react-rehydration.png 295w,
+/static/11eb8e76dccb3e54fb2c633f98fbb424/799d3/react-rehydration.png 590w,
+/static/11eb8e76dccb3e54fb2c633f98fbb424/2a3d6/react-rehydration.png 885w,
+/static/11eb8e76dccb3e54fb2c633f98fbb424/ae92f/react-rehydration.png 1180w,
+/static/11eb8e76dccb3e54fb2c633f98fbb424/7b49a/react-rehydration.png 1666w&quot;
         sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
         style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
         loading=&quot;lazy&quot;
