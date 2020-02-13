@@ -105,6 +105,34 @@ tags: ['React', 'SSR']
 
 ![react rehydration](react-rehydration.png)
 
+### 总结
+
+服务端渲染并不是魔法，需要根据商业逻辑来决定要不要采用。
+
+#### 什么时候使用单页面应用？
+
+- 网站丰富的交互
+- 网络很快
+- 最小服务端资源
+- 主代码量比较小或采用懒加载
+- 实时/分部更新
+
+#### 什么时候使用服务端渲染？
+
+- SEO 很重要
+- 网络比较慢
+- 足够的服务器资源
+- 主代码庞大，加载慢
+- 社交分享比较重要
+
+### 更多
+
+[Rendering on the Web | Web | Google Developers](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
+
+[A Netflix Web Performance Case Study](https://medium.com/dev-channel/a-netflix-web-performance-case-study-c0bcde26a9d9)
+
+[awesome universal rendering](https://github.com/brillout/awesome-universal-rendering)
+
 ### 参考
 
 <https://itnext.io/server-side-rendering-with-react-redux-and-react-router-fa5b67d4965e?_branch_match_id=755024804793509077&gi=cd56fb5a4621>
