@@ -115,7 +115,7 @@ methods<span class="token punctuation">.</span><span class="token function">forE
   route<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>handler<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
-<p>尽管上面的函数有两个参数，它实际和 <code class="language-text">app[method] = function(path){...}</code> 定义是相似的。第二个参数 <code class="language-text">handler</code> 是在 <code class="language-text">slice.call(argumentsundefined 1)</code> 中获取的。</p>
+<p>尽管上面的函数有两个参数，它实际和 <code class="language-text">app[method] = function(path){...}</code> 定义是相似的。第二个参数 <code class="language-text">handler</code> 是在 slice.call(arguments, 1) 中获取的。</p>
 <blockquote>
 <p>长话短说，<code class="language-text">app.&lt;method&gt;</code> 只是在应用 router 中使用 <code class="language-text">route</code> 方法保存 route，然后传递 <code class="language-text">handler</code> 到 <code class="language-text">route.&lt;method&gt;</code></p>
 </blockquote>
@@ -186,7 +186,7 @@ proto<span class="token punctuation">.</span><span class="token function-variabl
   <span class="token keyword">var</span> server <span class="token operator">=</span> http<span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token keyword">return</span> server<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>server<span class="token punctuation">,</span> arguments<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
-<p>看起来 <code class="language-text">app.listen</code> 只是包装了一下 <code class="language-text">http.createServer</code>。这是说的通的，回想一下<a href="#create-new-express-app">第一章</a>，<code class="language-text">app</code> 实际上是 <code class="language-text">function(requndefined resundefined next){...}</code> 签名的函数，与 <code class="language-text">http.createServer</code> 所需要的函数签名 <code class="language-text">function(requndefined res) {...}</code> 是兼容的。</p>
+<p>看起来 <code class="language-text">app.listen</code> 只是包装了一下 <code class="language-text">http.createServer</code>。这是说的通的，回想一下<a href="#create-new-express-app">第一章</a>，<code class="language-text">app</code> 实际上是 function(req, res, next){…} 签名的函数，与 <code class="language-text">http.createServer</code> 所需要的函数签名 function(req, res) {…} 是兼容的。</p>
 <p>当意识到这些时你会发现这样非常简洁，express.js 所提供的所有能力可以总结为是一个非常高明的处理函数。</p>
 <h3><a name="handle-http-request"></a>处理 HTTP 请求</h3>
 <p>现在我们知道 <code class="language-text">app</code> 实际是一个普通的请求处理对象，我们下面通过定位一个 HTTP 请求来最终定位到内部 handler 的位置。</p>
