@@ -117,7 +117,7 @@ app.get = function(path, handler) {
 };
 ```
 
-尽管上面的函数有两个参数，它实际和 `app[method] = function(path){...}` 定义是相似的。第二个参数 `handler` 是在 `slice.call(arguments, 1)` 中获取的。
+尽管上面的函数有两个参数，它实际和 `app[method] = function(path){...}` 定义是相似的。第二个参数 `handler` 是在 slice.call(arguments, 1) 中获取的。
 
 > 长话短说，`app.<method>` 只是在应用 router 中使用 `route` 方法保存 route，然后传递 `handler` 到 `route.<method>`
 
@@ -212,7 +212,7 @@ app.listen = function listen() {
 };
 ```
 
-看起来 `app.listen` 只是包装了一下 `http.createServer`。这是说的通的，回想一下[第一章](#create-new-express-app)，`app` 实际上是 `function(req, res, next){...}` 签名的函数，与 `http.createServer` 所需要的函数签名 `function(req, res) {...}` 是兼容的。
+看起来 `app.listen` 只是包装了一下 `http.createServer`。这是说的通的，回想一下[第一章](#create-new-express-app)，`app` 实际上是 function(req, res, next){...} 签名的函数，与 `http.createServer` 所需要的函数签名 function(req, res) {...} 是兼容的。
 
 当意识到这些时你会发现这样非常简洁，express.js 所提供的所有能力可以总结为是一个非常高明的处理函数。
 
