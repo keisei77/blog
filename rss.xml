@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 21 Feb 2020 14:18:15 GMT</lastBuildDate><item><title><![CDATA[Koa 对比 Express]]></title><description><![CDATA[从理念上来说，Koa 意图“修复并取代 node”，而 Express 做的是“增强 node”。Koa 使用 promise 和 async 函数来摆脱回调地狱并简化异常处理逻辑。它暴露了自身的  和  对象而取代了 node 的  和  对象。 Express…]]></description><link>https://www.keisei.top/koa-vs-express/</link><guid isPermaLink="false">https://www.keisei.top/koa-vs-express/</guid><pubDate>Thu, 20 Feb 2020 20:31:00 GMT</pubDate><content:encoded>&lt;p&gt;从理念上来说，Koa 意图“修复并取代 node”，而 Express 做的是“增强 node”。Koa 使用 promise 和 async 函数来摆脱回调地狱并简化异常处理逻辑。它暴露了自身的 &lt;code class=&quot;language-text&quot;&gt;ctx.request&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;ctx.response&lt;/code&gt; 对象而取代了 node 的 &lt;code class=&quot;language-text&quot;&gt;req&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;res&lt;/code&gt; 对象。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 22 Feb 2020 14:01:36 GMT</lastBuildDate><item><title><![CDATA[Koa 对比 Express]]></title><description><![CDATA[从理念上来说，Koa 意图“修复并取代 node”，而 Express 做的是“增强 node”。Koa 使用 promise 和 async 函数来摆脱回调地狱并简化异常处理逻辑。它暴露了自身的  和  对象而取代了 node 的  和  对象。 Express…]]></description><link>https://www.keisei.top/koa-vs-express/</link><guid isPermaLink="false">https://www.keisei.top/koa-vs-express/</guid><pubDate>Thu, 20 Feb 2020 20:31:00 GMT</pubDate><content:encoded>&lt;p&gt;从理念上来说，Koa 意图“修复并取代 node”，而 Express 做的是“增强 node”。Koa 使用 promise 和 async 函数来摆脱回调地狱并简化异常处理逻辑。它暴露了自身的 &lt;code class=&quot;language-text&quot;&gt;ctx.request&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;ctx.response&lt;/code&gt; 对象而取代了 node 的 &lt;code class=&quot;language-text&quot;&gt;req&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;res&lt;/code&gt; 对象。&lt;/p&gt;
 &lt;p&gt;Express 从另一方面，通过增加额外的属性和方法增强了 node 的 &lt;code class=&quot;language-text&quot;&gt;req&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;res&lt;/code&gt; 对象，并引入了许多框架上的功能，例如路由和模板，而 Koa 没有这么做。&lt;/p&gt;
 &lt;p&gt;Koa 可以被看作是 node.js 的 &lt;code class=&quot;language-text&quot;&gt;http&lt;/code&gt; 模块的抽象，Express 是 node.js 的应用框架。&lt;/p&gt;
 &lt;table&gt;
@@ -3397,6 +3397,21 @@ console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cl
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;为了使 JavaScript 能够运行原生应用，必须仍然使用底层原生代码。从上图中，我们可以看到每个 RN 控件都会与对应的原生控件进行交互。RN 通过 bridge 来完成这两种方式的通信。所以原生代码实际上在它自己的线程操作，即如果 RN 的 JavaScript 代码执行了很长时间，并不会使 UI 卡住或者变慢。通过 bridge 传递事件来执行回调。&lt;/p&gt;
+&lt;h3&gt;构建流程架构&lt;/h3&gt;
+&lt;p&gt;在构建 react native 应用时，react native 做了下面两件事情：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;它在本地运行一个 node web 服务器，来发布一个持有所有我们 RN JavaScript 代码的 payload 文件&lt;/li&gt;
+&lt;li&gt;然后它会构建一个原生的应用程序并部署到设备上。该程序中配置了拥有 JavaScript 运行环境，并下载之前生成好的 payload&lt;/li&gt;
+&lt;li&gt;这个 payload 文件随后直接被传递到 JavaScript 运行环境，这样就拥有了原生容器和支撑运行整个应用程序的 JavaScript 代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;调试架构&lt;/h3&gt;
+&lt;p&gt;对于调试 react native 应用程序的过程，我们需要做以下事情：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;设置源码的地址&lt;/li&gt;
+&lt;li&gt;开启浏览器使调试器可以输出调试信息&lt;/li&gt;
+&lt;li&gt;或者可以执行通过控制台打印日志来理解构建过程或调试程序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;React Native 开启了快速开发原型应用的篇章。许多基础的功能可以很轻松的实现。如果需要，它们可以通过原生代码和视图进行扩展，并且也可以与其他视图控制器进行集成。由于 RN 使用了 javascript，开发者可以更快更高效的工作，并且不需要每次更新代码后重启，可以直接刷新视图。&lt;/p&gt;
 &lt;h3&gt;参考&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&quot;http://jyaasa.com/blog/getting-started-with-react-native-core-architecture-of-react-native&quot;&gt;http://jyaasa.com/blog/getting-started-with-react-native-core-architecture-of-react-native&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[区分CSS 分辨率和设备分辨率]]></title><description><![CDATA[前言 作为 Web 开发人员，我们在工作中可能会接触移动端 Web…]]></description><link>https://www.keisei.top/css-resolution-vs-device-resolution/</link><guid isPermaLink="false">https://www.keisei.top/css-resolution-vs-device-resolution/</guid><pubDate>Sat, 14 Dec 2019 21:33:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;作为 Web 开发人员，我们在工作中可能会接触移动端 Web 应用的开发。近年来移动端设备都是高分屏/视网膜屏，而且我们有各种尺寸的屏幕需要兼容：手机，平板，桌面端。在我们面前需要理解并运用的就是分辨率这个关键问题。
