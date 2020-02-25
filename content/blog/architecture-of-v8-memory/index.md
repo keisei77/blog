@@ -27,6 +27,10 @@ tags: ['V8', 'Garbage Collection']
 
 这些空间中的每一个都由一组 pages 组成。Page 是使用 mmap 从操作系统分配的连续内存块。除较大的对象空间外，每个页面的大小均为 1MB。
 
+### 栈内存
+
+每个 V8 进程会有对应的栈。这里是静态数据，包含方法/函数帧，基本数据，指向对象的指针存放的地方。栈内存的大小限制可以通过 `--stack_size` 标志控制。
+
 ### 参考
 
 <https://deepu.tech/memory-management-in-v8/>
