@@ -1,4 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 24 Feb 2020 15:08:11 GMT</lastBuildDate><item><title><![CDATA[可视化了解 V8 内存管理]]></title><description><![CDATA[参考 https://deepu.tech/memory-management-in-v8/]]></description><link>https://www.keisei.top/architecture-of-v8-memory/</link><guid isPermaLink="false">https://www.keisei.top/architecture-of-v8-memory/</guid><pubDate>Mon, 24 Feb 2020 23:03:00 GMT</pubDate><content:encoded>&lt;h3&gt;参考&lt;/h3&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 25 Feb 2020 15:59:16 GMT</lastBuildDate><item><title><![CDATA[可视化了解 V8 内存管理]]></title><description><![CDATA[本文我们来看一下用于ECMAScript和WebAssembly的V8 引擎的内存管理。V8 引擎现在被 NodeJS，Deno 等运行时，Electron，还有 Chrome，Chromium，Brave，Opera 和 Microsoft Edge…]]></description><link>https://www.keisei.top/architecture-of-v8-memory/</link><guid isPermaLink="false">https://www.keisei.top/architecture-of-v8-memory/</guid><pubDate>Mon, 24 Feb 2020 23:03:00 GMT</pubDate><content:encoded>&lt;p&gt;本文我们来看一下用于&lt;a href=&quot;https://tc39.es/ecma262/&quot;&gt;ECMAScript&lt;/a&gt;和&lt;a href=&quot;https://webassembly.github.io/spec/core/&quot;&gt;WebAssembly&lt;/a&gt;的&lt;a href=&quot;https://v8.dev/&quot;&gt;V8 引擎&lt;/a&gt;的内存管理。V8 引擎现在被 NodeJS，Deno 等运行时，Electron，还有 Chrome，Chromium，Brave，Opera 和 Microsoft Edge 等浏览器采用。由于 JavaScript 是一门解释型语言，需要引擎来解释并执行。V8 引擎解释 JavaScript 代码并将代码编译成原生的机器码。V8 引擎是通过 C++编写的，可以嵌套在任意的 C++程序中。&lt;/p&gt;
+&lt;h3&gt;V8 内存架构&lt;/h3&gt;
+&lt;p&gt;由于 JavaScript 是单线程的，V8 会在每个 JavaScript 上下文中使用一个单独的进程，如果使用了 service worker，它会根据每个 worker 产生一个新的 V8 进程。每个运行中的应用程序总是被 V8 进程分配一些内存，被称为&lt;strong&gt;常驻集（Resident Set）&lt;/strong&gt;。然后被进一步分为一下不同的片段：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/51d594675e95270d44f2ba31e0459f30/b7c40/memory-structure-of-V8.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 56.25%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAACZ0lEQVQoz2O4cvP2teXrTs9ZeWbuyrPzVp2btwrIgKDLS9YdXLB177xN++Zt2j9v8745W3fP3rJ7zpads7acXbrl6o1bDHevXV9V2RVY1BZT3R1d2p6R3RxR0Rld1R1a3LIkta+spDFnbmTerNjCicm+/rPkgqYrh06X8Jo2J2fO/etXGO5du7Gkrt+lpjekY6p/fV9kQatP04SQzqme9V0LsiaV1dUXbAgvWh1bND/B0X+mcPgMhYTZfAEzZuTPv3/jKsPNmzcPFHXNDW9clt69LK17VXrPstTOpcld84Obt6RNLIxckxG5vCx9bXn6qprsXaUZOwoSN8cFbVpatuIu0OZr12/ebey4ll12s6jmZmH1jcLq29Ud97rbbjUl3ulIPdWce6Ip/3xn5anWmfODYhaGxi2JSp3sErgnv/Q20M9Xb9x+UlX5MCn+cV7u47ych8kJT4srXs8qfTFJ/eU007ezrV9P0Xoz1ezZxI7pxgozzJXmO+hO0BLenRBy+9Y9hivXbj5u63hYXv6ophaIHlZUPG5qez6t5enEqKeT4p5OTnw6Meb5lNQHfd3z7I0Xedsu9XOaYaO7JyXm1s27DNev3fi6dMG3JfOhCMJeNO/78qXf16z6vnrlt6WLvy9Z/GH21PU+lhuDHbbHei131jtXknbn9l2Gw9futS0+3rLoWCsCHQeRi493rTjdteIUkAERbF5wpGn+oaZ5B5vmH25dePTQ1XsMu688CJt+Lmja2WBUFDjlTMLcC0AEZEBEQqadC5kOQsHTzoVOP7fz0n2GCw8eX3yIHZ2//+j8g0e4ZIEaAWRwlfz83vVPAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;memory structure of V8&quot;
+        title=&quot;memory structure of V8&quot;
+        src=&quot;/static/51d594675e95270d44f2ba31e0459f30/799d3/memory-structure-of-V8.png&quot;
+        srcset=&quot;/static/51d594675e95270d44f2ba31e0459f30/00d96/memory-structure-of-V8.png 148w,
+/static/51d594675e95270d44f2ba31e0459f30/0b23c/memory-structure-of-V8.png 295w,
+/static/51d594675e95270d44f2ba31e0459f30/799d3/memory-structure-of-V8.png 590w,
+/static/51d594675e95270d44f2ba31e0459f30/2a3d6/memory-structure-of-V8.png 885w,
+/static/51d594675e95270d44f2ba31e0459f30/b7c40/memory-structure-of-V8.png 960w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h3&gt;堆内存&lt;/h3&gt;
+&lt;p&gt;这是 V8 存储对象或动态数据的地方。这是内存区域最大的块，这也是&lt;strong&gt;垃圾回收（Garbage Collection）&lt;/strong&gt;发生的地方。并不是整个堆内存都会被回收，只有新生代和老生代会被垃圾回收管理。堆会进一步分为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;新生代（New Space）&lt;/strong&gt; 新生代或“&lt;strong&gt;年轻代（Young generation）&lt;/strong&gt;”是新对象存储的地方，这些新对象通常都是短暂存活的。这块内存非常小，有两个 semi-space。这块内存被“清道夫（&lt;strong&gt;Scavenger(Minor GC)&lt;/strong&gt;）”管理。新生代可以通过 &lt;code class=&quot;language-text&quot;&gt;--min_semi_space_size(初始化)&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;--max_semi_space_size(最大)&lt;/code&gt; 标志来控制大小。&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;老生代（Old Space）&lt;/strong&gt; 老生代或“&lt;strong&gt;老年代（Old generation）&lt;/strong&gt;”是那些在新生代中在两次次要 GC 中存活下来的对象。这块内存是被“&lt;strong&gt;主 GC（Major GC: Mark-Sweep &amp;#x26; Mark-Compact）&lt;/strong&gt;”管理。老生代可以通过 &lt;code class=&quot;language-text&quot;&gt;--initial_old_space_size(初始化)&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;--max_old_space_size(最大)&lt;/code&gt; 标志来控制大小。这块内存又被分为两份：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;旧指针空间（Old pointer space）&lt;/strong&gt;：包含具有指向其他对象的幸存对象&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;旧数据空间（Old data space）&lt;/strong&gt;：包含保存数据的对象（没有指向其他的对象）。字符串，包装过的数字等保存新生代中在两次次要 GC 中存活下来的对象。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;大对象空间（Large object space）&lt;/strong&gt;：这是超过其他内存限制的更大的对象存活的地方。大对象不会被垃圾回收。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;代码空间（Code-space）&lt;/strong&gt;：这是即时（&lt;strong&gt;Just In Time: JIT&lt;/strong&gt;）编译器存储编译过的代码的地方。这是唯一可执行的内存空间（尽管代码可能被分配在“大对象空间”，这些也是可执行的）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;细胞空间，属性细胞空间，map 空间（Cell space, property cell space, and map space）&lt;/strong&gt;：这些空间分别包含：&lt;code class=&quot;language-text&quot;&gt;Cells&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;PropertyCells&lt;/code&gt;, 和 &lt;code class=&quot;language-text&quot;&gt;Maps&lt;/code&gt;。这些空间中的每个空间都包含相同大小的对象，并且对它们指向的对象有一些限制，从而简化了回收。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些空间中的每一个都由一组 pages 组成。Page 是使用 mmap 从操作系统分配的连续内存块。除较大的对象空间外，每个页面的大小均为 1MB。&lt;/p&gt;
+&lt;h3&gt;参考&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&quot;https://deepu.tech/memory-management-in-v8/&quot;&gt;https://deepu.tech/memory-management-in-v8/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[初识小程序架构]]></title><description><![CDATA[笔者之前接手过一些小程序的项目，不过当时时间紧任务重，基本上就是边看文档边撸代码，并没有真正好好的理解小程序的设计。今天准备花些时间来了解一下，小程序背后的故事。 前世今生 小程序这个概念应该是微信最早提出并推广应用的。当时发布之后我也尝试做过类似 Instagram…]]></description><link>https://www.keisei.top/architecture-of-miniprogram/</link><guid isPermaLink="false">https://www.keisei.top/architecture-of-miniprogram/</guid><pubDate>Sun, 23 Feb 2020 20:52:00 GMT</pubDate><content:encoded>&lt;p&gt;笔者之前接手过一些小程序的项目，不过当时时间紧任务重，基本上就是边看文档边撸代码，并没有真正好好的理解小程序的设计。今天准备花些时间来了解一下，小程序背后的故事。&lt;/p&gt;
 &lt;h3&gt;前世今生&lt;/h3&gt;
 &lt;p&gt;小程序这个概念应该是微信最早提出并推广应用的。当时发布之后我也尝试做过类似 Instagram 这样的支持上传，浏览图片的小程序，无奈当时刚发布时小程序的框架还有很多不完善的地方，比如像素单位在 Android 和 iOS 上不统一，开发工具体验差等，因此而弃坑。现在回过头来看小程序的发展已然非常成熟，各家大厂纷纷跟进，百花齐放。&lt;/p&gt;
