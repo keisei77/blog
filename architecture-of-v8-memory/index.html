@@ -72,6 +72,8 @@
 <li><strong>细胞空间，属性细胞空间，map 空间（Cell space, property cell space, and map space）</strong>：这些空间分别包含：<code class="language-text">Cells</code>, <code class="language-text">PropertyCells</code>, 和 <code class="language-text">Maps</code>。这些空间中的每个空间都包含相同大小的对象，并且对它们指向的对象有一些限制，从而简化了回收。</li>
 </ul>
 <p>这些空间中的每一个都由一组 pages 组成。Page 是使用 mmap 从操作系统分配的连续内存块。除较大的对象空间外，每个页面的大小均为 1MB。</p>
+<h3>栈内存</h3>
+<p>每个 V8 进程会有对应的栈。这里是静态数据，包含方法/函数帧，基本数据，指向对象的指针存放的地方。栈内存的大小限制可以通过 <code class="language-text">--stack_size</code> 标志控制。</p>
 <h3>参考</h3>
 <p><a href="https://deepu.tech/memory-management-in-v8/">https://deepu.tech/memory-management-in-v8/</a></p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/V8">V8</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Garbage Collection">Garbage Collection</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/architecture-of-miniprogram/">初识小程序架构<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   
