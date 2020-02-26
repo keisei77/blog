@@ -56,7 +56,7 @@
       />
   </a>
     </span></p>
-<h3>堆内存</h3>
+<h4>堆内存</h4>
 <p>这是 V8 存储对象或动态数据的地方。这是内存区域最大的块，这也是<strong>垃圾回收（Garbage Collection）</strong>发生的地方。并不是整个堆内存都会被回收，只有新生代和老生代会被垃圾回收管理。堆会进一步分为：</p>
 <ul>
 <li><strong>新生代（New Space）</strong> 新生代或“<strong>年轻代（Young generation）</strong>”是新对象存储的地方，这些新对象通常都是短暂存活的。这块内存非常小，有两个 semi-space。这块内存被“清道夫（<strong>Scavenger(Minor GC)</strong>）”管理。新生代可以通过 <code class="language-text">--min_semi_space_size(初始化)</code> 和 <code class="language-text">--max_semi_space_size(最大)</code> 标志来控制大小。</li>
@@ -72,8 +72,51 @@
 <li><strong>细胞空间，属性细胞空间，map 空间（Cell space, property cell space, and map space）</strong>：这些空间分别包含：<code class="language-text">Cells</code>, <code class="language-text">PropertyCells</code>, 和 <code class="language-text">Maps</code>。这些空间中的每个空间都包含相同大小的对象，并且对它们指向的对象有一些限制，从而简化了回收。</li>
 </ul>
 <p>这些空间中的每一个都由一组 pages 组成。Page 是使用 mmap 从操作系统分配的连续内存块。除较大的对象空间外，每个页面的大小均为 1MB。</p>
-<h3>栈内存</h3>
+<h4>栈内存</h4>
 <p>每个 V8 进程会有对应的栈。这里是静态数据，包含方法/函数帧，基本数据，指向对象的指针存放的地方。栈内存的大小限制可以通过 <code class="language-text">--stack_size</code> 标志控制。</p>
+<h3>V8 内存使用（栈 vs 堆）</h3>
+<p>现在我们已经清楚内存是如何管理的，我们来看一下当应用运行时内存是如何使用的。</p>
+<p>我们来看下面这段代码，注意代码并未优化，主要来关注栈和堆的内存使用。</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> salary<span class="token punctuation">,</span> sales</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>salary <span class="token operator">=</span> salary<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>sales <span class="token operator">=</span> sales<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token constant">BONUS_PERCENTAGE</span> <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">getBonusPercentage</span><span class="token punctuation">(</span><span class="token parameter">salary</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> percentage <span class="token operator">=</span> <span class="token punctuation">(</span>salary <span class="token operator">*</span> <span class="token constant">BONUS_PERCENTAGE</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> percentage<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">findEmployeeBonus</span><span class="token punctuation">(</span><span class="token parameter">salary<span class="token punctuation">,</span> noOfSales</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> bonusPercentage <span class="token operator">=</span> <span class="token function">getBonusPercentage</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> bonus <span class="token operator">=</span> bonusPercentage <span class="token operator">*</span> noOfSales<span class="token punctuation">;</span>
+  <span class="token keyword">return</span> bonus<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> john <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Employee</span><span class="token punctuation">(</span><span class="token string">'John'</span><span class="token punctuation">,</span> <span class="token number">5000</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+john<span class="token punctuation">.</span>bonus <span class="token operator">=</span> <span class="token function">findEmployeeBonus</span><span class="token punctuation">(</span>john<span class="token punctuation">.</span>salary<span class="token punctuation">,</span> john<span class="token punctuation">.</span>sales<span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>john<span class="token punctuation">.</span>bonus<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
+<div class="gatsby-resp-iframe-wrapper" style="padding-bottom: 66.66666666666666%; position: relative; height: 0; overflow: hidden; margin-bottom: 1.0725rem" > <iframe src="https://speakerdeck.com/deepu105/v8-memory-usage-stack-and-heap" style=" position: absolute; top: 0; left: 0; width: 100%; height: 100%; "></iframe> </div>
+<p>相关 slide 可以<a href="https://speakerdeck.com/deepu105/v8-memory-usage-stack-and-heap" target="_blank">点击新窗口打开</a></p>
+<p>可以看到：</p>
+<ul>
+<li>全局作用域是存在于栈的“全局帧”中</li>
+<li>每个函数调用都作为帧块被加入栈内存</li>
+<li>所有的局部变量包括参数和返回值都在栈的函数帧块中</li>
+<li>所有的原始数据如 <code class="language-text">int</code> 和 <code class="language-text">string</code> 都被直接存入栈中。这也适用全局作用域</li>
+<li>所有的对象类型如 <code class="language-text">Employee</code> 和 <code class="language-text">Function</code> 都在堆中被创建，从栈中使用栈指针引用它们。在 JavaScript 中函数本质上是对象，这也适用全局作用域</li>
+<li>从当前函数调用的函数被加入栈顶</li>
+<li>当函数返回时，它的帧在栈中被移除</li>
+<li>一旦主流程完成，堆中的内存没有栈中任何的指针指向会成为孤儿对象</li>
+<li>除非做了复制，其他对象内的所有对象引用都使用引用指针</li>
+</ul>
+<p>栈就像看到的一样是操作系统而不是 V8 本身管理并结束的，因此我们不需要太关注栈。相反，堆内存不是操作系统自动管理的，由于它有最大的内存空间并存储动态数据，可能随着时间增长呈指数增长以至程序执行用光内存。这就是垃圾回收需要的原因。</p>
+<p>对于垃圾回收区分堆中的指针和数据是非常重要的，V8 使用“<strong>标记指针（Tagged pointer）</strong>”的方式来回收，它在每个字母后面预留了一比特来标记是指针还是数据。这个方式需要有限的编译器支持，但实现起来很简单，而且效率很高。</p>
 <h3>参考</h3>
 <p><a href="https://deepu.tech/memory-management-in-v8/">https://deepu.tech/memory-management-in-v8/</a></p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/V8">V8</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Garbage Collection">Garbage Collection</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/architecture-of-miniprogram/">初识小程序架构<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   
