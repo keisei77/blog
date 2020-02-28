@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 27 Feb 2020 13:38:29 GMT</lastBuildDate><item><title><![CDATA[了解 V8 内存管理]]></title><description><![CDATA[本文我们来看一下用于ECMAScript和WebAssembly的V8 引擎的内存管理。V8 引擎现在被 NodeJS，Deno 等运行时，Electron，还有 Chrome，Chromium，Brave，Opera 和 Microsoft Edge…]]></description><link>https://www.keisei.top/architecture-of-v8-memory/</link><guid isPermaLink="false">https://www.keisei.top/architecture-of-v8-memory/</guid><pubDate>Mon, 24 Feb 2020 23:03:00 GMT</pubDate><content:encoded>&lt;p&gt;本文我们来看一下用于&lt;a href=&quot;https://tc39.es/ecma262/&quot;&gt;ECMAScript&lt;/a&gt;和&lt;a href=&quot;https://webassembly.github.io/spec/core/&quot;&gt;WebAssembly&lt;/a&gt;的&lt;a href=&quot;https://v8.dev/&quot;&gt;V8 引擎&lt;/a&gt;的内存管理。V8 引擎现在被 NodeJS，Deno 等运行时，Electron，还有 Chrome，Chromium，Brave，Opera 和 Microsoft Edge 等浏览器采用。由于 JavaScript 是一门解释型语言，需要引擎来解释并执行。V8 引擎解释 JavaScript 代码并将代码编译成原生的机器码。V8 引擎是通过 C++编写的，可以嵌套在任意的 C++程序中。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 28 Feb 2020 13:41:47 GMT</lastBuildDate><item><title><![CDATA[了解 V8 内存管理]]></title><description><![CDATA[本文我们来看一下用于ECMAScript和WebAssembly的V8 引擎的内存管理。V8 引擎现在被 NodeJS，Deno 等运行时，Electron，还有 Chrome，Chromium，Brave，Opera 和 Microsoft Edge…]]></description><link>https://www.keisei.top/architecture-of-v8-memory/</link><guid isPermaLink="false">https://www.keisei.top/architecture-of-v8-memory/</guid><pubDate>Mon, 24 Feb 2020 23:03:00 GMT</pubDate><content:encoded>&lt;p&gt;本文我们来看一下用于&lt;a href=&quot;https://tc39.es/ecma262/&quot;&gt;ECMAScript&lt;/a&gt;和&lt;a href=&quot;https://webassembly.github.io/spec/core/&quot;&gt;WebAssembly&lt;/a&gt;的&lt;a href=&quot;https://v8.dev/&quot;&gt;V8 引擎&lt;/a&gt;的内存管理。V8 引擎现在被 NodeJS，Deno 等运行时，Electron，还有 Chrome，Chromium，Brave，Opera 和 Microsoft Edge 等浏览器采用。由于 JavaScript 是一门解释型语言，需要引擎来解释并执行。V8 引擎解释 JavaScript 代码并将代码编译成原生的机器码。V8 引擎是通过 C++编写的，可以嵌套在任意的 C++程序中。&lt;/p&gt;
 &lt;h3&gt;V8 内存架构&lt;/h3&gt;
 &lt;p&gt;由于 JavaScript 是单线程的，V8 会在每个 JavaScript 上下文中使用一个单独的进程，如果使用了 service worker，它会根据每个 worker 产生一个新的 V8 进程。每个运行中的应用程序总是被 V8 进程分配一些内存，被称为&lt;strong&gt;常驻集（Resident Set）&lt;/strong&gt;。然后被进一步分为一下不同的片段：&lt;/p&gt;
 &lt;p&gt;&lt;span
@@ -37,10 +37,10 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;新生代（New Space）&lt;/strong&gt; 新生代或“&lt;strong&gt;年轻代（Young generation）&lt;/strong&gt;”是新对象存储的地方，这些新对象通常都是短暂存活的。这块内存非常小，有两个 semi-space。这块内存被“清道夫（&lt;strong&gt;Scavenger(Minor GC)&lt;/strong&gt;）”管理。新生代可以通过 &lt;code class=&quot;language-text&quot;&gt;--min_semi_space_size(初始化)&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;--max_semi_space_size(最大)&lt;/code&gt; 标志来控制大小。&lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;老生代（Old Space）&lt;/strong&gt; 老生代或“&lt;strong&gt;老年代（Old generation）&lt;/strong&gt;”是那些在新生代中在两次次要 GC 中存活下来的对象。这块内存是被“&lt;strong&gt;主 GC（Major GC: Mark-Sweep &amp;#x26; Mark-Compact）&lt;/strong&gt;”管理。老生代可以通过 &lt;code class=&quot;language-text&quot;&gt;--initial_old_space_size(初始化)&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;--max_old_space_size(最大)&lt;/code&gt; 标志来控制大小。这块内存又被分为两份：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;老生代（Old Space）&lt;/strong&gt; 老生代或“&lt;strong&gt;老年代（Old generation）&lt;/strong&gt;”是那些在新生代中在两次二级 GC 中存活下来的对象。这块内存是被“&lt;strong&gt;主 GC（Major GC: Mark-Sweep &amp;#x26; Mark-Compact）&lt;/strong&gt;”管理。老生代可以通过 &lt;code class=&quot;language-text&quot;&gt;--initial_old_space_size(初始化)&lt;/code&gt; 和 &lt;code class=&quot;language-text&quot;&gt;--max_old_space_size(最大)&lt;/code&gt; 标志来控制大小。这块内存又被分为两份：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;旧指针空间（Old pointer space）&lt;/strong&gt;：包含具有指向其他对象的幸存对象&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;旧数据空间（Old data space）&lt;/strong&gt;：包含保存数据的对象（没有指向其他的对象）。字符串，包装过的数字等保存新生代中在两次次要 GC 中存活下来的对象。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;旧数据空间（Old data space）&lt;/strong&gt;：包含保存数据的对象（没有指向其他的对象）。字符串，包装过的数字等保存新生代中在两次二级 GC 中存活下来的对象。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;大对象空间（Large object space）&lt;/strong&gt;：这是超过其他内存限制的更大的对象存活的地方。大对象不会被垃圾回收。&lt;/li&gt;
@@ -100,6 +100,26 @@ console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cl
 &lt;/blockquote&gt;
 &lt;p&gt;在 V8 中垃圾回收器是回收未使用的内存来供 V8 进程重新利用。&lt;/p&gt;
 &lt;p&gt;V8 垃圾回收器是传代的（堆中的对象根据年代进行分组并在不同的阶段被清除）。V8 中有两个阶段，采用了三种不同的算法来进行垃圾回收：&lt;/p&gt;
+&lt;h4&gt;二级 GC（清道夫）&lt;/h4&gt;
+&lt;p&gt;这种类型的 GC 保证年轻或新生代空间紧凑整洁。对象分配在新生代空间中，该空间很小（介于 1MB 至 8MB，取决于行为启发）。在“新空间”中分配内存很容易：只要想为新对象预留空间，可以直接增加分配的指针。当指针达到新空间的极限，二级 GC 就会被触发。这个过程也被称为&lt;strong&gt;清道夫&lt;/strong&gt;，它实现了&lt;a href=&quot;http://en.wikipedia.org/wiki/Cheney&amp;#x27;s_algorithm&quot;&gt;Cheney 的算法&lt;/a&gt;。它发生的频率较高，通过使用平行的帮助线程执行非常快。&lt;/p&gt;
+&lt;p&gt;我们来看一下二级 GC 的过程：&lt;/p&gt;
+&lt;p&gt;新空间被分为均等的两份半空间：&lt;strong&gt;到空间（to-space）&lt;/strong&gt;和&lt;strong&gt;来空间（from-space）&lt;/strong&gt;。大多数的分配都是在到空间的（除了确切类型的对象，如可执行代码始终存储在老空间中）。当到空间填满时，二级 GC 就会被触发。&lt;/p&gt;
+&lt;p&gt;相关 slide 可以&lt;a href=&quot;https://speakerdeck.com/deepu105/v8-minor-gc&quot; target=&quot;_blank&quot;&gt;点击新窗口打开&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;假设当我们开始时已经有一些对象存在于“到空间”（块 01 至 06 标记为已使用的内存）&lt;/li&gt;
+&lt;li&gt;创建了一个新对象（07）&lt;/li&gt;
+&lt;li&gt;V8 尝试从到空间中获取内存，但是没有空余的空间来容纳，因此 V8 会触发二级 GC&lt;/li&gt;
+&lt;li&gt;二级 GC 将“到空间”和“来空间”进行交换，所有的对象现在都在“来空间”，“到空间”现在是空的&lt;/li&gt;
+&lt;li&gt;二级 GC 递归地遍历“来空间”的对象图开始从栈指针（GC 根）找出被使用的或存活的（使用了内存）对象。这些对象引用的任何对象也都在“到空间”中移动到此 page，并且它们的指针都更新了。这个过程会持续到所有“来空间”的对象都被扫描过。在最后，“到空间”自动压缩以减少碎片&lt;/li&gt;
+&lt;li&gt;二级 GC 现在清空“来空间”，因为任何留下的对象都成为了垃圾&lt;/li&gt;
+&lt;li&gt;新对象在“到空间”中分配内存&lt;/li&gt;
+&lt;li&gt;我们假设一会儿时间过去了，“到空间”中现在有更多的对象（块 07 到 09 都被标记为已使用的内存）&lt;/li&gt;
+&lt;li&gt;应用创建了一个新对象（10）&lt;/li&gt;
+&lt;li&gt;V8 尝试从“到空间”中获取内存，但是没有多余的内存来容纳，因此 V8 触发了第二次二级 GC&lt;/li&gt;
+&lt;li&gt;以上的过程会重复，而任何在第二次二级 GC 中存活的对象被移动到“老生代空间”。第一次幸存者被移动到“到空间”，剩余的从“来空间”中被清除&lt;/li&gt;
+&lt;li&gt;新对象在“到空间”中被分配内存&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;现在我们看到了二级 GC 从年轻代中回收空间，并保持紧凑。这是一个停滞不前的过程，但是由于它是很快的高效的，在大多数时间中都是微不足道的。由于此过程不会扫描“老生代”的对象来获取“新生代”中的任何引用，它使用从老生代到新生代的所有指针的寄存器。这通过一个&lt;a href=&quot;https://www.memorymanagement.org/glossary/w.html#term-write-barrier&quot;&gt;&lt;strong&gt;写屏障（write barriers）&lt;/strong&gt;&lt;/a&gt;的过程记录到存储缓冲区中。&lt;/p&gt;
 &lt;h3&gt;参考&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&quot;https://deepu.tech/memory-management-in-v8/&quot;&gt;https://deepu.tech/memory-management-in-v8/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[初识小程序架构]]></title><description><![CDATA[笔者之前接手过一些小程序的项目，不过当时时间紧任务重，基本上就是边看文档边撸代码，并没有真正好好的理解小程序的设计。今天准备花些时间来了解一下，小程序背后的故事。 前世今生 小程序这个概念应该是微信最早提出并推广应用的。当时发布之后我也尝试做过类似 Instagram…]]></description><link>https://www.keisei.top/architecture-of-miniprogram/</link><guid isPermaLink="false">https://www.keisei.top/architecture-of-miniprogram/</guid><pubDate>Sun, 23 Feb 2020 20:52:00 GMT</pubDate><content:encoded>&lt;p&gt;笔者之前接手过一些小程序的项目，不过当时时间紧任务重，基本上就是边看文档边撸代码，并没有真正好好的理解小程序的设计。今天准备花些时间来了解一下，小程序背后的故事。&lt;/p&gt;
 &lt;h3&gt;前世今生&lt;/h3&gt;
