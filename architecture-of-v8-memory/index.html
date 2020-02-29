@@ -111,14 +111,14 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <li>所有的对象类型如 <code class="language-text">Employee</code> 和 <code class="language-text">Function</code> 都在堆中被创建，从栈中使用栈指针引用它们。在 JavaScript 中函数本质上是对象，这也适用全局作用域</li>
 <li>从当前函数调用的函数被加入栈顶</li>
 <li>当函数返回时，它的帧在栈中被移除</li>
-<li>一旦主流程完成，堆中的内存没有栈中任何的指针指向会成为孤儿对象</li>
+<li>一旦主流程完成，堆中的内存没有栈中任何的指针指向会成为孤立对象</li>
 <li>除非做了复制，其他对象内的所有对象引用都使用引用指针</li>
 </ul>
 <p>栈就像看到的一样是操作系统而不是 V8 本身管理并结束的，因此我们不需要太关注栈。相反，堆内存不是操作系统自动管理的，由于它有最大的内存空间并存储动态数据，可能随着时间增长呈指数增长以至程序执行用光内存。这就是垃圾回收需要的原因。</p>
 <p>对于垃圾回收区分堆中的指针和数据是非常重要的，V8 使用“<strong>标记指针（Tagged pointer）</strong>”的方式来回收，它在每个字母后面预留了一比特来标记是指针还是数据。这个方式需要有限的编译器支持，但实现起来很简单，而且效率很高。</p>
 <h3>V8 内存管理：垃圾回收</h3>
 <p>现在我们知道 V8 是如何分配内存的，我们来看一下它又是如何自动管理对应用程序性能非常重要的堆内存的。当一个应用程序尝试分配超过堆剩余内存（取决于 V8 设置的标志大小）时，会造成<strong>内存溢出的异常</strong>。对堆不正确的管理也会造成内存泄露。</p>
-<p>V8 通过垃圾回收管理堆内存。简单来说，它释放孤儿对象的内存，即没有在栈中有直接或间接（在另一个对象中的引用）引用的对象会被回收来为新对象的创建提供空间。</p>
+<p>V8 通过垃圾回收管理堆内存。简单来说，它释放孤立对象的内存，即没有在栈中有直接或间接（在另一个对象中的引用）引用的对象会被回收来为新对象的创建提供空间。</p>
 <blockquote>
 <p><strong>Orinoco</strong> 是 V8 垃圾回收项目的代号，通过并行，增量，并发的技术进行垃圾回收，来释放主线程。</p>
 </blockquote>
@@ -143,9 +143,38 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <li>以上的过程会重复，而任何在第二次二级 GC 中存活的对象被移动到“老生代空间”。第一次幸存者被移动到“到空间”，剩余的从“来空间”中被清除</li>
 <li>新对象在“到空间”中被分配内存</li>
 </ol>
-<p>现在我们看到了二级 GC 从年轻代中回收空间，并保持紧凑。这是一个停滞不前的过程，但是由于它是很快的高效的，在大多数时间中都是微不足道的。由于此过程不会扫描“老生代”的对象来获取“新生代”中的任何引用，它使用从老生代到新生代的所有指针的寄存器。这通过一个<a href="https://www.memorymanagement.org/glossary/w.html#term-write-barrier"><strong>写屏障（write barriers）</strong></a>的过程记录到存储缓冲区中。</p>
+<p>现在我们看到了二级 GC 从年轻代中回收空间，并保持紧凑。这是一个会中断其他过程的（stop-the-world）过程，但是由于它是很快的高效的，在大多数时间中都是微不足道的。由于此过程不会扫描“老生代”的对象来获取“新生代”中的任何引用，它使用从老生代到新生代的所有指针的寄存器。这通过一个<a href="https://www.memorymanagement.org/glossary/w.html#term-write-barrier"><strong>写屏障（write barriers）</strong></a>的过程记录到存储缓冲区中。</p>
+<h4>主 GC（Major GC）</h4>
+<p>该类 GC 保证老生代空间的紧凑整洁。在它从二级 GC 循环中被填满时，它会基于一个动态计算出的内存限制在老生代没有额外空间时触发。</p>
+<p>清道夫算法对小的数据非常契合，对大的堆难以处理。老生代内存有开销，主 GC 是通过<strong>标记清除压缩（Mark-Sweep-Compact）</strong>算法来完成的。它使用了三色（白-灰-黑）标记系统。因此主 GC 是一个三步执行的过程，第三步的执行取决于片段的启发式。</p>
+<p><img src="/7bccbe1e01240d0a409a8cd80d89e4f9/major-gc.gif" alt="major gc"></p>
+<ul>
+<li><strong>标记</strong>：第一步，两种算法共同之处，垃圾回收器分辨哪些对象是在使用中的，哪些不是。使用中的或从 GC 根（栈指针）可访问的对象会被递归地标记为存活。它在堆中的深度优先查找，可以想象成为一个有向图</li>
+<li><strong>清除</strong>：垃圾回收器遍历堆，对任何没有标记为存活的对象记录它们的内存地址。在空闲列表中这块空间被标记为空闲，可以被用来存储其他对象</li>
+<li><strong>压缩</strong>：清除之后，如果需要，所有存活的对象会被移动到一起。这可以降低碎片化，增加分配新对象内存的性能</li>
+</ul>
+<p>这种类型的 GC 在执行垃圾回收时也是会中断其他的执行，因为它引入了停止时间的特性。为了避免该问题，V8 使用了如下技术：</p>
+<p><img src="/0cd12639e82d99d64ca29e089183cab6/technique.svg" alt="technique"></p>
+<ul>
+<li><strong>增量 GC</strong>：垃圾回收执行多个增量的步骤来完成</li>
+<li><strong>并发标记</strong>：通过使用多个帮助线程来并发标记而不干扰主要的 JavaScript 线程。写屏障（write barriers）被用来追踪 JavaScript 创建的对象的新引用</li>
+<li><strong>并发清除/压缩</strong>：清除压缩是并发在帮助线程完成的，不干扰主要的 JavaScript 线程</li>
+<li><strong>惰性清除</strong>：惰性清除可以在内存需要时再删除 pages 的垃圾</li>
+</ul>
+<p>我们来看一下主要的 GC 过程：</p>
+<ol>
+<li>假设许多二级 GC 循环都通过了，老年代已经填满，V8 决定触发一次主 GC</li>
+<li>主 GC 递归地遍历对象图，从堆栈指针开始，以标记在旧空间中被用作活动对象（已用内存）和其余对象作为垃圾（孤立对象）的对象。 这是使用多个并发的帮助线程完成的，每个线程都基于一个指针。 这不会影响 JS 主线程。</li>
+<li>完成并发标记或达到内存限制后，GC 将使用主线程执行标记完成步骤。这会短暂暂停时间。</li>
+<li>现在，主要 GC 使用并发清除线程将所有孤立对象的内存标记为空闲。还会触发并行压缩任务，以将相关的内存块移至同一 page 以避免碎片。在这些步骤中将更新指针。</li>
+</ol>
 <h3>参考</h3>
-<p><a href="https://deepu.tech/memory-management-in-v8/">https://deepu.tech/memory-management-in-v8/</a></p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/V8">V8</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Garbage Collection">Garbage Collection</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/architecture-of-miniprogram/">初识小程序架构<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
+<p><a href="https://v8.dev/blog/trash-talk">v8.dev/blog/trash-talk</a></p>
+<p><a href="http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection">jayconrod.com</a></p>
+<p><a href="https://blog.codeship.com/understanding-garbage-collection-in-node-js/">blog.codeship.com</a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management">developer.mozilla.org</a></p>
+<p><a href="https://blog.sessionstack.com/how-javascript-works-memory-management-how-to-handle-4-common-memory-leaks-3f28b94cfbec">blog.sessionstack.com</a></p>
+<p><a href="https://deepu.tech/memory-management-in-v8/">Visualizing memory management in V8 Engine (JavaScript, NodeJS, Deno, WebAssembly)</a></p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/V8">V8</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Garbage Collection">Garbage Collection</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/architecture-of-miniprogram/">初识小程序架构<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   
   
   if(true) {
