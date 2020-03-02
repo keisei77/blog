@@ -1,4 +1,109 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 01 Mar 2020 14:13:25 GMT</lastBuildDate><item><title><![CDATA[处理 Web 应用中的内存泄露问题]]></title><description><![CDATA[参考 https://nolanlawson.com/2020/02/19/fixing-memory-leaks-in-web-applications/]]></description><link>https://www.keisei.top/fixing-memory-leaks-in-web-app/</link><guid isPermaLink="false">https://www.keisei.top/fixing-memory-leaks-in-web-app/</guid><pubDate>Sun, 01 Mar 2020 22:08:00 GMT</pubDate><content:encoded>&lt;h3&gt;参考&lt;/h3&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 02 Mar 2020 14:30:50 GMT</lastBuildDate><item><title><![CDATA[处理 Web 应用中的内存泄露问题]]></title><description><![CDATA[当我们从构建服务端渲染的网站切换到构建客户端渲染的单页面应用时，我们需要对用户设备上的资源格外小心。不能阻碍 UI…]]></description><link>https://www.keisei.top/fixing-memory-leaks-in-web-app/</link><guid isPermaLink="false">https://www.keisei.top/fixing-memory-leaks-in-web-app/</guid><pubDate>Sun, 01 Mar 2020 22:08:00 GMT</pubDate><content:encoded>&lt;p&gt;当我们从构建服务端渲染的网站切换到构建客户端渲染的单页面应用时，我们需要对用户设备上的资源格外小心。不能阻碍 UI 线程，不要使笔记本风扇快速旋转，不要榨干手机的电池等等。我们为了更好的交互和类似原生应用的体验而带来的这些问题是服务端渲染所不存在的。&lt;/p&gt;
+&lt;p&gt;其中一个很重要的问题是内存泄漏。一个糟糕实现的 SPA 可以轻松吃掉 MB 级内存甚至 GB 级的内存，甚至在后台 tab 中也会持续吞噬资源。这时页面开始变慢，甚至浏览器直接终结这个 tab：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 570px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/2a8b7d6e23c2563f2c7e1e2f51123c08/f65ec/aw-snap.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 32.631578947368425%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAIAAACHqfpvAAAACXBIWXMAAAsSAAALEgHS3X78AAAAfUlEQVQY052QPQ7CMAyFfW5OBAMLl4AOSEggJhbWZIn/SGWHlKCOVALy7OHzYD/bkPNYa526BOfLNaXUqGMEhBhVtdOZiEKIxPJ7T1txTiBEJhIRbcHyZuLGiOjuX5xZ/TGW55I+vzDX672tNnl3NDCrXv479XAr28FO9/ICVWWbxk/ldyoAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;aw snap&quot;
+        title=&quot;aw snap&quot;
+        src=&quot;/static/2a8b7d6e23c2563f2c7e1e2f51123c08/f65ec/aw-snap.png&quot;
+        srcset=&quot;/static/2a8b7d6e23c2563f2c7e1e2f51123c08/00d96/aw-snap.png 148w,
+/static/2a8b7d6e23c2563f2c7e1e2f51123c08/0b23c/aw-snap.png 295w,
+/static/2a8b7d6e23c2563f2c7e1e2f51123c08/f65ec/aw-snap.png 570w&quot;
+        sizes=&quot;(max-width: 570px) 100vw, 570px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;当然，服务端渲染的网站也可能会在服务端出现内存泄漏。但它完全不像客户端的内存泄漏，因为浏览器在每次切换页面时都会清除内存。&lt;/p&gt;
+&lt;p&gt;关于内存泄漏的主题在 web 开发文献中并没有很好地覆盖。可以肯定的是，大多数的 SPA 应用都存在内存泄漏，除非这些团队有健壮的基础设施来捕获并修复内存泄漏。在 JavaScript 中太容易分配了内存却疏忽清理。&lt;/p&gt;
+&lt;p&gt;为什么没有多少人写有关内存泄漏的文章呢？大概如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;没有多少抱怨&lt;/strong&gt;：没有多少用户在浏览网页时去用心关注任务管理器。通常，我们不会听到用户的抱怨，除非泄露非常严重使 tab 直接崩溃或应用变慢&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缺少数据&lt;/strong&gt;：没有团队或应用提供测量网站存在多少内存泄露的功能&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缺少工具&lt;/strong&gt;：现有的工具也很难简单去检查或修复内存泄漏&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缺少关注&lt;/strong&gt;：浏览器会扼杀那些占用内存过多的 tab 页，用户更可能去抱怨浏览器而不是网站&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在本文将来介绍一些修复内存泄漏的经验，并提供一些例子来高效鉴别它们。&lt;/p&gt;
+&lt;h3&gt;内存泄漏剖析&lt;/h3&gt;
+&lt;p&gt;现代 web 应用框架像 React，Vue 和 Svelte 都是基于组件的模型。在这种模型下，最常见的一种内存泄漏是：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;window&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;message&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;onMessage&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这就会造成内存泄漏。如果在全局对象（&lt;code class=&quot;language-text&quot;&gt;window&lt;/code&gt;，&lt;code class=&quot;language-text&quot;&gt;&amp;lt;body&amp;gt;&lt;/code&gt; 等）上调用 &lt;code class=&quot;language-text&quot;&gt;addEventListener&lt;/code&gt; 却忘记在组件卸载时通过 &lt;code class=&quot;language-text&quot;&gt;removeEventListener&lt;/code&gt; 清除，那么就造成了内存泄漏。&lt;/p&gt;
+&lt;p&gt;更坏的是，我们直接泄露了整个组件。因为 &lt;code class=&quot;language-text&quot;&gt;this.onMessage&lt;/code&gt; 是绑定在 &lt;code class=&quot;language-text&quot;&gt;this&lt;/code&gt; 上，这个组件被泄露了。它的子组件也被泄露了，而且很有可能所有有关这些组件的 DOM 节点也被泄露了。这会很快变得糟糕。&lt;/p&gt;
+&lt;p&gt;可以通过下面来解决：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// 挂载阶段&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;onMessage &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;onMessage&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+window&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;message&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;onMessage&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;// 卸载阶段&lt;/span&gt;
+window&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;removeEventListener&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;message&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;onMessage&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;注意我们缓存了对绑定的 &lt;code class=&quot;language-text&quot;&gt;onMessage&lt;/code&gt; 函数的引用。必须向 &lt;code class=&quot;language-text&quot;&gt;removeEventListener&lt;/code&gt; 传入和 &lt;code class=&quot;language-text&quot;&gt;addEventListener&lt;/code&gt; 完全一样的函数，否则不会生效。&lt;/p&gt;
+&lt;h3&gt;内存泄漏常见情况&lt;/h3&gt;
+&lt;p&gt;常见的造成内存泄漏的 API：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;addEventListener&lt;/code&gt;，最常见的一种。调用 &lt;code class=&quot;language-text&quot;&gt;removeEventListener&lt;/code&gt; 来清除。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;setTimeout&lt;/code&gt;&lt;/a&gt; / &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;setInterval&lt;/code&gt;&lt;/a&gt;，如果创建了递归的计时器（如每 30 秒执行一次），那么需要通过 &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/clearTimeout&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;clearTimeout&lt;/code&gt;&lt;/a&gt; 或 &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/clearInterval&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;clearInterval&lt;/code&gt;&lt;/a&gt; 来清除。（如果 &lt;code class=&quot;language-text&quot;&gt;setTimeout&lt;/code&gt; 像 &lt;code class=&quot;language-text&quot;&gt;setInterval&lt;/code&gt; 那么使用会造成泄漏，即在 &lt;code class=&quot;language-text&quot;&gt;setTimeout&lt;/code&gt; 回调内部调用 &lt;code class=&quot;language-text&quot;&gt;setTimeout&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;IntersectionObserver&lt;/code&gt;&lt;/a&gt;，&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;ResizeObserver&lt;/code&gt;&lt;/a&gt;，&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;MutationObserver&lt;/code&gt;&lt;/a&gt;等。这些新的 API 非常方便，但是它们很容易造成泄漏。如果在一个组件中创建了它们，并且它绑定到了一个全局可见的元素上，那么需要调用 &lt;code class=&quot;language-text&quot;&gt;disconnect()&lt;/code&gt; 来清理。（注意垃圾回收 DOM 节点时，也会回收它们的监听器和 observer。所以通常只需要关心全局的元素，如 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;body&amp;gt;&lt;/code&gt;，&lt;code class=&quot;language-text&quot;&gt;document&lt;/code&gt; 以及全局可见的 header/footer 元素等）。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Promises&lt;/code&gt;&lt;/a&gt;，&lt;a href=&quot;https://rxjs.dev/guide/observable&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Observables&lt;/code&gt;&lt;/a&gt;，&lt;a href=&quot;https://nodejs.org/api/events.html#events_class_eventemitter&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;EventEmitters&lt;/code&gt;&lt;/a&gt;等。如果忘记停止监听，那么任何模型上设置的监听器都可能泄漏。（一个 Promise 如果永远没有 resolved 或 rejected，那么任何附着的 &lt;code class=&quot;language-text&quot;&gt;.then()&lt;/code&gt; 回调都会泄漏。）&lt;/li&gt;
+&lt;li&gt;全局保存的对象。像 &lt;a href=&quot;https://redux.js.org/&quot;&gt;Redux&lt;/a&gt; 的状态是存在全局对象下的，所以如果不加小心，可能会不断增加内存消耗，而它永远不会被清理。&lt;/li&gt;
+&lt;li&gt;无尽的 DOM 增长。如果实现了一个无线滚动的功能而没有使用&lt;a href=&quot;https://github.com/WICG/virtual-scroller#readme&quot;&gt;虚拟化&lt;/a&gt;，那么 DOM 节点的数量会无限制的增长。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;当然还有很多其他泄漏内存的方式，以上是比较常见的类型。&lt;/p&gt;
+&lt;h3&gt;鉴别内存泄漏&lt;/h3&gt;
+&lt;p&gt;在 Chrome 开发者工具中，我们主要使用 “Memory tab” 下面的 “Heap snapshot”：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 570px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/8f2fa0b193b0dd41794c141ad9480a38/f65ec/chrome-dev-tool.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 58.42105263157894%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAAAsSAAALEgHS3X78AAAB8klEQVQoz52T627aQBCF/eCV0hACRBApL9Dn6I9KfYqqlQgGXwr4tmB7zdpr7D0964QqRcmfWvo0u76cmTk7dibjz7gf3xgbJ5NbMsLk/hZj7ufzKeaLBywe53h6WuDhYYy7u5vhmWU6HWE2G5vZdGQeF1N8mY/OThzHRogDDscjikxARPGAlhVMXUNJi8L5dIJpmlf0ENGegTN5uUx2zOH8+PkLnu+b7XaL3HURk2S9QRVFqJNkQGcpydBY0vQviugoMlDKWEXf84zjrtfI8wLVqUJdFIiDAFEQYu/7JOA+RJlmKCh8TX5ZszvdtgjDEM6KFR1ZqpQSjdbIKVpyLauKSU5DIrs+KQXN9uyH1zRsv++6F8Hn1eofwexwQJSkyMsSqqkhKWqxgs1F4E1smcTSGXMlaCuKY8SbDSLaELlrJJ4PyXv2vqSnxX6PkrG0kdi9oq9tnqNj2yG/dexhFGzTVljSP2/lInU3EPTOo2jAAxIULIVA8R4UzBklxf3lEk7FygYxip6ZpdEtur4f5kDRG1t5TSt6tvQhdmY4YgG7dUp6dRHs6N9/X28FL6JVlOD3mvO49NHt6NluB8HR0Rx8w3d6JjXv0PMZDwI+J2YQLIhWEt+fK3z6KjD7JpBLtqs0VM0/w1rA1sxHvFq0p49/ADB3e6V6DyMRAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;chrome dev tool&quot;
+        title=&quot;chrome dev tool&quot;
+        src=&quot;/static/8f2fa0b193b0dd41794c141ad9480a38/f65ec/chrome-dev-tool.png&quot;
+        srcset=&quot;/static/8f2fa0b193b0dd41794c141ad9480a38/00d96/chrome-dev-tool.png 148w,
+/static/8f2fa0b193b0dd41794c141ad9480a38/0b23c/chrome-dev-tool.png 295w,
+/static/8f2fa0b193b0dd41794c141ad9480a38/f65ec/chrome-dev-tool.png 570w&quot;
+        sizes=&quot;(max-width: 570px) 100vw, 570px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;当我们点击 “Take snapshot” 按钮，在页面的 JavaScript 虚拟机上就开始捕获所有的存活对象。包括被 &lt;code class=&quot;language-text&quot;&gt;window&lt;/code&gt; 引用的对象，被 &lt;code class=&quot;language-text&quot;&gt;setInterval&lt;/code&gt; 回调函数引用的对象等。将它看作该网页使用的所有内存的停滞时刻。&lt;/p&gt;
+&lt;p&gt;下一步是重现某些你认为会造成泄露的场景，例如，打开然后关闭一个对话框。一旦关闭对话框，期望内存会回到之前的水平。所以再记录一个快照，然后与之前的快照进行对比。&lt;/p&gt;
+&lt;p&gt;然而，需要意识到这个工具有一些限制：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;尽管点击了 “collect garbage” 按钮，可能也需要连续几次快照才能真正清除未引用的内存。（检查每次快照的总内存，它应该保持一样稳定。）&lt;/li&gt;
+&lt;li&gt;如果存在 web workers，service workers，iframes，shared workers 等。那这些内存不会出现在 heap 快照中，因为它们存在于另一个 JavaScript 虚拟机中。可以捕获这部分内存，但是要确保你知道在测量哪一部分。&lt;/li&gt;
+&lt;li&gt;有时候快照会卡住或崩溃。需要关闭浏览器 tab 然后重新开始。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;看到这里，你或许会去看两个快照之间有哪些对象是被泄露了。这会变得有些棘手，因为那些对象不是所有的都是真的泄漏。许多只是正常的使用 — 有些对象会因为是被另一个对象引用而再次被分配，有些是被某种方式缓存起来在将来被清除等。&lt;/p&gt;
+&lt;h3&gt;参考&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&quot;https://nolanlawson.com/2020/02/19/fixing-memory-leaks-in-web-applications/&quot;&gt;https://nolanlawson.com/2020/02/19/fixing-memory-leaks-in-web-applications/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[了解 V8 内存管理]]></title><description><![CDATA[本文我们来看一下用于ECMAScript和WebAssembly的V8 引擎的内存管理。V8 引擎现在被 NodeJS，Deno 等运行时，Electron，还有 Chrome，Chromium，Brave，Opera 和 Microsoft Edge…]]></description><link>https://www.keisei.top/architecture-of-v8-memory/</link><guid isPermaLink="false">https://www.keisei.top/architecture-of-v8-memory/</guid><pubDate>Mon, 24 Feb 2020 23:03:00 GMT</pubDate><content:encoded>&lt;p&gt;本文我们来看一下用于&lt;a href=&quot;https://tc39.es/ecma262/&quot;&gt;ECMAScript&lt;/a&gt;和&lt;a href=&quot;https://webassembly.github.io/spec/core/&quot;&gt;WebAssembly&lt;/a&gt;的&lt;a href=&quot;https://v8.dev/&quot;&gt;V8 引擎&lt;/a&gt;的内存管理。V8 引擎现在被 NodeJS，Deno 等运行时，Electron，还有 Chrome，Chromium，Brave，Opera 和 Microsoft Edge 等浏览器采用。由于 JavaScript 是一门解释型语言，需要引擎来解释并执行。V8 引擎解释 JavaScript 代码并将代码编译成原生的机器码。V8 引擎是通过 C++编写的，可以嵌套在任意的 C++程序中。&lt;/p&gt;
 &lt;h3&gt;V8 内存架构&lt;/h3&gt;
 &lt;p&gt;由于 JavaScript 是单线程的，V8 会在每个 JavaScript 上下文中使用一个单独的进程，如果使用了 service worker，它会根据每个 worker 产生一个新的 V8 进程。每个运行中的应用程序总是被 V8 进程分配一些内存，被称为&lt;strong&gt;常驻集（Resident Set）&lt;/strong&gt;。然后被进一步分为一下不同的片段：&lt;/p&gt;
