@@ -58,6 +58,13 @@ const StyledMenu = styled(StyledLink)`
     padding-right: 0;
   }
 `;
+const StyledAnchor = styled.a<{ isScrolled: boolean }>`
+  color: ${props => (props.isScrolled ? '#fff' : 'inherit')};
+  display: flex;
+  align-items: center;
+  transition: color 0.1s ease-in-out;
+  padding: 0 8px;
+`;
 
 function Header(props: HeaderProps) {
   const { title, isScrolled } = props;
@@ -76,6 +83,13 @@ function Header(props: HeaderProps) {
           {/* <StyledMenu isScrolled={isScrolled} to="/timeline">
           归档
         </StyledMenu> */}
+          <StyledAnchor
+            isScrolled={isScrolled}
+            href="https://keisei.now.sh/"
+            target="blank"
+          >
+            冠状病毒数据报告
+          </StyledAnchor>
           <StyledMenu isScrolled={isScrolled} to="/about">
             关于
           </StyledMenu>
