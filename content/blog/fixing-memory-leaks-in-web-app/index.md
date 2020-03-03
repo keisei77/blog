@@ -80,6 +80,24 @@ window.removeEventListener('message', this.onMessage);
 
 看到这里，你或许会去看两个快照之间有哪些对象是被泄露了。这会变得有些棘手，因为那些对象不是所有的都是真的泄漏。许多只是正常的使用 -- 有些对象会因为是被另一个对象引用而再次被分配，有些是被某种方式缓存起来在将来被清除等。
 
+### 遍历 retainer 树
+
+堆快照 diff 可以展示一个 “retainer” 链，从链上可以找出哪些对象指向其他哪些保持存活的对象。可以据此找出泄漏的对象是在哪里被创建的。
+
+![retainer chain](retainer-chain.png)
+
+上面例子中，有一个变量 `someObject` 被一个闭包（context）引用，实际是由一个事件监听器引用的。如果点击源代码链接，它会定位到 JavaScript 声明的地方：
+
+```javascript
+class SomeObject () { /* ... */ }
+
+const someObject = new SomeObject();
+const onMessage = () => { /* ... */ };
+window.addEventListener('message', onMessage);
+```
+
+上面例子中，“context” 就是引用了 `someObject` 变量的 `onMessage` 闭包。（这是一个[故意的例子](https://github.com/nolanlawson/pinafore/commit/de6ca2d85334ad5f657ddd0f335750b60afab895)，真实环境中的内存泄漏会比这更难以发现。）
+
 ### 参考
 
 <https://nolanlawson.com/2020/02/19/fixing-memory-leaks-in-web-applications/>
