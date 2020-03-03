@@ -127,6 +127,44 @@ window<span class="token punctuation">.</span><span class="token function">remov
 <li>有时候快照会卡住或崩溃。需要关闭浏览器 tab 然后重新开始。</li>
 </ol>
 <p>看到这里，你或许会去看两个快照之间有哪些对象是被泄露了。这会变得有些棘手，因为那些对象不是所有的都是真的泄漏。许多只是正常的使用 — 有些对象会因为是被另一个对象引用而再次被分配，有些是被某种方式缓存起来在将来被清除等。</p>
+<h3>遍历 retainer 树</h3>
+<p>堆快照 diff 可以展示一个 “retainer” 链，从链上可以找出哪些对象指向其他哪些保持存活的对象。可以据此找出泄漏的对象是在哪里被创建的。</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 570px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/4574b346b300d67936c66ac6f03476b7/f65ec/retainer-chain.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 19.473684210526315%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAECAYAAACOXx+WAAAACXBIWXMAAAsSAAALEgHS3X78AAAAxUlEQVQY012OUQ6DIBBEvf8h21hRC4isCgqKTBfiV0leNpksb6cRrxbzMGASAvph6nsYzkyZD2WHxgGy69CJHoL3Pp8OUiq83m/0vKOUQmO+tgqUKJIRJCXObUPyHtfDvXusdoOWhG2UOEKA55yWBc45TJOBMTPatkUTYsJMC/RsQSyidcV13/h/mSlpZkHOGSklXFdCjJGlvlIbhtWBBgXJDRU3Ja3hrMVOhMDyyEdOltS2PE9jEFhy7EdtV5BKY+Jc898fIk0wgsBwGCkAAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="retainer chain"
+        title="retainer chain"
+        src="/static/4574b346b300d67936c66ac6f03476b7/f65ec/retainer-chain.png"
+        srcset="/static/4574b346b300d67936c66ac6f03476b7/00d96/retainer-chain.png 148w,
+/static/4574b346b300d67936c66ac6f03476b7/0b23c/retainer-chain.png 295w,
+/static/4574b346b300d67936c66ac6f03476b7/f65ec/retainer-chain.png 570w"
+        sizes="(max-width: 570px) 100vw, 570px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>上面例子中，有一个变量 <code class="language-text">someObject</code> 被一个闭包（context）引用，实际是由一个事件监听器引用的。如果点击源代码链接，它会定位到 JavaScript 声明的地方：</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">SomeObject</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> someObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SomeObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token function-variable function">onMessage</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> onMessage<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
+<p>上面例子中，“context” 就是引用了 <code class="language-text">someObject</code> 变量的 <code class="language-text">onMessage</code> 闭包。（这是一个<a href="https://github.com/nolanlawson/pinafore/commit/de6ca2d85334ad5f657ddd0f335750b60afab895">故意的例子</a>，真实环境中的内存泄漏会比这更难以发现。）</p>
 <h3>参考</h3>
 <p><a href="https://nolanlawson.com/2020/02/19/fixing-memory-leaks-in-web-applications/">https://nolanlawson.com/2020/02/19/fixing-memory-leaks-in-web-applications/</a></p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/memory leak">memory leak</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/architecture-of-v8-memory/">了解 V8 内存管理<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 02 Mar 2020 14:30:50 GMT</lastBuildDate><item><title><![CDATA[处理 Web 应用中的内存泄露问题]]></title><description><![CDATA[当我们从构建服务端渲染的网站切换到构建客户端渲染的单页面应用时，我们需要对用户设备上的资源格外小心。不能阻碍 UI…]]></description><link>https://www.keisei.top/fixing-memory-leaks-in-web-app/</link><guid isPermaLink="false">https://www.keisei.top/fixing-memory-leaks-in-web-app/</guid><pubDate>Sun, 01 Mar 2020 22:08:00 GMT</pubDate><content:encoded>&lt;p&gt;当我们从构建服务端渲染的网站切换到构建客户端渲染的单页面应用时，我们需要对用户设备上的资源格外小心。不能阻碍 UI 线程，不要使笔记本风扇快速旋转，不要榨干手机的电池等等。我们为了更好的交互和类似原生应用的体验而带来的这些问题是服务端渲染所不存在的。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 03 Mar 2020 12:38:21 GMT</lastBuildDate><item><title><![CDATA[处理 Web 应用中的内存泄露问题]]></title><description><![CDATA[当我们从构建服务端渲染的网站切换到构建客户端渲染的单页面应用时，我们需要对用户设备上的资源格外小心。不能阻碍 UI…]]></description><link>https://www.keisei.top/fixing-memory-leaks-in-web-app/</link><guid isPermaLink="false">https://www.keisei.top/fixing-memory-leaks-in-web-app/</guid><pubDate>Sun, 01 Mar 2020 22:08:00 GMT</pubDate><content:encoded>&lt;p&gt;当我们从构建服务端渲染的网站切换到构建客户端渲染的单页面应用时，我们需要对用户设备上的资源格外小心。不能阻碍 UI 线程，不要使笔记本风扇快速旋转，不要榨干手机的电池等等。我们为了更好的交互和类似原生应用的体验而带来的这些问题是服务端渲染所不存在的。&lt;/p&gt;
 &lt;p&gt;其中一个很重要的问题是内存泄漏。一个糟糕实现的 SPA 可以轻松吃掉 MB 级内存甚至 GB 级的内存，甚至在后台 tab 中也会持续吞噬资源。这时页面开始变慢，甚至浏览器直接终结这个 tab：&lt;/p&gt;
 &lt;p&gt;&lt;span
       class=&quot;gatsby-resp-image-wrapper&quot;
@@ -103,6 +103,44 @@ window&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span cla
 &lt;li&gt;有时候快照会卡住或崩溃。需要关闭浏览器 tab 然后重新开始。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;看到这里，你或许会去看两个快照之间有哪些对象是被泄露了。这会变得有些棘手，因为那些对象不是所有的都是真的泄漏。许多只是正常的使用 — 有些对象会因为是被另一个对象引用而再次被分配，有些是被某种方式缓存起来在将来被清除等。&lt;/p&gt;
+&lt;h3&gt;遍历 retainer 树&lt;/h3&gt;
+&lt;p&gt;堆快照 diff 可以展示一个 “retainer” 链，从链上可以找出哪些对象指向其他哪些保持存活的对象。可以据此找出泄漏的对象是在哪里被创建的。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 570px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/4574b346b300d67936c66ac6f03476b7/f65ec/retainer-chain.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 19.473684210526315%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAECAYAAACOXx+WAAAACXBIWXMAAAsSAAALEgHS3X78AAAAxUlEQVQY012OUQ6DIBBEvf8h21hRC4isCgqKTBfiV0leNpksb6cRrxbzMGASAvph6nsYzkyZD2WHxgGy69CJHoL3Pp8OUiq83m/0vKOUQmO+tgqUKJIRJCXObUPyHtfDvXusdoOWhG2UOEKA55yWBc45TJOBMTPatkUTYsJMC/RsQSyidcV13/h/mSlpZkHOGSklXFdCjJGlvlIbhtWBBgXJDRU3Ja3hrMVOhMDyyEdOltS2PE9jEFhy7EdtV5BKY+Jc898fIk0wgsBwGCkAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;retainer chain&quot;
+        title=&quot;retainer chain&quot;
+        src=&quot;/static/4574b346b300d67936c66ac6f03476b7/f65ec/retainer-chain.png&quot;
+        srcset=&quot;/static/4574b346b300d67936c66ac6f03476b7/00d96/retainer-chain.png 148w,
+/static/4574b346b300d67936c66ac6f03476b7/0b23c/retainer-chain.png 295w,
+/static/4574b346b300d67936c66ac6f03476b7/f65ec/retainer-chain.png 570w&quot;
+        sizes=&quot;(max-width: 570px) 100vw, 570px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;上面例子中，有一个变量 &lt;code class=&quot;language-text&quot;&gt;someObject&lt;/code&gt; 被一个闭包（context）引用，实际是由一个事件监听器引用的。如果点击源代码链接，它会定位到 JavaScript 声明的地方：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;SomeObject&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; someObject &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;SomeObject&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;onMessage&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+window&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;message&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; onMessage&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;上面例子中，“context” 就是引用了 &lt;code class=&quot;language-text&quot;&gt;someObject&lt;/code&gt; 变量的 &lt;code class=&quot;language-text&quot;&gt;onMessage&lt;/code&gt; 闭包。（这是一个&lt;a href=&quot;https://github.com/nolanlawson/pinafore/commit/de6ca2d85334ad5f657ddd0f335750b60afab895&quot;&gt;故意的例子&lt;/a&gt;，真实环境中的内存泄漏会比这更难以发现。）&lt;/p&gt;
 &lt;h3&gt;参考&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&quot;https://nolanlawson.com/2020/02/19/fixing-memory-leaks-in-web-applications/&quot;&gt;https://nolanlawson.com/2020/02/19/fixing-memory-leaks-in-web-applications/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[了解 V8 内存管理]]></title><description><![CDATA[本文我们来看一下用于ECMAScript和WebAssembly的V8 引擎的内存管理。V8 引擎现在被 NodeJS，Deno 等运行时，Electron，还有 Chrome，Chromium，Brave，Opera 和 Microsoft Edge…]]></description><link>https://www.keisei.top/architecture-of-v8-memory/</link><guid isPermaLink="false">https://www.keisei.top/architecture-of-v8-memory/</guid><pubDate>Mon, 24 Feb 2020 23:03:00 GMT</pubDate><content:encoded>&lt;p&gt;本文我们来看一下用于&lt;a href=&quot;https://tc39.es/ecma262/&quot;&gt;ECMAScript&lt;/a&gt;和&lt;a href=&quot;https://webassembly.github.io/spec/core/&quot;&gt;WebAssembly&lt;/a&gt;的&lt;a href=&quot;https://v8.dev/&quot;&gt;V8 引擎&lt;/a&gt;的内存管理。V8 引擎现在被 NodeJS，Deno 等运行时，Electron，还有 Chrome，Chromium，Brave，Opera 和 Microsoft Edge 等浏览器采用。由于 JavaScript 是一门解释型语言，需要引擎来解释并执行。V8 引擎解释 JavaScript 代码并将代码编译成原生的机器码。V8 引擎是通过 C++编写的，可以嵌套在任意的 C++程序中。&lt;/p&gt;
 &lt;h3&gt;V8 内存架构&lt;/h3&gt;
