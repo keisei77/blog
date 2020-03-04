@@ -88,7 +88,7 @@ function Header(props: HeaderProps) {
             href="https://keisei.now.sh/"
             target="blank"
           >
-            冠状病毒数据报告
+            疫情数据
           </StyledAnchor>
           <StyledMenu isScrolled={isScrolled} to="/about">
             关于
