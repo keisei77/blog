@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.065d6dce9e47410fcace.css">code[class*=language-],pre[class*=language-]{color:#657b83;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}code[class*=language-]::selection,code[class*=language-] ::selection,pre[class*=language-]::selection,pre[class*=language-] ::selection{background:#073642}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto;border-radius:.3em}:not(pre)>code[class*=language-],pre[class*=language-]{background-color:#fdf6e3}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#93a1a1}.token.punctuation{color:#586e75}.namespace{opacity:.7}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#268bd2}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string,.token.url{color:#2aa198}.token.entity{color:#657b83;background:#eee8d5}.token.atrule,.token.attr-value,.token.keyword{color:#859900}.token.class-name,.token.function{color:#b58900}.token.important,.token.regex,.token.variable{color:#cb4b16}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}
+
+/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}main{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}[hidden],template{display:none}body,html{font-family:Roboto,arial,sans-serif;font-size:16px;height:100%}img{width:100%}a{text-decoration:none;word-break:break-all}#___gatsby,#___gatsby #gatsby-focus-wrapper{height:100%}#___gatsby #gatsby-focus-wrapper blockquote{background-color:#eee;padding:0 1rem;margin:0;display:inline-block;position:relative}#___gatsby #gatsby-focus-wrapper blockquote:before{content:"";position:absolute;background:#595959;width:4px;left:0;height:100%}#___gatsby #gatsby-focus-wrapper li p{margin:unset}#___gatsby #gatsby-focus-wrapper code[class*=language-text]{white-space:pre-wrap}</style><meta name="generator" content="Gatsby 2.18.16"/><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link rel="alternate" type="application/rss+xml" href="/rss.xml"/><link rel="icon" href="/icons/icon-48x48.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="manifest" href="/manifest.webmanifest"/><meta name="theme-color" content="#74d2ff"/><link rel="apple-touch-icon" sizes="48x48" href="/icons/icon-48x48.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="256x256" href="/icons/icon-256x256.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png?v=5bb430c18087a8c996d9fd082839d967"/><title data-react-helmet="true">使用 Next.js + Puppeteer + heroku 构建爬虫 Web APP | 学习随笔</title><meta data-react-helmet="true" name="description" content="了解如何利用免费资源来实现微型爬虫 Web 应用并记录遇到的一些坑"/><meta data-react-helmet="true" property="og:title" content="使用 Next.js + Puppeteer + heroku 构建爬虫 Web APP"/><meta data-react-helmet="true" property="og:description" content="了解如何利用免费资源来实现微型爬虫 Web 应用并记录遇到的一些坑"/><meta data-react-helmet="true" property="og:type" content="website"/><meta data-react-helmet="true" name="twitter:card" content="summary"/><meta data-react-helmet="true" name="twitter:creator" content="Keisei"/><meta data-react-helmet="true" name="twitter:title" content="使用 Next.js + Puppeteer + heroku 构建爬虫 Web APP"/><meta data-react-helmet="true" name="twitter:description" content="了解如何利用免费资源来实现微型爬虫 Web 应用并记录遇到的一些坑"/><style data-styled="gbMHrA ggczkX cKBlNu bnDyRh BYIyc ftRwYj caORiI dMeVCf eMzzfH cpRIIU iHkcoF eVlgNw" data-styled-version="4.4.1">
+/* sc-component-id: header__StyledHeader-ehg0ch-0 */
+.gbMHrA{background:#fff;box-shadow:none;position:fixed;top:0;left:0;right:0;z-index:10;padding:1rem;cursor:pointer;width:100vw;box-sizing:border-box;-webkit-transition:background 0.1s ease-in-out;transition:background 0.1s ease-in-out;}
+/* sc-component-id: header__StyledHeaderContainer-ehg0ch-1 */
+.ggczkX{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;} @media screen and (min-width:1200px){.ggczkX{margin:0 calc(17.5% - 0.5rem);}}
+/* sc-component-id: header__StyledNav-ehg0ch-2 */
+.BYIyc{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;margin:unset;padding:unset;}
+/* sc-component-id: header__StyledLink-ehg0ch-3 */
+.cKBlNu{color:inherit;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-transition:color 0.1s ease-in-out;transition:color 0.1s ease-in-out;}
+/* sc-component-id: header__StyledLogo-ehg0ch-4 */
+.bnDyRh{padding-right:1rem;height:2rem;width:4rem;}
+/* sc-component-id: header__StyledMenu-ehg0ch-5 */
+.ftRwYj{color:inherit;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-transition:color 0.1s ease-in-out;transition:color 0.1s ease-in-out;padding:0 8px;} .ftRwYj:last-child{padding-right:0;}
+/* sc-component-id: header__StyledAnchor-ehg0ch-6 */
+.caORiI{color:inherit;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-transition:color 0.1s ease-in-out;transition:color 0.1s ease-in-out;padding:0 8px;}
+/* sc-component-id: layout__StyledMain-ccgz52-0 */
+.dMeVCf{margin-left:auto;margin-right:auto;padding:4rem 1rem 0;min-height:calc(100% - 6.125rem);} @media screen and (min-width:1200px){.dMeVCf{width:65%;}}
+/* sc-component-id: layout__StyledFooter-ccgz52-1 */
+.eVlgNw{padding:0 1rem 1rem;margin-left:auto;margin-right:auto;} @media screen and (min-width:1200px){.eVlgNw{width:65%;}}
+/* sc-component-id: tag__StyledLink-sc-3nz3a9-0 */
+.iHkcoF{text-align:center;color:#fff;margin-right:0.5rem;padding:0.25rem 0.5rem;display:inline-block;border-radius:0.875rem;height:1rem;overflow:hidden;text-overflow:ellipsis;line-height:1rem;-webkit-transition:opacity 0.1s ease-in-out;transition:opacity 0.1s ease-in-out;background:#74d2ff;margin-top:0.5rem;} .iHkcoF:hover{opacity:0.85;}
+/* sc-component-id: tag__StyledPre-sc-3nz3a9-1 */
+.eMzzfH{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;border-top:1px solid #74d2ff;padding-top:0.5rem;}
+/* sc-component-id: tag__StyledLabel-sc-3nz3a9-2 */
+.cpRIIU{margin-top:0.5rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}</style><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmEU9fBBc4.woff2"/><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fBBc4.woff2"/><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfBBc4.woff2"/><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/google-fonts/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2"/><style type="text/css">@font-face{font-family:Roboto;font-style:normal;font-weight:300;src:local('Roboto Light'),local('Roboto-Light'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fBBc4.woff2) format('woff2'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fBBc-.woff) format('woff');font-display: swap;}@font-face{font-family:Roboto;font-style:normal;font-weight:400;src:local('Roboto'),local('Roboto-Regular'),url(/google-fonts/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2) format('woff2'),url(/google-fonts/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxM.woff) format('woff');font-display: swap;}@font-face{font-family:Roboto;font-style:normal;font-weight:500;src:local('Roboto Medium'),local('Roboto-Medium'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmEU9fBBc4.woff2) format('woff2'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmEU9fBBc-.woff) format('woff');font-display: swap;}@font-face{font-family:Roboto;font-style:normal;font-weight:700;src:local('Roboto Bold'),local('Roboto-Bold'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfBBc4.woff2) format('woff2'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfBBc-.woff) format('woff');font-display: swap;}</style><link as="script" rel="preload" href="/component---src-templates-blog-post-tsx-d733e0923a0e8bbec832.js"/><link as="script" rel="preload" href="/commons-b5776895d13e85cc11fe.js"/><link as="script" rel="preload" href="/app-82c298cec2200b6adb16.js"/><link as="script" rel="preload" href="/styles-447e9c36d03d3302a739.js"/><link as="script" rel="preload" href="/webpack-runtime-14c525c1153bf481baf0.js"/><link as="fetch" rel="preload" href="/page-data/build-crawler-with-nextjs-and-heroku/page-data.json" crossorigin="anonymous"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group" id="gatsby-focus-wrapper"><div style="height:100%"><header class="header__StyledHeader-ehg0ch-0 gbMHrA"><span class="header__StyledHeaderContainer-ehg0ch-1 ggczkX"><a class="header__StyledLink-ehg0ch-3 cKBlNu" href="/"><img src="data:image/png;base64,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" alt="logo" class="header__StyledLogo-ehg0ch-4 bnDyRh"/>学习随笔</a><nav class="header__StyledNav-ehg0ch-2 BYIyc"><a class="header__StyledLink-ehg0ch-3 header__StyledMenu-ehg0ch-5 ftRwYj" href="/tags">标签</a><a href="https://keisei.now.sh/" target="blank" class="header__StyledAnchor-ehg0ch-6 caORiI">疫情数据</a><a class="header__StyledLink-ehg0ch-3 header__StyledMenu-ehg0ch-5 ftRwYj" href="/about">关于</a></nav></span></header><main class="layout__StyledMain-ccgz52-0 dMeVCf"><article><header><h1 style="margin-bottom:0">使用 Next.js + Puppeteer + heroku 构建爬虫 Web APP</h1><p style="display:block">March 08, 2020</p></header><section><h3>背景</h3>
+<p>我之前每天都会去腾讯新闻页面上去关注有关疫情发展的当日的数据状况，久而久之就感觉该页面不够精简，而且路径过长，需要二次点击才能看到主页面。那么就干脆直接去拿他们的数据来自己做个<a href="https://small-ideas.herokuapp.com/">页面</a>好了，仓库地址：。
+目前没有 UI，只是简单排了序。后续根据心情在做样式上的改进吧。</p>
+<h3>前期分析</h3>
+<p>当我开始想要去获取腾讯的数据时，首先在疫情动态主页面<a href="https://xw.qq.com/act/qgfeiyan">https://xw.qq.com/act/qgfeiyan</a>上看了一下浏览器请求，找了一小会发现地图、列表所渲染的数据并不是通过异步的 Ajax 请求的。由于地图用的是 echarts 渲染的，这肯定不是服务端渲染的，所以数据一定藏在某个地方。那么可以尝试通过全局搜索该页面上的唯一数值，如果没有找到，就有可能是在某个文件请求返回的。</p>
+<p>经过逐个排查，终于找到原来是通过 JSONP 方式请求的数据<a href="https://view.inews.qq.com/g2/getOnsInfo?_t=0.12532683853215&#x26;name=disease_h5&#x26;callback=__jpcb1">https://view.inews.qq.com/g2/getOnsInfo?_t=0.12532683853215&#x26;name=disease<em>h5&#x26;callback=\</em>_jpcb1</a>，可以看到通过这种方式解决了跨域问题：
+<span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 50.69565217391304%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABcUlEQVQoz5VR2ZKCMBDk/z/Lh63ygPUA5Q4oKLdcC4hH7ySWW/uoqerqTGbSmfRIB1+Fa3/DsWRYxhy2KcO1FMGWsXjGlOesb6cw9TmYsxQ5vk8iC3V5QHXeoyx8SC7zsdsZUNUtlqsNNhsNqrYTvF5rgjWK+dlstsCUoOsmNlSvKCswut+2HermB1XVQPI8BsPQKcHguq4AY5wduI4jYs/zRN62bTiODX6H19i2hf3eR5omSJIERZFDyrIM4fGIlDg/n+mlBt0woCd0fY++73C/33G73QT/33O+XC4YqJbz9XolQVIOqYPQ93Hakw9pioFEb12HgVBVFT5ZUrBVoU8mMKdTMFkGU5Qnvr5wUFVkeS4KH4/HW5CS+ISQfIrIozwIBMo4RlWWqOuavtz/Cb7VYZbGCMIAWVGg534QRvKC+zOOo/DnM8EsRUBdHcOQppUKkRdehn8kmJNHIYlFUSRGX9JXGxpK27ZiIB0N5hPBX1w49WvE5U0fAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="jsonp"
+        title="jsonp"
+        src="/static/0e239e2e2084b8504794b4093c41dbca/799d3/jsonp.png"
+        srcset="/static/0e239e2e2084b8504794b4093c41dbca/00d96/jsonp.png 148w,
+/static/0e239e2e2084b8504794b4093c41dbca/0b23c/jsonp.png 295w,
+/static/0e239e2e2084b8504794b4093c41dbca/799d3/jsonp.png 590w,
+/static/0e239e2e2084b8504794b4093c41dbca/2a3d6/jsonp.png 885w,
+/static/0e239e2e2084b8504794b4093c41dbca/c112d/jsonp.png 1150w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+    </span></p>
+<p>注意截图中的_t 参数为类似时间戳的数据，callback 为回调函数。由于我们只是需要他返回的数据，而不关心回调函数的执行，所以我索性去掉了 callback 参数，发现该请求仍能返回数据，并且是 json 格式！正好符合了我们的预期。</p>
+<h3>搭建应用</h3>
+<p>有了接口，那么开发页面就是信手拈来的事情。在之前曾经了解过 <a href="https://nextjs.org/">Next.js</a> 这个 React SSR 框架，并且了解到该公司还免费部署个人应用，并提供免费的域名使用。于是就开始了轻松的开发之旅。</p>
+<p>Next.js 提供了一个页面渲染前先获取初始化数据的 API：<a href="https://nextjs.org/docs/api-reference/data-fetching/getInitialProps">getInitialProps</a>，该函数会在 nodejs 环境下运行，把请求的数据通过 props 的方式注入到调用该 API 的组件内。</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> fetch <span class="token keyword">from</span> <span class="token string">'isomorphic-unfetch'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">Page</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> stars <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token operator">&lt;</span>div<span class="token operator">></span>Next stars<span class="token punctuation">:</span> <span class="token punctuation">{</span>stars<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+Page<span class="token punctuation">.</span><span class="token function-variable function">getInitialProps</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token parameter">ctx</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> res <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'https://api.github.com/repos/zeit/next.js'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> json <span class="token operator">=</span> <span class="token keyword">await</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> stars<span class="token punctuation">:</span> json<span class="token punctuation">.</span>stargazers_count <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> Page<span class="token punctuation">;</span></code></pre></div>
+<p>来自官网的例子，通过几行代码我们就可以拿到需要的数据，然后简简单单的做个表格就可以直观看到疫情发展啦。</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 468px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/87d947a455f5ea1138770fc6e65cae37/45d15/snapshot.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 164.74358974358975%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAhCAYAAADZPosTAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAD10lEQVRIx51WaW/iVhTl/0uVqkbTL/OlnTaTmUzV9he0naqTsIcQsoB3491mMYuNFzi975khkFBh1eKA/aR3OHc597liC28QWm8Rmm+hP3xH+AZj4yMs24asmRBlFQNRhqjokBQNT30JgqRC1Q1MwgXmyxgzQjiPMCVUltYZJvoZAvUMkf0GY/Vbuv8eofMRU+McrnZBf3gBX/sZtnxOa+8x0s/5fWBcYmxeYkS/C/83RP4nVNLxrwjtXxAMPyGb/I6ZfQlDeIeZ8wGR+x4+bV4FRG4ywnf8fulewJF/oucf4RIs8QfM3UvE3gUqU5LtBwEc14MXTBCvUvzfa0OoKIqEavUKnz//jW63C8/zEMURfN9HGE4xGY8wnU4xHo8xGgXI85xv3Wxeg75QkSQR19Uqrr5coXZdRf/xCYIgwjBMIhjBc124BI/+IKBIsiwr1GyOk5JCGXf395BlGQ+Pj1CoqpblIMvXWK83yAn0IdUxkvSZ7L+uiigI6PbuD/Kwpg0pbWZI0pTCXGNE6vxgfKDuKKEkyajVmljGK8SEiP8mVJxnrJIUi2WEyTQ8TWgMTXRu73g4haICjOQr2Ho4m8MflVBomCb6g8FWWYwoirAiVRlVkyPLeS6Z+jCcnSaUZQn1Rgvtmy5arTZuWh30+yIWUczV8bCJjIWcvqjwUUKB1FWbrSJUIkj2QmVg61G0xIBayfVGpwn7VOUGKdN0kxTkRRG2YPcJz98MDw+PGE9KFEVVFHQ6t6Qs4y7I9rHN33K5JMIHau4SCjVNR6vT4R5e7bXJLmSWR8qhJEoIRpPThAOBcthoFM7YgCN90TYMiqIS4fQ0oUjDs31zC5Ps1rvv4a7b47liuSvyWSh/eurDcrwSbaOqaNTb3MN+4MMyLWqRmNuNtQnLI4NMuXZcv4xCAf98uaamnfMF5mNGwDycbL3MniUaHo5XglDTh+hSqDzEIz4uipRQUWSKoEyVdR0CqUz2fHyIQqFKRXG9oIz1ZBpfvV3fHUNOUCiHrl+CcEDWa1IfJmn+KtSvSEmlTApNu0SVVVWnaSOSG6JXPn4eXylUTaNDrMT4Gho66rU6hsPCy6sXTmHIMlJI7WWXahuaIq3WDXdI9tLLW6zXOdjcLOWUAc2+6nUdMVOzSg+mzWqXwwT6UIdXxsuSrNC5XKMcGdzPr0MuprdLLwKl2kZRNTrg73YExxXm9ALglzv1HMflfdhstzCbL3bW25+JbC8/9Ms4hfVXvdnElA6g5fYc2Q+bKWSktu2UGw6ypOCvP/6kKlp8OidJemg9embrlmXTO6N7kvBfBrXjjTmNlW0AAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="snapshot"
+        title="snapshot"
+        src="/static/87d947a455f5ea1138770fc6e65cae37/45d15/snapshot.png"
+        srcset="/static/87d947a455f5ea1138770fc6e65cae37/00d96/snapshot.png 148w,
+/static/87d947a455f5ea1138770fc6e65cae37/0b23c/snapshot.png 295w,
+/static/87d947a455f5ea1138770fc6e65cae37/45d15/snapshot.png 468w"
+        sizes="(max-width: 468px) 100vw, 468px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<h3>新的挑战</h3>
+<p>上线几天后，发现国内的数据是每日更新的，但是国外的数据却停留在了某一天。感觉腾讯耍了一点小心机。于是我投身另一平台：丁香园疫情动态页面<a href="https://ncov.dxy.cn/ncovh5/view/pneumonia_peopleapp?from=timeline&#x26;isappinstalled=0">https://ncov.dxy.cn/ncovh5/view/pneumonia_peopleapp?from=timeline&#x26;isappinstalled=0</a>。该页面也是类似腾讯展示了国内和国外的疫情发展状况。而我所需要的数据正是国外的数据，那么对丁香园的页面，我们有需要重新去查找他们的数据来源情况。</p>
+<p>经过一番查找，发现该页面既没有通过 Ajax 请求，也没有通过 JSONP 的方式，最终确认数据是服务端直接输出到 html 中了。</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/25a7eacbca90ed8930609d229f77cd97/1d346/dingxiang.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 63.399693721286376%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAACnUlEQVQ4y42Tu8/cRBTF/bfRUIOEKNJEJEgUKKn5n5AQkSJEgShQGiqKILJf9tuX1+/XeB6eGXuXH9eGQIulK1vjmTPnnHtuorWlKHvKStG2mrzoyYqOrlMopRjHEecctfxP046iGDieOg7ngbrWdL1hVIZpctu+5PsfIp88ufH0qxsff3bn6fOC518ceP3jCMyEEPE+0Oct5TknP5UU+5T2lKI6jdUOH2fmWfbGQPLd64XPn8GXL+589Cm8fOH45uuONz+vgMsGGJcbLi/p/3iPenigE2B1LYn5FXvKmMqGxVn8qEn6IfBu53j/qNgfRq7pQH5VaOW2W6PUPHlClmPzejtsxBJbNPiqxjYad62Ys6sAWpJZaC5mxBgjbMSrdqAdDD4IWFzZLUStCXLYXXNMWmKFnctKfCHVKoKLApgRR0MSQmDQ4tHgMXZCmShN6RnFm2Vl+A+gL+sNzKUZgzRHpxWTsFa5wkpjYp4zXTJhKAdMIehGM7YFS/T0dcmyAq0MV8lyaThfMOcMI7JtVm2e+qrCC1gwnkUNeFlLltvCmGeyaFASkTBHCtX/Byg13++EsmJ8+w53OKLPxebnKtk2I5NYFNN02yOSF06nlrqxnFPFRWi3dSdRuDF/ABTwRUveziXTCrg7Yh4O+MdHxt0JJ8yXuhJrxMPJ39ntO9JMbYB1YyTo3ZapDUwkT9LlsmhxMgSTdds7iN9Bvv22Nm1ZDJLXxE2RXKag6S3HLPLtT5pXv8j0NJ77bfVQMmhlQq6/o/ozY38SBXv69kLfpVIXynwvUdvR1MdVcpQuz4zS3bScePOb5te3VqLjud3W6KxTEOA+yQXrJfJeJknA3zVH9+/3WsksTVjmVVrkz/u8TcdaH8BW2WuD/u/zF1Fs0zqXwAF2AAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="dingxiang"
+        title="dingxiang"
+        src="/static/25a7eacbca90ed8930609d229f77cd97/799d3/dingxiang.png"
+        srcset="/static/25a7eacbca90ed8930609d229f77cd97/00d96/dingxiang.png 148w,
+/static/25a7eacbca90ed8930609d229f77cd97/0b23c/dingxiang.png 295w,
+/static/25a7eacbca90ed8930609d229f77cd97/799d3/dingxiang.png 590w,
+/static/25a7eacbca90ed8930609d229f77cd97/2a3d6/dingxiang.png 885w,
+/static/25a7eacbca90ed8930609d229f77cd97/ae92f/dingxiang.png 1180w,
+/static/25a7eacbca90ed8930609d229f77cd97/1d346/dingxiang.png 1306w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>那么这种直接写在 html 中的数据该如何获取呢？</p>
+<p>我考虑了几种方式：</p>
+<ul>
+<li>获取 html 的 text 文本然后通过正则匹配</li>
+<li>通过<a href="https://github.com/cheeriojs/cheerio">cheerio</a>来根据 script 标签来获取</li>
+<li>使用无头浏览器直接访问该 html</li>
+</ul>
+<p>正则匹配比较原始，而且应该会有性能问题，暂不考虑。cheerio 以类似 jQuery 的方式来获取节点，我有做过尝试但是感觉不够新颖，因此也未继续实践。
+正巧之前也关注过无头浏览器相关的概念，即在服务端运行一个没有界面的浏览器，业内最知名的应该是<a href="https://phantomjs.org/">phantomjs</a>。<a href="https://pptr.dev/">Puppeteer</a>最近是越来越火，毕竟谷歌家的东西比较有保障，所以采用了 Puppeteer 来跑丁香园的页面。</p>
+<p>// TODO: nextjs serverless 编译为函数，不支持 custom server</p>
+<p>// 寻求 heroku，并安装 <a href="https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz">https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz</a></p>
+<p>// TODO: cross-env</p>
+<p>// sentry</p>
+<h3>将来打算</h3>
+<p>希望能把后端独立出一个仓库，这样前后端可以分开部署。</p>
+<p><a href="http://heroku.com/">heroku</a></p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Crawler">Crawler</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Next.js">Next.js</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Puppeteer">Puppeteer</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/fixing-memory-leaks-in-web-app/">处理 Web 应用中的内存泄露问题<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
+  
+  
+  if(true) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  }
+  if (typeof ga === "function") {
+    ga('create', 'UA-106134976-2', 'auto', {});
+      
+      
+      
+      
+      
+      }</script><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/build-crawler-with-nextjs-and-heroku/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-82c298cec2200b6adb16.js"],"component---node-modules-gatsby-plugin-offline-app-shell-js":["/component---node-modules-gatsby-plugin-offline-app-shell-js-87ef582ba388a83f73c0.js"],"component---src-templates-all-tags-tsx":["/component---src-templates-all-tags-tsx-1c287b9dde7e13c34220.js"],"component---src-templates-single-tag-tsx":["/component---src-templates-single-tag-tsx-962057ed4cc0143466d4.js"],"component---src-templates-blog-post-tsx":["/component---src-templates-blog-post-tsx-d733e0923a0e8bbec832.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-f77e3ef8b10792e4ceaf.js"],"component---src-pages-about-tsx":["/component---src-pages-about-tsx-c7b393f86bb409312d16.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-cfc16755786314b67d27.js"],"component---src-pages-timeline-tsx":["/component---src-pages-timeline-tsx-ba5c3fdea2df329721da.js"]};/*]]>*/</script><script src="/webpack-runtime-14c525c1153bf481baf0.js" async=""></script><script src="/styles-447e9c36d03d3302a739.js" async=""></script><script src="/app-82c298cec2200b6adb16.js" async=""></script><script src="/commons-b5776895d13e85cc11fe.js" async=""></script><script src="/component---src-templates-blog-post-tsx-d733e0923a0e8bbec832.js" async=""></script></body></html>
