@@ -85,7 +85,7 @@ function Header(props: HeaderProps) {
         </StyledMenu> */}
           <StyledAnchor
             isScrolled={isScrolled}
-            href="https://keisei.now.sh/"
+            href="https://small-ideas.herokuapp.com/"
             target="blank"
           >
             疫情数据
