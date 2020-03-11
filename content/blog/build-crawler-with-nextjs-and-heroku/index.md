@@ -7,7 +7,7 @@ tags: ['Crawler', 'Next.js', 'Puppeteer']
 
 ### 背景
 
-我之前每天都会去腾讯新闻页面上去关注有关疫情发展的当日的数据状况，久而久之就感觉该页面不够精简，而且路径过长，需要二次点击才能看到主页面。那么就干脆直接去拿他们的数据来自己做个[页面](https://small-ideas.herokuapp.com/)好了，仓库地址：。
+我之前每天都会去腾讯新闻页面上去关注有关疫情发展的当日的数据状况，久而久之就感觉该页面不够精简，而且路径过长，需要二次点击才能看到主页面。那么就干脆直接去拿他们的数据来自己做个[页面](https://keisei.now.sh/)好了，仓库地址：前端[https://github.com/keisei77/small-ideas.git](https://github.com/keisei77/small-ideas.git)，后端[https://github.com/keisei77/micro-backend.git](https://github.com/keisei77/micro-backend.git)。
 目前没有 UI，只是简单排了序。后续根据心情在做样式上的改进吧。
 
 ### 前期分析
