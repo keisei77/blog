@@ -1,4 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 11 Mar 2020 12:25:23 GMT</lastBuildDate><item><title><![CDATA[使用 Next.js + Puppeteer + heroku 构建爬虫 Web APP]]></title><description><![CDATA[背景 我之前每天都会去腾讯新闻页面上去关注有关疫情发展的当日的数据状况，久而久之就感觉该页面不够精简，而且路径过长，需要二次点击才能看到主页面。那么就干脆直接去拿他们的数据来自己做个页面好了，仓库地址：前端https://github.com/keisei77/small…]]></description><link>https://www.keisei.top/build-crawler-with-nextjs-and-heroku/</link><guid isPermaLink="false">https://www.keisei.top/build-crawler-with-nextjs-and-heroku/</guid><pubDate>Sun, 08 Mar 2020 22:46:00 GMT</pubDate><content:encoded>&lt;h3&gt;背景&lt;/h3&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 12 Mar 2020 13:21:17 GMT</lastBuildDate><item><title><![CDATA[高性能前端架构]]></title><description><![CDATA[本文来介绍一些能够使 Web…]]></description><link>https://www.keisei.top/performant-frontend-architecture/</link><guid isPermaLink="false">https://www.keisei.top/performant-frontend-architecture/</guid><pubDate>Thu, 12 Mar 2020 21:02:00 GMT</pubDate><content:encoded>&lt;p&gt;本文来介绍一些能够使 Web 应用加载更快，用户体验更好的技术。&lt;/p&gt;
+&lt;p&gt;从整个前端架构来看，如何能够第一时间加载最需要的资源，最大化利用已经缓存过的资源？&lt;/p&gt;
+&lt;p&gt;在此我们不会阐述过多如何优化渲染时间以及后端应如何分发资源。&lt;/p&gt;
+&lt;h3&gt;概览&lt;/h3&gt;
+&lt;p&gt;我们将应用的加载分为三个不同的阶段：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;初始化渲染 - 在用户看到任何画面之前需要加载多长时间？&lt;/li&gt;
+&lt;li&gt;应用加载 - 在用户能够使用之前需要加载多长时间？&lt;/li&gt;
+&lt;li&gt;下一页 - 在跳转到下一页时需要加载多长时间？&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/1013e5a81986030631b526b79fec099b/16662/performant-front-end-architecture.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 76.61900756938603%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAYAAADkmO9VAAAACXBIWXMAAAsSAAALEgHS3X78AAADMUlEQVQ4y12TTW/jVBSGu2MLC8SKpvGN7ThxHDt27PgjSRM7dpp+JOnnpE3TJGSatFMJhmEQGoHECglpVvwDdoxYsoI9K/4LErBi9XKuE6aIxaNzzq366D0311tMKUOzXBh2gHLVT+HzunrQ6dxwgrQXiwZyBf0t7H/kyLXFhV6zg7B7iFa8j0bYRTs5QEi0Or20xr0+2vQ3/g+CXKKqgeU15P4LPyNpKmSVAJa3i6AVQ6d0As360QSl3iW0/asNl6gOZ1C6IwjhKVh0BhZyqO9cgHlJKk6FolqBfPwAZfUa4tESSn0P/uILeNPPEMw/hz97CX/+Eu70BcTBLbKHC7D+U7AjDvXDFVhrSMIStnKb3d8zu3jHPce7eoRCvUsSkt08hzv5BMH005TiyRLyYAGpT5LDOTEDO5itpc3+o5DfB5NVSEoJYr4I2QlhDRewBjOY/RnVOUzqK5veOJoi2z6ndWnVkGo0AnO7jyvnqzVYbh0F3cY2K0C0bKhxhGLUhtoJUQhbUKMwpURzOe6k59nAA2v4lC4As531ryxSwkzJwOjjL/Hzr7/h629eQ2rU4T9M4d9N0Hg2Q/1+Cm81SQmo53Pj2RTq5ATZsz0IowMI8e46oaQa+GBbwsnDV/j9j7/w5oc3yAU+grsbuIurNU+vUFtcpvDZ+WhE/RWkCxKddCGc9yBEzceV+T3ypLwXRBXKbhPOcowaiWySeMtrmPMLVEnk3o7hU9LieIid0y7YGcme7NPT2STkMoGL+HvkUlmDVKd3Ob2AeX2GyvUpzMk5LILP2UGM7DDBziBBhvpMv4PMcYJsq07CzZdSLllQaHVBKuBDlodarKCuu6gbXkpQrr2tnuagVrRgSTrsfAXVvAGHKCsGBdoI1YKB49sXePXd9zhePkdQsPDg7eHe72HpJFjVEtzTvHRi3NHzWFEdyzWMBBNPiHHWREesIMuFMiV7PyPh5tW3+PNv4MeffoGmmtgLOuh4IWKvjdiPkNAc+3wOEdFZQBtUZZ0wYBNaXl8nTO+QLrNoutiNEtheE5JmokjfdN6wUaCqVJy0l/ls1iBqFrbpq9ghwb/wdDlFxz9zOgjg7n6LpgAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;performant frontend architecture&quot;
+        title=&quot;performant frontend architecture&quot;
+        src=&quot;/static/1013e5a81986030631b526b79fec099b/799d3/performant-front-end-architecture.png&quot;
+        srcset=&quot;/static/1013e5a81986030631b526b79fec099b/00d96/performant-front-end-architecture.png 148w,
+/static/1013e5a81986030631b526b79fec099b/0b23c/performant-front-end-architecture.png 295w,
+/static/1013e5a81986030631b526b79fec099b/799d3/performant-front-end-architecture.png 590w,
+/static/1013e5a81986030631b526b79fec099b/2a3d6/performant-front-end-architecture.png 885w,
+/static/1013e5a81986030631b526b79fec099b/ae92f/performant-front-end-architecture.png 1180w,
+/static/1013e5a81986030631b526b79fec099b/16662/performant-front-end-architecture.png 2378w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[使用 Next.js + Puppeteer + heroku 构建爬虫 Web APP]]></title><description><![CDATA[背景 我之前每天都会去腾讯新闻页面上去关注有关疫情发展的当日的数据状况，久而久之就感觉该页面不够精简，而且路径过长，需要二次点击才能看到主页面。那么就干脆直接去拿他们的数据来自己做个页面好了，仓库地址：前端https://github.com/keisei77/small…]]></description><link>https://www.keisei.top/build-crawler-with-nextjs-and-heroku/</link><guid isPermaLink="false">https://www.keisei.top/build-crawler-with-nextjs-and-heroku/</guid><pubDate>Sun, 08 Mar 2020 22:46:00 GMT</pubDate><content:encoded>&lt;h3&gt;背景&lt;/h3&gt;
 &lt;p&gt;我之前每天都会去腾讯新闻页面上去关注有关疫情发展的当日的数据状况，久而久之就感觉该页面不够精简，而且路径过长，需要二次点击才能看到主页面。那么就干脆直接去拿他们的数据来自己做个&lt;a href=&quot;https://keisei.now.sh/&quot;&gt;页面&lt;/a&gt;好了，仓库地址：前端&lt;a href=&quot;https://github.com/keisei77/small-ideas.git&quot;&gt;https://github.com/keisei77/small-ideas.git&lt;/a&gt;，后端&lt;a href=&quot;https://github.com/keisei77/micro-backend.git&quot;&gt;https://github.com/keisei77/micro-backend.git&lt;/a&gt;。
 目前没有 UI，只是简单排了序。后续根据心情在做样式上的改进吧。&lt;/p&gt;
 &lt;h3&gt;前期分析&lt;/h3&gt;
