@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 13 Mar 2020 14:00:52 GMT</lastBuildDate><item><title><![CDATA[高性能前端架构]]></title><description><![CDATA[本文来介绍一些能够使 Web…]]></description><link>https://www.keisei.top/performant-frontend-architecture/</link><guid isPermaLink="false">https://www.keisei.top/performant-frontend-architecture/</guid><pubDate>Thu, 12 Mar 2020 21:02:00 GMT</pubDate><content:encoded>&lt;p&gt;本文来介绍一些能够使 Web 应用加载更快，用户体验更好的技术。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 14 Mar 2020 06:36:32 GMT</lastBuildDate><item><title><![CDATA[高性能前端架构]]></title><description><![CDATA[本文来介绍一些能够使 Web…]]></description><link>https://www.keisei.top/performant-frontend-architecture/</link><guid isPermaLink="false">https://www.keisei.top/performant-frontend-architecture/</guid><pubDate>Thu, 12 Mar 2020 21:02:00 GMT</pubDate><content:encoded>&lt;p&gt;本文来介绍一些能够使 Web 应用加载更快，用户体验更好的技术。&lt;/p&gt;
 &lt;p&gt;从整个前端架构来看，如何能够第一时间加载最需要的资源，最大化利用已经缓存过的资源？&lt;/p&gt;
 &lt;p&gt;在此我们不会阐述过多如何优化渲染时间以及后端应如何分发资源。&lt;/p&gt;
 &lt;h3&gt;概览&lt;/h3&gt;
@@ -223,7 +223,189 @@ self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class
     &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;查看更多关于&lt;a href=&quot;https://developers.google.com/web/ilt/pwa/caching-files-with-service-worker&quot;&gt;通过 service worker 预加载和缓存资源&lt;/a&gt;。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[使用 Next.js + Puppeteer + heroku 构建爬虫 Web APP]]></title><description><![CDATA[背景 我之前每天都会去腾讯新闻页面上去关注有关疫情发展的当日的数据状况，久而久之就感觉该页面不够精简，而且路径过长，需要二次点击才能看到主页面。那么就干脆直接去拿他们的数据来自己做个页面好了，仓库地址：前端https://github.com/keisei77/small…]]></description><link>https://www.keisei.top/build-crawler-with-nextjs-and-heroku/</link><guid isPermaLink="false">https://www.keisei.top/build-crawler-with-nextjs-and-heroku/</guid><pubDate>Sun, 08 Mar 2020 22:46:00 GMT</pubDate><content:encoded>&lt;h3&gt;背景&lt;/h3&gt;
+&lt;p&gt;查看更多关于&lt;a href=&quot;https://developers.google.com/web/ilt/pwa/caching-files-with-service-worker&quot;&gt;通过 service worker 预加载和缓存资源&lt;/a&gt;。&lt;/p&gt;
+&lt;h3&gt;APP 加载&lt;/h3&gt;
+&lt;p&gt;现在用户能看到一些画面，还需要做其他一些事情才能使用应用：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;加载应用代码（JS 和 CSS）&lt;/li&gt;
+&lt;li&gt;加载页面必需的数据&lt;/li&gt;
+&lt;li&gt;加载额外的数据和图片&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/175e7f810d7e33f9647203ad609b402f/e5b7c/app-load-stages.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 26.350245499181668%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAFCAYAAABFA8wzAAAACXBIWXMAAAsSAAALEgHS3X78AAABNklEQVQY0zWQTUvDQBCG8/f0rv9ALyIeFfWmF9GTUtBSaOmp1OLBbxSkVigollDrpfWipaJtssnme5M0+zrZ4sDsMPO8M7O72pdhozdi+Jg4GIw53r8Z7EAgt5zpQwODnJH3RiZMN1BsSKzzOaaeGcv7Jo4Pba1Qw1m7q0RpJiEpxklKp8RGsYHC+SMikcDyQpjk3MsHTrFXu8H6SUPlnC7wYzIY3Ia2dFDFymEdt699nLa6qDV19Ie/NC/B8n4ZpYumWialVDGOY6SRj+1SA6tHdfzbVPgQkQeteveC+a0iFnYqWNytYG7zGA96X4nK1y3cP7+ROkUQhoiiCELEil21dVw+dSCJhVQPPJd4CE1tDX2EngOXW8iS2f9lWaai63AwxpRblqXq/0zQEkY1wzBg21y94g/PzGmMuKqysQAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;app load stages&quot;
+        title=&quot;app load stages&quot;
+        src=&quot;/static/175e7f810d7e33f9647203ad609b402f/799d3/app-load-stages.png&quot;
+        srcset=&quot;/static/175e7f810d7e33f9647203ad609b402f/00d96/app-load-stages.png 148w,
+/static/175e7f810d7e33f9647203ad609b402f/0b23c/app-load-stages.png 295w,
+/static/175e7f810d7e33f9647203ad609b402f/799d3/app-load-stages.png 590w,
+/static/175e7f810d7e33f9647203ad609b402f/e5b7c/app-load-stages.png 611w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;注意并不是只有从网络请求数据会延迟渲染。一旦代码加载，浏览器需要解析，编译并执行。&lt;/p&gt;
+&lt;h4&gt;代码分离：只加载必要的代码，最大化命中缓存&lt;/h4&gt;
+&lt;p&gt;代码分离允许当前页面只加载必需的代码而不是整个应用代码。代码分离也意味着每部分都是可以被缓存的，尽管其他部分可能是已经改变的，需要重新加载。&lt;/p&gt;
+&lt;p&gt;典型的，代码分割为三种不同类型的文件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;指定页面的代码&lt;/li&gt;
+&lt;li&gt;共享的应用代码&lt;/li&gt;
+&lt;li&gt;第三方不经常变化的模块（更适合缓存）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Webpack 可以通过 &lt;a href=&quot;https://webpack.js.org/plugins/split-chunks-plugin/&quot;&gt;optimization.splitChunks&lt;/a&gt; 自动分割共享的代码来减少总文件体积。确保开启运行时 chunk 这样 chunk 哈希值就是稳定的，可以更长久地缓存。Ivan Akulov 有一篇&lt;a href=&quot;https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching&quot;&gt;深入介绍代码分割和缓存的教程&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;对于页面特定的代码没有办法自动分割，需要指定哪些可以分开加载。通常是一个特别的路由或页面的集合。&lt;a href=&quot;https://webpack.js.org/guides/code-splitting/#dynamic-imports&quot;&gt;使用动态 import 来惰性加载代码。&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;代码分割会造成加载应用时发送更多的请求。但只要这些请求是并行的，就不是太大的问题，尤其是通过 HTTP/2 托管的。可以看下面瀑布流前三个请求：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/9958167144c54dc634d1b7daa03077e3/4abbd/bundle-splitting-synchronous.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 24.486803519061585%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAFCAYAAABFA8wzAAAACXBIWXMAAAsSAAALEgHS3X78AAABIElEQVQY0yWQ2XKCQBBF/f8vyg8kVJTCuCACKsYhYR9lGxYfTsbJQ1dXd906ffsumqZlGAaUUozjyDzPPJ9PU7JuSPOMVrbIqqBXWjdOWj8abd/3ug/c7z1NrZjmiYUQv6zXDpvNhsvlwna7ZbfbcTwc+PID/FOAvJZ8uA77pY2MzojblbwojYlBdeRpT1W9DCkWaVbg+0fCMCRJEoIgMNBXT/Vs3EyKsoqQpaAIV0TuijiODXDSn+T5iJTDPzBJclx3r8s1ohfY8zx9xOcmBG3XofqO+v5N02QUsY88f1KHFj+nM5k4ksUlWfZg6DQwugpse4XjOOZl27axLMtEEEURTdvStQ8e8qYzUya3tqnp9KFC+OTbN9zlOwcvoNe7P7CcccC0CVKYAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;bundle splitting synchronous&quot;
+        title=&quot;bundle splitting synchronous&quot;
+        src=&quot;/static/9958167144c54dc634d1b7daa03077e3/799d3/bundle-splitting-synchronous.png&quot;
+        srcset=&quot;/static/9958167144c54dc634d1b7daa03077e3/00d96/bundle-splitting-synchronous.png 148w,
+/static/9958167144c54dc634d1b7daa03077e3/0b23c/bundle-splitting-synchronous.png 295w,
+/static/9958167144c54dc634d1b7daa03077e3/799d3/bundle-splitting-synchronous.png 590w,
+/static/9958167144c54dc634d1b7daa03077e3/4abbd/bundle-splitting-synchronous.png 682w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;然而瀑布流中也有 2 个请求是顺序发起的。这些文件是该页面需要的，通过 import()调用动态加载的。&lt;/p&gt;
+&lt;p&gt;如果知道哪些 chunks 是需要的，可以通过插入&lt;a href=&quot;https://www.debugbear.com/blog/resource-hints-rel-preload-prefetch-preconnect#preload&quot;&gt;预加载 link 标签&lt;/a&gt;来解决。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/9552cfefcbb751b50e378a0834320b73/cef4e/bundle-splitting-parallel.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 22.919708029197082%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAFCAYAAABFA8wzAAAACXBIWXMAAAsSAAALEgHS3X78AAABLUlEQVQY0yWQy3KCQBBF+f8fsiqVTRZmkSgKiC9QBERxVBQBZ0CrTlqz6JrpRZ8691pVVWGMQWtN27Z0Xcfj8eApcylvqOJMfS7lb1DXK5eLons80V2LNu371hgt94bq1mLFScZoZOM4Duv1Gs/zmEwmTH0fd77EiwKKRcru0LDKMnqDL8LxmCJIyLMIpRR1U1NVd1SusfLDkeVySRiG7HY7FosFvsCCIGAveycWujO08t5qRao8yiLnGHkot8dm+st2u6WSNKeDwcqyXKzcNyRJkjd8Npsxn8+JZW+ahruMvhsuN0WuXLE5sI/GpP43e/eDzPvkOP0hCXOsaJMyHA4YS4xXZNu26ff7UsOIOI55dVzXNU19lx7/gWWZckrFMLQ5rwakAnMcEYqv/AHTwW+1p+yFXQAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;bundle splitting parallel&quot;
+        title=&quot;bundle splitting parallel&quot;
+        src=&quot;/static/9552cfefcbb751b50e378a0834320b73/799d3/bundle-splitting-parallel.png&quot;
+        srcset=&quot;/static/9552cfefcbb751b50e378a0834320b73/00d96/bundle-splitting-parallel.png 148w,
+/static/9552cfefcbb751b50e378a0834320b73/0b23c/bundle-splitting-parallel.png 295w,
+/static/9552cfefcbb751b50e378a0834320b73/799d3/bundle-splitting-parallel.png 590w,
+/static/9552cfefcbb751b50e378a0834320b73/cef4e/bundle-splitting-parallel.png 685w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;然而可以看到这与整个页面加载的时长比较来看收益不是太大。&lt;/p&gt;
+&lt;p&gt;而且，使用预加载有时候适得其反，它会延迟其它更重要的文件加载。有一篇&lt;a href=&quot;https://andydavies.me/blog/2019/02/12/preloading-fonts-and-the-puzzle-of-priorities/&quot;&gt;预加载字体&lt;/a&gt;的博文介绍了在 CSS 文件前加载字体文件会阻塞初始化渲染。&lt;/p&gt;
+&lt;h4&gt;加载页面数据&lt;/h4&gt;
+&lt;p&gt;有些应用是用来展示一些数据的，有一些技巧可以用来提前加载数据并且避免延迟渲染。&lt;/p&gt;
+&lt;h5&gt;&lt;strong&gt;开始加载数据前不需要等待 bundles&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;对于顺序请求链这有一个特殊的情况：加载应用 bundle 代码后才发送请求获取数据。&lt;/p&gt;
+&lt;p&gt;有两种方式来避免：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在 HTML 文档中嵌入页面数据&lt;/li&gt;
+&lt;li&gt;在文档中插入 inline 脚本来发起数据请求&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在 HTML 中嵌入数据保证应用不需要等待数据的加载。由于不需要处理加载中的状态，它也减少了应用的复杂度。&lt;/p&gt;
+&lt;p&gt;如果请求数据过久会延迟文档的响应，也会延迟初次渲染。这种情况下，或通过 service worker 缓存了 HTML 文档，可以通过嵌套 inline 脚本去加载数据。可以通过一个全局的 promise：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;window&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;userDataPromise &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;/me&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;对这两种方案需要知道在应用开始渲染前哪些数据是页面需要加载的。这对于用户相关的数据（用户名称，通知等）是简单的，但对于特定页面的内容会比较麻烦。考虑识别数最重要的页面并为这些页面实现特殊的逻辑。&lt;/p&gt;
+&lt;h5&gt;&lt;strong&gt;不要在等待加载不重要的数据时阻塞渲染&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;有时生成的页面数据需要很慢的很复杂的后端逻辑。这种情况下可以第一时间加载简化版的页面，使应用功能基本可用。&lt;/p&gt;
+&lt;p&gt;例如，一个分析应用首次加载时可以先加载所有的图表列表而不是图表的数据。这允许用户去找到他们感兴趣的图表，
+还可以帮助将后端请求分散到不同的服务器上。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/996ab66136976b0b22d95e7778fb4664/581a4/essential-data-first.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 32.29166666666667%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAYAAADDl76dAAAACXBIWXMAAAsSAAALEgHS3X78AAABUElEQVQY032Qz07CQBDG+wCIWvqf0kK7ULSUAhq8IR7xKTBCDPiWtFAwgUtJaoIJhFfgwPFzd42JJw+/zLe7M9/MjtDrPSKXy0PXi1AUDZKkcFRV54iihMPhgDRNUShIUNi9ZtAclWujaMKybVzkLzEcvkAYDJ65GSE1OA5BpeJyfnW57GC3+8Jms4HrEty3Orhrd9Buhqh5N2gEAfyggZJtYTp9h8AmlGWVJld5sWWVUSrZ3JDBdJZliKIImqbD9wMEQYg6NWPvrM6jWpY1jMdvEPr9p38nZA2OxyO225Q3JsTjkzIjx62hFfhohSFM08R0MoHQ7T7wHaqqwbuwIgbbJ4uiKGO/3/MvX9E9dfxbNG/q8AiBYZiokioIbS5eFzB6HUFYr9eYzWaI4zkl/sPPOYpinM9nnE4n/u3V6oOTJEss5gskSxoXCc/Lsk98AyWb5sB8lpBvAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;essential data first&quot;
+        title=&quot;essential data first&quot;
+        src=&quot;/static/996ab66136976b0b22d95e7778fb4664/799d3/essential-data-first.png&quot;
+        srcset=&quot;/static/996ab66136976b0b22d95e7778fb4664/00d96/essential-data-first.png 148w,
+/static/996ab66136976b0b22d95e7778fb4664/0b23c/essential-data-first.png 295w,
+/static/996ab66136976b0b22d95e7778fb4664/799d3/essential-data-first.png 590w,
+/static/996ab66136976b0b22d95e7778fb4664/581a4/essential-data-first.png 672w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h5&gt;&lt;strong&gt;避免顺序发起数据请求链&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;比如，第一次发起请求去查找哪个用户登录了，然后发起另一个请求查询属于哪个团队并返回用户相关的团队数据。可以通过 &lt;a href=&quot;https://graphql.org/&quot;&gt;GraphQL&lt;/a&gt; 来解决。&lt;/p&gt;
+&lt;h4&gt;服务端渲染&lt;/h4&gt;
+&lt;p&gt;服务端渲染意味着在服务器端先预渲染应用，然后返回完整的 HTML 文档。这意味着在客户端可以看到页面完整的渲染而不需要去等待加载额外的代码或数据。&lt;/p&gt;
+&lt;p&gt;因为服务器只发送静态的 HTML 文件，应用还是不能交互。应用需要重新加载渲染逻辑，然后在 DOM 上增加必要的事件监听器。&lt;/p&gt;
+&lt;p&gt;如果某些非交互的内容是有价值的考虑使用服务端渲染。例如，服务端渲染可以对博客渲染有很大收益。&lt;/p&gt;
+&lt;h3&gt;下一页&lt;/h3&gt;
+&lt;p&gt;在某个节点用户开始操作应用，并跳转至下一页。一旦初始页面在浏览器中呈现，就可以准备下一个交互。&lt;/p&gt;
+&lt;h4&gt;预请求资源&lt;/h4&gt;
+&lt;p&gt;如果预加载了下一页所需要的代码，那么当用户开始跳转时可以减少延迟。使用&lt;a href=&quot;https://www.debugbear.com/blog/resource-hints-rel-preload-prefetch-preconnect#prefetch&quot;&gt;预请求 link 标签&lt;/a&gt;，或对于动态导入使用 &lt;code class=&quot;language-text&quot;&gt;webpackPrefetch&lt;/code&gt;：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token comment&quot;&gt;/* webpackPrefetch: true, webpackChunkName: &quot;todo-list&quot; */&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;./TodoList&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;确保发送用户数据和带宽的大小，尤其是用户使用移动端连接。当用户使用移动端的网站或开启了节省数据模式时需要预加载更少的资源。&lt;/p&gt;
+&lt;p&gt;对用户最可能需要的部分制定策略。&lt;/p&gt;
+&lt;h4&gt;重复利用已经加载的数据&lt;/h4&gt;
+&lt;p&gt;在应用中缓存 Ajax 请求数据到本地避免将来发起请求。如果用户从团队列表页跳转至编辑团队页面，可以直接利用已经请求过的数据立即跳转。&lt;/p&gt;
+&lt;p&gt;注意这对于其他用户操作同一份数据是不生效的，有可能该用户下载的数据已经过期了。在这种情况下，考虑在获取最新数据时先以只读的方式展示现有数据。&lt;/p&gt;
+&lt;h3&gt;总结&lt;/h3&gt;
+&lt;p&gt;本文介绍了一些可能会在加载过程中不同节点出现使页面加载变慢的因素。使用 &lt;a href=&quot;https://developers.google.com/web/tools/chrome-devtools&quot;&gt;Chrome 开发者工具&lt;/a&gt;，&lt;a href=&quot;https://www.webpagetest.org/&quot;&gt;WebPageTest&lt;/a&gt; 和 &lt;a href=&quot;https://developers.google.com/web/tools/lighthouse&quot;&gt;Lighthouse&lt;/a&gt; 来找出应用中出现了哪些问题。&lt;/p&gt;
+&lt;p&gt;通常不太可能优化所有的问题，找出最影响用户使用的最关键的问题并专注去修复。&lt;/p&gt;
+&lt;p&gt;非常推荐分割请求。只加载必要的资源，最大化利用缓存的内容并当文件更新时才去重新加载。&lt;/p&gt;
+&lt;h3&gt;参考&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.debugbear.com/blog/performant-front-end-architecture&quot;&gt;https://www.debugbear.com/blog/performant-front-end-architecture&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[使用 Next.js + Puppeteer + heroku 构建爬虫 Web APP]]></title><description><![CDATA[背景 我之前每天都会去腾讯新闻页面上去关注有关疫情发展的当日的数据状况，久而久之就感觉该页面不够精简，而且路径过长，需要二次点击才能看到主页面。那么就干脆直接去拿他们的数据来自己做个页面好了，仓库地址：前端https://github.com/keisei77/small…]]></description><link>https://www.keisei.top/build-crawler-with-nextjs-and-heroku/</link><guid isPermaLink="false">https://www.keisei.top/build-crawler-with-nextjs-and-heroku/</guid><pubDate>Sun, 08 Mar 2020 22:46:00 GMT</pubDate><content:encoded>&lt;h3&gt;背景&lt;/h3&gt;
 &lt;p&gt;我之前每天都会去腾讯新闻页面上去关注有关疫情发展的当日的数据状况，久而久之就感觉该页面不够精简，而且路径过长，需要二次点击才能看到主页面。那么就干脆直接去拿他们的数据来自己做个&lt;a href=&quot;https://keisei.now.sh/&quot;&gt;页面&lt;/a&gt;好了，仓库地址：前端&lt;a href=&quot;https://github.com/keisei77/small-ideas.git&quot;&gt;https://github.com/keisei77/small-ideas.git&lt;/a&gt;，后端&lt;a href=&quot;https://github.com/keisei77/micro-backend.git&quot;&gt;https://github.com/keisei77/micro-backend.git&lt;/a&gt;。
 目前没有 UI，只是简单排了序。后续根据心情在做样式上的改进吧。&lt;/p&gt;
 &lt;h3&gt;前期分析&lt;/h3&gt;
