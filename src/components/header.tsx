@@ -27,8 +27,15 @@ const StyledHeader = styled.header<{ isScrolled: boolean }>`
 const StyledHeaderContainer = styled.span`
   display: flex;
   justify-content: space-between;
+  .title {
+    display: none;
+  }
   @media screen and (min-width: 1200px) {
     margin: 0 calc(17.5% - 0.5rem);
+
+    .title {
+      display: inline-block;
+    }
   }
 `;
 
@@ -74,7 +81,7 @@ function Header(props: HeaderProps) {
       <StyledHeaderContainer>
         <StyledLink isScrolled={isScrolled} to={`/`}>
           <StyledLogo src={logo} alt="logo" />
-          {title}
+          <span className="title">{title}</span>
         </StyledLink>
         <StyledNav>
           <StyledMenu isScrolled={isScrolled} to="/tags">
