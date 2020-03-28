@@ -19,6 +19,7 @@
   "private": true,
   "dependencies": {
     "@types/lodash": "^4.14.149",
+    "@types/react-dom": "^16.9.5",
     "@types/react-helmet": "^5.0.14",
     "@types/styled-components": "^4.4.0",
     "babel-plugin-styled-components": "^1.10.6",
@@ -44,6 +45,7 @@
     "gatsby-transformer-remark": "^2.6.37",
     "gatsby-transformer-sharp": "^2.3.4",
     "gh-pages": "^2.1.1",
+    "isomorphic-unfetch": "^3.0.0",
     "less": "^3.10.3",
     "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
@@ -51,6 +53,7 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-helmet": "^5.2.1",
+    "react-infinite-scroll-component": "^5.0.4",
     "styled-components": "^4.4.1"
   },
   "devDependencies": {

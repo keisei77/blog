@@ -90,6 +90,9 @@ function Header(props: HeaderProps) {
           >
             疫情数据
           </StyledAnchor>
+          <StyledMenu isScrolled={isScrolled} to="/weibo">
+            热搜
+          </StyledMenu>
           <StyledMenu isScrolled={isScrolled} to="/about">
             关于
           </StyledMenu>
