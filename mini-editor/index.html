@@ -1,0 +1,525 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><style data-href="/styles.065d6dce9e47410fcace.css">code[class*=language-],pre[class*=language-]{color:#657b83;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}code[class*=language-]::selection,code[class*=language-] ::selection,pre[class*=language-]::selection,pre[class*=language-] ::selection{background:#073642}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto;border-radius:.3em}:not(pre)>code[class*=language-],pre[class*=language-]{background-color:#fdf6e3}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#93a1a1}.token.punctuation{color:#586e75}.namespace{opacity:.7}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#268bd2}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string,.token.url{color:#2aa198}.token.entity{color:#657b83;background:#eee8d5}.token.atrule,.token.attr-value,.token.keyword{color:#859900}.token.class-name,.token.function{color:#b58900}.token.important,.token.regex,.token.variable{color:#cb4b16}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}
+
+/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}main{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}[hidden],template{display:none}body,html{font-family:Roboto,arial,sans-serif;font-size:16px;height:100%}img{width:100%}a{text-decoration:none;word-break:break-all}#___gatsby,#___gatsby #gatsby-focus-wrapper{height:100%}#___gatsby #gatsby-focus-wrapper blockquote{background-color:#eee;padding:0 1rem;margin:0;display:inline-block;position:relative}#___gatsby #gatsby-focus-wrapper blockquote:before{content:"";position:absolute;background:#595959;width:4px;left:0;height:100%}#___gatsby #gatsby-focus-wrapper li p{margin:unset}#___gatsby #gatsby-focus-wrapper code[class*=language-text]{white-space:pre-wrap}</style><meta name="generator" content="Gatsby 2.18.16"/><link rel="preconnect dns-prefetch" href="https://www.google-analytics.com"/><link rel="alternate" type="application/rss+xml" href="/rss.xml"/><link rel="icon" href="/icons/icon-48x48.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="manifest" href="/manifest.webmanifest"/><meta name="theme-color" content="#74d2ff"/><link rel="apple-touch-icon" sizes="48x48" href="/icons/icon-48x48.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="256x256" href="/icons/icon-256x256.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png?v=5bb430c18087a8c996d9fd082839d967"/><link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png?v=5bb430c18087a8c996d9fd082839d967"/><title data-react-helmet="true">迷你富文本编辑器 | 学习随笔</title><meta data-react-helmet="true" name="description" content="手撸富文本编辑器遇到的问题及参考思路"/><meta data-react-helmet="true" property="og:title" content="迷你富文本编辑器"/><meta data-react-helmet="true" property="og:description" content="手撸富文本编辑器遇到的问题及参考思路"/><meta data-react-helmet="true" property="og:type" content="website"/><meta data-react-helmet="true" name="twitter:card" content="summary"/><meta data-react-helmet="true" name="twitter:creator" content="Keisei"/><meta data-react-helmet="true" name="twitter:title" content="迷你富文本编辑器"/><meta data-react-helmet="true" name="twitter:description" content="手撸富文本编辑器遇到的问题及参考思路"/><style data-styled="gbMHrA fceVdf cKBlNu bnDyRh BYIyc ftRwYj caORiI dMeVCf eMzzfH cpRIIU iHkcoF eVlgNw" data-styled-version="4.4.1">
+/* sc-component-id: header__StyledHeader-ehg0ch-0 */
+.gbMHrA{background:#fff;box-shadow:none;position:fixed;top:0;left:0;right:0;z-index:10;padding:1rem;cursor:pointer;width:100vw;box-sizing:border-box;-webkit-transition:background 0.1s ease-in-out;transition:background 0.1s ease-in-out;}
+/* sc-component-id: header__StyledHeaderContainer-ehg0ch-1 */
+.fceVdf{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;} .fceVdf .title{display:none;} @media screen and (min-width:1200px){.fceVdf{margin:0 calc(17.5% - 0.5rem);}.fceVdf .title{display:inline-block;}}
+/* sc-component-id: header__StyledNav-ehg0ch-2 */
+.BYIyc{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;margin:unset;padding:unset;}
+/* sc-component-id: header__StyledLink-ehg0ch-3 */
+.cKBlNu{color:inherit;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-transition:color 0.1s ease-in-out;transition:color 0.1s ease-in-out;}
+/* sc-component-id: header__StyledLogo-ehg0ch-4 */
+.bnDyRh{padding-right:1rem;height:2rem;width:4rem;}
+/* sc-component-id: header__StyledMenu-ehg0ch-5 */
+.ftRwYj{color:inherit;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-transition:color 0.1s ease-in-out;transition:color 0.1s ease-in-out;padding:0 8px;} .ftRwYj:last-child{padding-right:0;}
+/* sc-component-id: header__StyledAnchor-ehg0ch-6 */
+.caORiI{color:inherit;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-transition:color 0.1s ease-in-out;transition:color 0.1s ease-in-out;padding:0 8px;}
+/* sc-component-id: layout__StyledMain-ccgz52-0 */
+.dMeVCf{margin-left:auto;margin-right:auto;padding:4rem 1rem 0;min-height:calc(100% - 6.125rem);} @media screen and (min-width:1200px){.dMeVCf{width:65%;}}
+/* sc-component-id: layout__StyledFooter-ccgz52-1 */
+.eVlgNw{padding:0 1rem 1rem;margin-left:auto;margin-right:auto;} @media screen and (min-width:1200px){.eVlgNw{width:65%;}}
+/* sc-component-id: tag__StyledLink-sc-3nz3a9-0 */
+.iHkcoF{text-align:center;color:#fff;margin-right:0.5rem;padding:0.25rem 0.5rem;display:inline-block;border-radius:0.875rem;height:1rem;overflow:hidden;text-overflow:ellipsis;line-height:1rem;-webkit-transition:opacity 0.1s ease-in-out;transition:opacity 0.1s ease-in-out;background:#74d2ff;margin-top:0.5rem;} .iHkcoF:hover{opacity:0.85;}
+/* sc-component-id: tag__StyledPre-sc-3nz3a9-1 */
+.eMzzfH{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;border-top:1px solid #74d2ff;padding-top:0.5rem;}
+/* sc-component-id: tag__StyledLabel-sc-3nz3a9-2 */
+.cpRIIU{margin-top:0.5rem;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}</style><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmEU9fBBc4.woff2"/><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fBBc4.woff2"/><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfBBc4.woff2"/><link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="/google-fonts/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2"/><style type="text/css">@font-face{font-family:Roboto;font-style:normal;font-weight:300;src:local('Roboto Light'),local('Roboto-Light'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fBBc4.woff2) format('woff2'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fBBc-.woff) format('woff');font-display: swap;}@font-face{font-family:Roboto;font-style:normal;font-weight:400;src:local('Roboto'),local('Roboto-Regular'),url(/google-fonts/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2) format('woff2'),url(/google-fonts/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxM.woff) format('woff');font-display: swap;}@font-face{font-family:Roboto;font-style:normal;font-weight:500;src:local('Roboto Medium'),local('Roboto-Medium'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmEU9fBBc4.woff2) format('woff2'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmEU9fBBc-.woff) format('woff');font-display: swap;}@font-face{font-family:Roboto;font-style:normal;font-weight:700;src:local('Roboto Bold'),local('Roboto-Bold'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfBBc4.woff2) format('woff2'),url(/google-fonts/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfBBc-.woff) format('woff');font-display: swap;}</style><link as="script" rel="preload" href="/component---src-templates-blog-post-tsx-d733e0923a0e8bbec832.js"/><link as="script" rel="preload" href="/commons-166820e34cc369da4b30.js"/><link as="script" rel="preload" href="/app-82c298cec2200b6adb16.js"/><link as="script" rel="preload" href="/styles-447e9c36d03d3302a739.js"/><link as="script" rel="preload" href="/webpack-runtime-87d6c2197a0162d43a97.js"/><link as="fetch" rel="preload" href="/page-data/mini-editor/page-data.json" crossorigin="anonymous"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group" id="gatsby-focus-wrapper"><div style="height:100%"><header class="header__StyledHeader-ehg0ch-0 gbMHrA"><span class="header__StyledHeaderContainer-ehg0ch-1 fceVdf"><a class="header__StyledLink-ehg0ch-3 cKBlNu" href="/"><img src="data:image/png;base64,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" alt="logo" class="header__StyledLogo-ehg0ch-4 bnDyRh"/><span class="title">学习随笔</span></a><nav class="header__StyledNav-ehg0ch-2 BYIyc"><a class="header__StyledLink-ehg0ch-3 header__StyledMenu-ehg0ch-5 ftRwYj" href="/tags">标签</a><a href="https://keisei.now.sh/ncov" target="blank" class="header__StyledAnchor-ehg0ch-6 caORiI">疫情数据</a><a class="header__StyledLink-ehg0ch-3 header__StyledMenu-ehg0ch-5 ftRwYj" href="/about">关于</a></nav></span></header><main class="layout__StyledMain-ccgz52-0 dMeVCf"><article><header><h1 style="margin-bottom:0">迷你富文本编辑器</h1><p style="display:block">April 14, 2020</p></header><section><h3>前言</h3>
+<p>之前曾有打算做一个富文本编辑器，最近花了一些时间开始开发，目前处于原型开发阶段。这其中遇到了一些棘手的问题，在此先记录一下。</p>
+<h3>初步构建</h3>
+<p>通过 CRA（<a href="https://github.com/facebook/create-react-app">create-react-app</a>）快速搭建项目。
+根据常见的编辑器样式，确定分为工具栏和输入框组件。</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/1d6ea7377fc13429772d26e6d2bb536a/50cab/prototype-editor.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 37.890625%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAbklEQVQoz6WSwQqAIBBE9/+/UbtYeFwVpJDVKTOpc/tg2NvwBpbssmDbHIyxqLWi01r7HXJuhfceMSWIiDoUQgAzY6Kx6wvpW6ThqhyFGqNbYt5h9Rr+NxtkKYjlAHVNTeT5DLcn2Mz6ye07+eIEEmZ46zdxaIYAAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="prototype editor"
+        title="prototype editor"
+        src="/static/1d6ea7377fc13429772d26e6d2bb536a/799d3/prototype-editor.png"
+        srcset="/static/1d6ea7377fc13429772d26e6d2bb536a/00d96/prototype-editor.png 148w,
+/static/1d6ea7377fc13429772d26e6d2bb536a/0b23c/prototype-editor.png 295w,
+/static/1d6ea7377fc13429772d26e6d2bb536a/799d3/prototype-editor.png 590w,
+/static/1d6ea7377fc13429772d26e6d2bb536a/50cab/prototype-editor.png 768w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<h4>工具栏</h4>
+<p>工具栏暂定加粗、斜体、下划线三种样式。</p>
+<div class="gatsby-highlight" data-language="jsx"><pre class="language-jsx"><code class="language-jsx"><span class="token keyword">const</span> <span class="token function-variable function">Toolbar</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">props<span class="token punctuation">:</span> Toolbar</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> toolbarState<span class="token punctuation">,</span> toolbarDispatch <span class="token punctuation">}</span> <span class="token operator">=</span> props<span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Toggle</span></span>
+        <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>bold<span class="token punctuation">"</span></span>
+        <span class="token attr-name">label</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>粗体<span class="token punctuation">"</span></span>
+        <span class="token attr-name">enabled</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>toolbarState<span class="token punctuation">.</span>bold<span class="token punctuation">}</span></span>
+        <span class="token attr-name">onClick</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+          <span class="token function">toolbarDispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> type<span class="token punctuation">:</span> <span class="token string">'bold'</span><span class="token punctuation">,</span> payload<span class="token punctuation">:</span> toolbarState<span class="token punctuation">.</span>content <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span></span>
+      <span class="token punctuation">></span></span><span class="token plain-text">
+        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">BoldSvg</span></span> <span class="token attr-name">enabled</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>toolbarState<span class="token punctuation">.</span>bold<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span><span class="token plain-text">
+      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Toggle</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Toggle</span></span>
+        <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>italic<span class="token punctuation">"</span></span>
+        <span class="token attr-name">label</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>斜体<span class="token punctuation">"</span></span>
+        <span class="token attr-name">enabled</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>toolbarState<span class="token punctuation">.</span>italic<span class="token punctuation">}</span></span>
+        <span class="token attr-name">onClick</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+          <span class="token function">toolbarDispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> type<span class="token punctuation">:</span> <span class="token string">'italic'</span><span class="token punctuation">,</span> payload<span class="token punctuation">:</span> toolbarState<span class="token punctuation">.</span>content <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span></span>
+      <span class="token punctuation">></span></span><span class="token plain-text">
+        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">ItalicSvg</span></span> <span class="token attr-name">enabled</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>toolbarState<span class="token punctuation">.</span>italic<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span><span class="token plain-text">
+      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Toggle</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+
+      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Toggle</span></span>
+        <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>underline<span class="token punctuation">"</span></span>
+        <span class="token attr-name">label</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>下划线<span class="token punctuation">"</span></span>
+        <span class="token attr-name">enabled</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>toolbarState<span class="token punctuation">.</span>underline<span class="token punctuation">}</span></span>
+        <span class="token attr-name">onClick</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+          <span class="token function">toolbarDispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> type<span class="token punctuation">:</span> <span class="token string">'underline'</span><span class="token punctuation">,</span> payload<span class="token punctuation">:</span> toolbarState<span class="token punctuation">.</span>content <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span></span>
+      <span class="token punctuation">></span></span><span class="token plain-text">
+        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">UnderlineSvg</span></span> <span class="token attr-name">enabled</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>toolbarState<span class="token punctuation">.</span>underline<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span><span class="token plain-text">
+      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Toggle</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span></span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
+<p>工具栏部分主要是各种按钮，以及点击时应该执行的 action。</p>
+<p>这里工具栏 Icon 采用了 svg 文件，这样我们可以修改它的 fill 属性来向用户表明是否是选中的：</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/f0cde03962a4c815094634ccb0d6f529/95c41/indicate-button-enabled.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 35.68627450980392%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAYAAAAIy204AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAcElEQVQoz61RSQqAMBDr//9oXQaXk3WvYjvRiop4HA3kMpBMQlRWlNBxAq0jEBECvPciMjNU1fSgvICp6+MgNQt0zkFN44DGGFhr7y9SBr1i/IfD8JlKikvLb0NRzdOMbId0bPfKH4e4As1uxbKPsgHQLilCwP8UdwAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="indicate button enabled"
+        title="indicate button enabled"
+        src="/static/f0cde03962a4c815094634ccb0d6f529/799d3/indicate-button-enabled.png"
+        srcset="/static/f0cde03962a4c815094634ccb0d6f529/00d96/indicate-button-enabled.png 148w,
+/static/f0cde03962a4c815094634ccb0d6f529/0b23c/indicate-button-enabled.png 295w,
+/static/f0cde03962a4c815094634ccb0d6f529/799d3/indicate-button-enabled.png 590w,
+/static/f0cde03962a4c815094634ccb0d6f529/95c41/indicate-button-enabled.png 765w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<h4>输入框</h4>
+<p>输入框部分，我们不能使用 textarea 标签来渲染的原因是不能对它的内容改变样式。我们使用了 <code class="language-text">contentEditable</code> 属性来使 div 变为可编辑状态。</p>
+<p>另外，我们需要在输入时重置光标的位置，否则光标会一直在文本首位闪烁。</p>
+<div class="gatsby-highlight" data-language="jsx"><pre class="language-jsx"><code class="language-jsx"><span class="token keyword">const</span> <span class="token function-variable function">resetCaret</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">el<span class="token punctuation">:</span> HTMLElement</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> tailNode <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createTextNode</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  el<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>tailNode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> isTargetFocused <span class="token operator">=</span> document<span class="token punctuation">.</span>activeElement <span class="token operator">===</span> el<span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>tailNode <span class="token operator">!==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> tailNode<span class="token punctuation">.</span>nodeValue <span class="token operator">!==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> isTargetFocused<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> selection <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">getSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>selection<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> range <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createRange</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      range<span class="token punctuation">.</span><span class="token function">setStart</span><span class="token punctuation">(</span>tailNode<span class="token punctuation">,</span> tailNode<span class="token punctuation">.</span>nodeValue<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      range<span class="token punctuation">.</span><span class="token function">collapse</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      selection<span class="token punctuation">.</span><span class="token function">removeAllRanges</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      selection<span class="token punctuation">.</span><span class="token function">addRange</span><span class="token punctuation">(</span>range<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>el <span class="token keyword">instanceof</span> <span class="token class-name">HTMLElement</span><span class="token punctuation">)</span> el<span class="token punctuation">.</span><span class="token function">focus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">Textarea</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">props<span class="token punctuation">:</span> Textarea</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> content<span class="token punctuation">,</span> changeHandler <span class="token punctuation">}</span> <span class="token operator">=</span> props<span class="token punctuation">;</span>
+  <span class="token keyword">const</span> elRef <span class="token operator">=</span> useRef <span class="token operator">&lt;</span> HTMLDivElement <span class="token operator">></span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> isMount <span class="token operator">=</span> <span class="token operator">!</span><span class="token operator">!</span>elRef<span class="token punctuation">.</span>current<span class="token punctuation">;</span>
+  <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>elRef<span class="token punctuation">.</span>current<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>content <span class="token operator">!==</span> elRef<span class="token punctuation">.</span>current<span class="token punctuation">.</span>innerHTML<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      elRef<span class="token punctuation">.</span>current<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> content<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">resetCaret</span><span class="token punctuation">(</span>elRef<span class="token punctuation">.</span>current<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>content<span class="token punctuation">,</span> isMount<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span>
+      <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>textarea<span class="token punctuation">"</span></span>
+      <span class="token attr-name">contentEditable</span>
+      <span class="token attr-name">ref</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>elRef<span class="token punctuation">}</span></span>
+      <span class="token attr-name">onInput</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token parameter">event</span> <span class="token operator">=></span> <span class="token function">changeHandler</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">}</span></span>
+      <span class="token attr-name">onBlur</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token parameter">event</span> <span class="token operator">=></span> <span class="token function">changeHandler</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">}</span></span>
+      <span class="token attr-name">onKeyUp</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token parameter">event</span> <span class="token operator">=></span> <span class="token function">changeHandler</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">}</span></span>
+      <span class="token attr-name">onKeyDown</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token parameter">event</span> <span class="token operator">=></span> <span class="token function">changeHandler</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">}</span></span>
+    <span class="token punctuation">></span></span><span class="token plain-text">
+      </span><span class="token punctuation">{</span>content<span class="token punctuation">}</span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre></div>
+<h4>那么我们是如何知道用户选择了哪些文本呢？</h4>
+<p>我们可以通过 <code class="language-text">window.getSelection()</code> 这个函数来获取用户选择的文本对象。</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/5e7cd2d83b2c85402f6b4ef614d5222f/c87be/selection.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 44.86094316807739%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAxklEQVQoz6WQ2w6DIBBE+f+P9KW3tIUqAgILOl0w9pY+tDrJCbsbMpmM0FpD3RQOxwOkkoghgogQI7+REHjvuq5irIG19gNXcW5GeO9xPV2hTgqtbBE9GwXC4IdqNhOQY0b5W2aiVGfPfwPfKY1YJHLOcHKA3vVwXcA0gZkqRcv8KyLlBHtxaBsF03OS8Wn0jx6GJaE5W/T7G8iFVaneEhZDfeyhGi5eGpR9TcJHh5QSxjwip7n0xPuWlGJJ9K2PTYavxy26A4M+xUvJe1PPAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="selection"
+        title="selection"
+        src="/static/5e7cd2d83b2c85402f6b4ef614d5222f/799d3/selection.png"
+        srcset="/static/5e7cd2d83b2c85402f6b4ef614d5222f/00d96/selection.png 148w,
+/static/5e7cd2d83b2c85402f6b4ef614d5222f/0b23c/selection.png 295w,
+/static/5e7cd2d83b2c85402f6b4ef614d5222f/799d3/selection.png 590w,
+/static/5e7cd2d83b2c85402f6b4ef614d5222f/c87be/selection.png 827w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>当选择上面的 <code class="language-text">Hello</code> 时，可以看到输出了各种 Node 和各种 Offset，我们可以简单通过这些 Offset 来确定当前选中的文本。</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript">  <span class="token keyword">function</span> <span class="token function">reducer</span><span class="token punctuation">(</span><span class="token parameter">state<span class="token punctuation">:</span> ToolbarState<span class="token punctuation">,</span> action<span class="token punctuation">:</span> ToolbarAction</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> currentSelection <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">getSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>currentSelection<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> selectedContent <span class="token operator">=</span> currentSelection<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">let</span> currentContent <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+      <span class="token keyword">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token string">'bold'</span><span class="token punctuation">:</span>
+          currentContent <span class="token operator">=</span> state<span class="token punctuation">.</span>content<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span>
+            selectedContent<span class="token punctuation">,</span>
+            <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">&lt;span style="font-weight: 700;"></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>selectedContent<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/span></span><span class="token template-punctuation string">`</span></span>
+          <span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">return</span> <span class="token punctuation">{</span> <span class="token operator">...</span>state<span class="token punctuation">,</span> bold<span class="token punctuation">:</span> <span class="token operator">!</span>state<span class="token punctuation">.</span>bold<span class="token punctuation">,</span> content<span class="token punctuation">:</span> currentContent <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token string">'italic'</span><span class="token punctuation">:</span>
+          currentContent <span class="token operator">=</span> state<span class="token punctuation">.</span>content<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span>
+            selectedContent<span class="token punctuation">,</span>
+            <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">&lt;span style="font-style: italic;"></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>selectedContent<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/span></span><span class="token template-punctuation string">`</span></span>
+          <span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">return</span> <span class="token punctuation">{</span> <span class="token operator">...</span>state<span class="token punctuation">,</span> italic<span class="token punctuation">:</span> <span class="token operator">!</span>state<span class="token punctuation">.</span>italic<span class="token punctuation">,</span> content<span class="token punctuation">:</span> currentContent <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token string">'underline'</span><span class="token punctuation">:</span>
+          currentContent <span class="token operator">=</span> state<span class="token punctuation">.</span>content<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span>
+            selectedContent<span class="token punctuation">,</span>
+            <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">&lt;span style="text-decoration: underline;"></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>selectedContent<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/span></span><span class="token template-punctuation string">`</span></span>
+          <span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">return</span> <span class="token punctuation">{</span>
+            <span class="token operator">...</span>state<span class="token punctuation">,</span>
+            underline<span class="token punctuation">:</span> <span class="token operator">!</span>state<span class="token punctuation">.</span>underline<span class="token punctuation">,</span>
+            content<span class="token punctuation">:</span> currentContent<span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token string">'change'</span><span class="token punctuation">:</span>
+          <span class="token keyword">return</span> <span class="token punctuation">{</span> <span class="token operator">...</span>state<span class="token punctuation">,</span> payload<span class="token punctuation">:</span> action<span class="token punctuation">.</span>payload <span class="token punctuation">}</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token string">'change'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span> <span class="token operator">...</span>state<span class="token punctuation">,</span> payload<span class="token punctuation">:</span> action<span class="token punctuation">.</span>payload <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> state<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>toolbarState<span class="token punctuation">,</span> toolbarDispatch<span class="token punctuation">]</span> <span class="token operator">=</span> useReducer<span class="token operator">&lt;</span>
+    Reducer<span class="token operator">&lt;</span>ToolbarState<span class="token punctuation">,</span> ToolbarAction<span class="token operator">></span>
+  <span class="token operator">></span><span class="token punctuation">(</span>reducer<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    content<span class="token punctuation">:</span> <span class="token string">'&lt;div>Hello World!&lt;/div>'</span><span class="token punctuation">,</span>
+    bold<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    italic<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    underline<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
+<p>这部分是目前实现比较挫的地方，简单使用了 <code class="language-text">useReducer</code> 来简化 setState 操作。可以看到这部分代码存在一些问题，首先由于 <code class="language-text">contentEditable</code> 存在的缘故，用户输入的任何内容其实 React 并不能控制，我们只能通过各种事件的回调拿到 target 中的 innerHTML(TODO: innerText 是不是更好)</p>
+<p>当然我们可以通过 <code class="language-text">document.execCommand()</code> 方法来传入对应的命令生成格式化的文本，但为了更深入地实现文本的可编辑性，我们暂时不考虑这种现成的 API。</p>
+<h3>开源 draft.js 体验</h3>
+<p><a href="https://draftjs.org/">draft.js</a> 是 facebook 团队开源的 React 版富文本编辑器库，官方提供了一个简易的 Demo：</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/9aebc6248acb34be03dd3af267bb34ea/83225/draft.js.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 53.751914241960186%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAA/0lEQVQoz51Sy3KDMAzk//+tJ9J7J6d4CjgYbPwAtpYSEYeSmbSa0ch6sKy8ruZ5RowRKSXQmeK6rm85mUSxytoRdV3j63zG6fOEy0XhXTsCr0IIaNsWxvRQSkFrjYZzg77X0NcrurbjqLs213o0TYNlWX6BM0NqyMoEHmOA955r7Fs9ckwpcp++O2RIDQKjwVt8OIE45xjgqCZgAr4xnKaJnYastRizUz4MhnMSi+bERUCxpWBZ0eG2Dq2YB+9MWP3MmuJLpYufgHIBnCaPYbQcX6m5V/apXjLcq1UO7t9Yacu992EUlLcPUeRS/+PE7Ds4uHw1G+D+gf7V91v9AMG1YsQJMjuEAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="draft.js"
+        title="draft.js"
+        src="/static/9aebc6248acb34be03dd3af267bb34ea/799d3/draft.js.png"
+        srcset="/static/9aebc6248acb34be03dd3af267bb34ea/00d96/draft.js.png 148w,
+/static/9aebc6248acb34be03dd3af267bb34ea/0b23c/draft.js.png 295w,
+/static/9aebc6248acb34be03dd3af267bb34ea/799d3/draft.js.png 590w,
+/static/9aebc6248acb34be03dd3af267bb34ea/83225/draft.js.png 653w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<div class="gatsby-highlight" data-language="html"><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>RichEditor-editor<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>DraftEditor-root<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>DraftEditor-editorContainer<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span>
+        <span class="token attr-name">aria-describedby</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>placeholder-7k0cv<span class="token punctuation">"</span></span>
+        <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>notranslate public-DraftEditor-content<span class="token punctuation">"</span></span>
+        <span class="token attr-name">contenteditable</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span>
+        <span class="token attr-name">role</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>textbox<span class="token punctuation">"</span></span>
+        <span class="token attr-name">spellcheck</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>false<span class="token punctuation">"</span></span><span class="token style-attr language-css"><span class="token attr-name">
+        <span class="token attr-name">style</span></span><span class="token punctuation">="</span><span class="token attr-value"><span class="token property">outline</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span> <span class="token property">user-select</span><span class="token punctuation">:</span> text<span class="token punctuation">;</span> <span class="token property">white-space</span><span class="token punctuation">:</span> pre-wrap<span class="token punctuation">;</span> <span class="token property">overflow-wrap</span><span class="token punctuation">:</span> break-word<span class="token punctuation">;</span></span><span class="token punctuation">"</span></span>
+      <span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">data-contents</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span>
+            <span class="token attr-name">data-block</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span>
+            <span class="token attr-name">data-editor</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>7k0cv<span class="token punctuation">"</span></span>
+            <span class="token attr-name">data-offset-key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>b6so6-0-0<span class="token punctuation">"</span></span>
+          <span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span>
+              <span class="token attr-name">data-offset-key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>b6so6-0-0<span class="token punctuation">"</span></span>
+              <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>public-DraftStyleDefault-block public-DraftStyleDefault-ltr<span class="token punctuation">"</span></span>
+            <span class="token punctuation">></span></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">data-offset-key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>b6so6-0-0<span class="token punctuation">"</span></span><span class="token style-attr language-css"><span class="token attr-name"> <span class="token attr-name">style</span></span><span class="token punctuation">="</span><span class="token attr-value"><span class="token property">font-weight</span><span class="token punctuation">:</span> bold<span class="token punctuation">;</span></span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">data-text</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>hello<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre></div>
+<p>当实现粗体时，可以看到生成的 html 中，多出了一段<code class="language-text">font-weight: bold;</code>的 span，其中很关键的一处是节点上有 offset-key 的 dataset，<code class="language-text">b6so6-0-0</code> 第一段为标识文本片段的随机字符串，第二段目的不明，第三段为各种样式的索引值。</p>
+<p>那么是如何实现的呢？</p>
+<p>首先我们来创建编辑器：</p>
+<div class="gatsby-highlight" data-language="jsx"><pre class="language-jsx"><code class="language-jsx"><span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token punctuation">{</span> useState<span class="token punctuation">,</span> useEffect<span class="token punctuation">,</span> useCallback <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Editor<span class="token punctuation">,</span> RichUtils<span class="token punctuation">,</span> EditorState <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'draft-js'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> InlineStyleControls <span class="token keyword">from</span> <span class="token string">'./InlineStyleControls'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token string">'draft-js/dist/Draft.css'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">DraftEditor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>editorState<span class="token punctuation">,</span> setEditorState<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span>EditorState<span class="token punctuation">.</span><span class="token function">createEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> editor <span class="token operator">=</span> React<span class="token punctuation">.</span><span class="token function">useRef</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">function</span> <span class="token function">focusEditor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>editor<span class="token punctuation">.</span>current<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token punctuation">(</span>editor <span class="token keyword">as</span> any<span class="token punctuation">)</span><span class="token punctuation">.</span>current<span class="token punctuation">.</span><span class="token function">focus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token function">focusEditor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> onChange <span class="token operator">=</span> <span class="token function">useCallback</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">editorState</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">setEditorState</span><span class="token punctuation">(</span>editorState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> toggleInlineStyle <span class="token operator">=</span> <span class="token function">useCallback</span><span class="token punctuation">(</span>
+    <span class="token punctuation">(</span><span class="token parameter">inlineStyle</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      <span class="token function">onChange</span><span class="token punctuation">(</span>RichUtils<span class="token punctuation">.</span><span class="token function">toggleInlineStyle</span><span class="token punctuation">(</span>editorState<span class="token punctuation">,</span> inlineStyle<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span>onChange<span class="token punctuation">,</span> editorState<span class="token punctuation">]</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">style</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span> padding<span class="token punctuation">:</span> <span class="token string">'24px'</span> <span class="token punctuation">}</span><span class="token punctuation">}</span></span> <span class="token attr-name">onClick</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>focusEditor<span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">InlineStyleControls</span></span>
+        <span class="token attr-name">editorState</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>editorState<span class="token punctuation">}</span></span>
+        <span class="token attr-name">onToggle</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>toggleInlineStyle<span class="token punctuation">}</span></span>
+      <span class="token punctuation">/></span></span><span class="token plain-text">
+      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Editor</span></span> <span class="token attr-name">ref</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>editor<span class="token punctuation">}</span></span> <span class="token attr-name">editorState</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>editorState<span class="token punctuation">}</span></span> <span class="token attr-name">onChange</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>onChange<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> DraftEditor<span class="token punctuation">;</span></code></pre></div>
+<p>我们以加粗为例，当点击加粗按钮时，实际上会调用 <code class="language-text">RichUtils.toggleInlineStyle()</code> 方法：
+<span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/540e2fdfa04da6df5641babb6ff1e0db/97b2d/draft-editor.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 80.29612756264237%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAYAAAAWGF8bAAAACXBIWXMAAA7DAAAOwwHHb6hkAAACA0lEQVQ4y61T7Y6bMBDk/Z+uf3pqc2lIckBIwAb8DdhM1+aSSxq1p1ZdaWQQ9nhmZ8maZsRmK7A7SFQVx2GXo8j3YOcOXCzggwfrPYQOsOMC41bYEdDWoyhr1Ocz2rbFsizIfhQjvrwIfH0VeNl02OQc+XFA/qaRlzMO1YztcUTNZigLIl4gzQqhApqW40yEnHN475EFaxFGum7xWILHR9HzMq/rrZan1dL5y+WCoihwOp2Q+TmAlyXq/R7H/ZGsNnC0aXQWxlg4N5KVlSKtD/ggLImj73tS6AMUyRYdQ8taDLyFFgOU1rDGYDIKSkoopRH3RpJ7GNoTLUfCqqqQVWWFC6kSQkLTIaUUpBT0/gxJxIwxNE2TUNd16t31OQaTbQ8VGO/TgSg5Hoik0co9opKu6xKGYXi66IqseFubGUlOxQm84enDSEE5NyG8Ny/aiylGhBB+i+y42xJhnTaa3kC2ilQIukCmUB5T/byyb983OFDCs58xqgmGWQxE2LAe/n2Mfg3iT8hiI2PfwhIw6Rm6MbDcom8lvRuEeX4g/VShTCOhkhonRxohja7pYAcJR6MTCZe/UJldU4qW7WAhGYVTU0ha4V/qRpgUDg79JY6PoJSn9MfEb5qUOuduiBOwToG7rdpMxHGncCJryXKn0h8zz+t4fDYm90iWZRzOZNnjf9RPuHTakzx7vL4AAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="draft editor"
+        title="draft editor"
+        src="/static/540e2fdfa04da6df5641babb6ff1e0db/799d3/draft-editor.png"
+        srcset="/static/540e2fdfa04da6df5641babb6ff1e0db/00d96/draft-editor.png 148w,
+/static/540e2fdfa04da6df5641babb6ff1e0db/0b23c/draft-editor.png 295w,
+/static/540e2fdfa04da6df5641babb6ff1e0db/799d3/draft-editor.png 590w,
+/static/540e2fdfa04da6df5641babb6ff1e0db/97b2d/draft-editor.png 878w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>这里 <code class="language-text">editorState</code> 是我们通过 <code class="language-text">EditorState.createEmpty()</code> 创建的 immutable 的初始状态，可以看到初始化了 currentContent,redoStack,selection,treeMap,undoStack 等属性。</p>
+<p><code class="language-text">toggleInlineStyle</code>内部实现：</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">toggleInlineStyle</span><span class="token punctuation">(</span><span class="token parameter">editorState<span class="token punctuation">,</span> inlineStyle</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 首先获取用户选择的文本</span>
+  <span class="token keyword">var</span> selection <span class="token operator">=</span> editorState<span class="token punctuation">.</span><span class="token function">getSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// 获取当前 style</span>
+  <span class="token keyword">var</span> currentStyle <span class="token operator">=</span> editorState<span class="token punctuation">.</span><span class="token function">getCurrentInlineStyle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// ...</span>
+
+  <span class="token comment">// 获取当前文本内容</span>
+  <span class="token keyword">var</span> content <span class="token operator">=</span> editorState<span class="token punctuation">.</span><span class="token function">getCurrentContent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> newContent<span class="token punctuation">;</span>
+
+  <span class="token comment">// 如果当前 style 中已有需要设置的 style，那直接去除，否则新增样式。</span>
+  <span class="token comment">// 这里调用了 DraftModifier 模块来更新样式</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>currentStyle<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span>inlineStyle<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    newContent <span class="token operator">=</span> DraftModifier<span class="token punctuation">.</span><span class="token function">removeInlineStyle</span><span class="token punctuation">(</span>
+      content<span class="token punctuation">,</span>
+      selection<span class="token punctuation">,</span>
+      inlineStyle
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    newContent <span class="token operator">=</span> DraftModifier<span class="token punctuation">.</span><span class="token function">applyInlineStyle</span><span class="token punctuation">(</span>
+      content<span class="token punctuation">,</span>
+      selection<span class="token punctuation">,</span>
+      inlineStyle
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> EditorState<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>editorState<span class="token punctuation">,</span> newContent<span class="token punctuation">,</span> <span class="token string">'change-inline-style'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p><code class="language-text">DraftModifier.applyInlineStyle</code> 内部简单调用了 <code class="language-text">ContentStateInlineStyle.add(contentStateundefined selectionStateundefined inlineStyle);</code></p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">var</span> ContentStateInlineStyle <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token function-variable function">add</span><span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token parameter">contentState<span class="token punctuation">,</span> selectionState<span class="token punctuation">,</span> inlineStyle</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">modifyInlineStyle</span><span class="token punctuation">(</span>contentState<span class="token punctuation">,</span> selectionState<span class="token punctuation">,</span> inlineStyle<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token function-variable function">remove</span><span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token function">remove</span><span class="token punctuation">(</span><span class="token parameter">contentState<span class="token punctuation">,</span> selectionState<span class="token punctuation">,</span> inlineStyle</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">modifyInlineStyle</span><span class="token punctuation">(</span>contentState<span class="token punctuation">,</span> selectionState<span class="token punctuation">,</span> inlineStyle<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">modifyInlineStyle</span><span class="token punctuation">(</span>
+  <span class="token parameter">contentState<span class="token punctuation">,</span>
+  selectionState<span class="token punctuation">,</span>
+  inlineStyle<span class="token punctuation">,</span>
+  addOrRemove</span>
+<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> blockMap <span class="token operator">=</span> contentState<span class="token punctuation">.</span><span class="token function">getBlockMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> startKey <span class="token operator">=</span> selectionState<span class="token punctuation">.</span><span class="token function">getStartKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> startOffset <span class="token operator">=</span> selectionState<span class="token punctuation">.</span><span class="token function">getStartOffset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> endKey <span class="token operator">=</span> selectionState<span class="token punctuation">.</span><span class="token function">getEndKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> endOffset <span class="token operator">=</span> selectionState<span class="token punctuation">.</span><span class="token function">getEndOffset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// 这里 blockMap 为 immutable 类型，skipUntil，takeUntil，concat 可以简单理解为跳过某部分，获取某部分，最终获取 startKey，endKey 之间的内容。</span>
+  <span class="token keyword">var</span> newBlocks <span class="token operator">=</span> blockMap
+    <span class="token punctuation">.</span><span class="token function">skipUntil</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">_<span class="token punctuation">,</span> k</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> k <span class="token operator">===</span> startKey<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">takeUntil</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">_<span class="token punctuation">,</span> k</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> k <span class="token operator">===</span> endKey<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span><span class="token function">Map</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span>endKey<span class="token punctuation">,</span> blockMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>endKey<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">block<span class="token punctuation">,</span> blockKey</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">var</span> sliceStart<span class="token punctuation">;</span>
+      <span class="token keyword">var</span> sliceEnd<span class="token punctuation">;</span>
+
+      <span class="token comment">// 这里是确定分片的起止位置</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>startKey <span class="token operator">===</span> endKey<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        sliceStart <span class="token operator">=</span> startOffset<span class="token punctuation">;</span>
+        sliceEnd <span class="token operator">=</span> endOffset<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        sliceStart <span class="token operator">=</span> blockKey <span class="token operator">===</span> startKey <span class="token operator">?</span> startOffset <span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        sliceEnd <span class="token operator">=</span> blockKey <span class="token operator">===</span> endKey <span class="token operator">?</span> endOffset <span class="token punctuation">:</span> block<span class="token punctuation">.</span><span class="token function">getLength</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">var</span> chars <span class="token operator">=</span> block<span class="token punctuation">.</span><span class="token function">getCharacterList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">var</span> current<span class="token punctuation">;</span>
+
+      <span class="token comment">// 针对每个字符确定样式</span>
+      <span class="token keyword">while</span> <span class="token punctuation">(</span>sliceStart <span class="token operator">&lt;</span> sliceEnd<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        current <span class="token operator">=</span> chars<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>sliceStart<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        chars <span class="token operator">=</span> chars<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>
+          sliceStart<span class="token punctuation">,</span>
+          addOrRemove
+            <span class="token operator">?</span> CharacterMetadata<span class="token punctuation">.</span><span class="token function">applyStyle</span><span class="token punctuation">(</span>current<span class="token punctuation">,</span> inlineStyle<span class="token punctuation">)</span>
+            <span class="token punctuation">:</span> CharacterMetadata<span class="token punctuation">.</span><span class="token function">removeStyle</span><span class="token punctuation">(</span>current<span class="token punctuation">,</span> inlineStyle<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        sliceStart<span class="token operator">++</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">return</span> block<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">'characterList'</span><span class="token punctuation">,</span> chars<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> contentState<span class="token punctuation">.</span><span class="token function">merge</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    blockMap<span class="token punctuation">:</span> blockMap<span class="token punctuation">.</span><span class="token function">merge</span><span class="token punctuation">(</span>newBlocks<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    selectionBefore<span class="token punctuation">:</span> selectionState<span class="token punctuation">,</span>
+    selectionAfter<span class="token punctuation">:</span> selectionState<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre></div>
+<h3>总结</h3>
+<p>在线编辑器虽然目前是非常常见的一个功能，但是想要做到优秀的体验和强大的能力，并不是那么容易实现的。此外，通过阅读优秀项目的源码，可以为我们的工作提供一些新的思路，也能提高阅读源码的能力和速度。</p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Editor">Editor</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/draft.js">draft.js</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/what-frontend-developer-should-know-about-banckend/">前端开发人员应该知道的后端知识<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
+  
+  
+  if(true) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  }
+  if (typeof ga === "function") {
+    ga('create', 'UA-106134976-2', 'auto', {});
+      
+      
+      
+      
+      
+      }</script><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/mini-editor/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-82c298cec2200b6adb16.js"],"component---node-modules-gatsby-plugin-offline-app-shell-js":["/component---node-modules-gatsby-plugin-offline-app-shell-js-87ef582ba388a83f73c0.js"],"component---src-templates-all-tags-tsx":["/component---src-templates-all-tags-tsx-1c287b9dde7e13c34220.js"],"component---src-templates-single-tag-tsx":["/component---src-templates-single-tag-tsx-962057ed4cc0143466d4.js"],"component---src-templates-blog-post-tsx":["/component---src-templates-blog-post-tsx-d733e0923a0e8bbec832.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-f77e3ef8b10792e4ceaf.js"],"component---src-pages-about-tsx":["/component---src-pages-about-tsx-9aa12795f7000902c32e.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-cfc16755786314b67d27.js"],"component---src-pages-timeline-tsx":["/component---src-pages-timeline-tsx-ba5c3fdea2df329721da.js"]};/*]]>*/</script><script src="/webpack-runtime-87d6c2197a0162d43a97.js" async=""></script><script src="/styles-447e9c36d03d3302a739.js" async=""></script><script src="/app-82c298cec2200b6adb16.js" async=""></script><script src="/commons-166820e34cc369da4b30.js" async=""></script><script src="/component---src-templates-blog-post-tsx-d733e0923a0e8bbec832.js" async=""></script></body></html>
