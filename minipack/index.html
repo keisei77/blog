@@ -148,7 +148,7 @@
 
   <span class="token comment">// 最后，我们来实现立即执行函数的函数体</span>
 
-  <span class="token comment">// 我们首先来实现 `require()` 函数：它接收模块 id 并在我们之前构建好的 `modules` 对象中寻找。我们解构这个有两个元素的数组，来获取我们的包装函数和 mapping 对象。</span>
+  <span class="token comment">// 我们首先来实现 `require()` 函数：它接收模块 id 并在我们之前构建好的 `modules` 对象中寻找。我们结构这个有两个元素的数组，来获取我们的包装函数和 mapping 对象。</span>
 
   <span class="token comment">// 我们的模块代码需要调用 `require()` 函数，它接收文件相对路径作为参数而不是模块的 id。我们的 require 函数需要模块 id。此外，两个不同的模块可能会 `require()` 同一个相对路径。</span>
 
