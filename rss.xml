@@ -1,4 +1,197 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 25 Apr 2020 14:13:14 GMT</lastBuildDate><item><title><![CDATA[入门 React DOM 服务端渲染]]></title><description><![CDATA[前言 当我们需要 React 服务端渲染时，需要了解  这个对象。它能够使组件渲染成静态的 html 标记。 ReactDOMServer 提供了四个方法，其中  和  可以在浏览器和 node 环境中运行， 和  由于使用了 node 中特有的 stream…]]></description><link>https://www.keisei.top/getting-started-react-dom-server-render/</link><guid isPermaLink="false">https://www.keisei.top/getting-started-react-dom-server-render/</guid><pubDate>Fri, 17 Apr 2020 23:52:00 GMT</pubDate><content:encoded>&lt;h3&gt;前言&lt;/h3&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 27 Apr 2020 13:53:07 GMT</lastBuildDate><item><title><![CDATA[如何绕过图片防盗链的校验]]></title><description><![CDATA[前言 最近笔者利用休息时间仿了一波微博热搜页面，简单来讲就是在服务端利用 cheerio 解析页面 html，提取热搜标题，并根据标题展开每个热搜的详细内容。  文字内容可以很简单的提取，但是热搜中出现的图片想要直接拿来显示并非易事。 遇到问题 图片的 src…]]></description><link>https://www.keisei.top/load-image-denied-solution/</link><guid isPermaLink="false">https://www.keisei.top/load-image-denied-solution/</guid><pubDate>Mon, 27 Apr 2020 21:11:00 GMT</pubDate><content:encoded>&lt;h3&gt;前言&lt;/h3&gt;
+&lt;p&gt;最近笔者利用休息时间仿了一波&lt;a href=&quot;https://keisei.now.sh/weibo&quot;&gt;微博热搜&lt;/a&gt;页面，简单来讲就是在&lt;a href=&quot;https://github.com/keisei77/micro-backend/blob/master/route/weibo.js&quot;&gt;服务端&lt;/a&gt;利用 &lt;a href=&quot;https://cheerio.js.org/&quot;&gt;cheerio&lt;/a&gt; 解析页面 html，提取热搜标题，并根据标题展开每个热搜的详细内容。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/e53db35c452c52ea128c557d642ec5dc/3298e/weibo-topic.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 135.01400560224087%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAbCAYAAAB836/YAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAB/UlEQVRIx5WUi26DMAxF+f9/3LR2tF3LKG/yHJ4vwRVrgYVKLlJIDtf2dZLB9jS0GQ26IapS6tUPFaUl/IZhiA7ejQOUdL2msmypqnsqi5rulaHsrqluDSltSZm46HWIpOocHa+WTpmlzxvH1dDpZijlaLWj3nKY7VC8p1GOOt6f4E8A17ulW2Hp8m3o+GVGeDjgWYUPz+eY1lsB1r0bD3/lAQjwmYGA4qvY/L/CGRCHPs56hCH9snWPp2x+qFyIF2DHC+fM0L22pJ0nzS/Hp/t7YA36ADIMrKThlFErQPEF/ZTifoX8h0aghoiU4XW3XLsl+GsNWaHA0G2oxQvj19PfBCL3BzALqZeNHZsCB0AtmoR9UQqxkE7KRlNnIe3DJVgHH8Ba0YSm/QuEAgCDmTV9V5b84Mn9eLJTmD0po4YAQoWohCqUAAaXEZw3aVvhNCkCQxwvegRh/f2kKWePRgNFoYyeKEUJpFFZGQEUY4+3DSu55mGO0RDUEms9D771frEZ67ZRAQhFUDI/uGTqqJTF0AA/3zDKukXQJhC1y3j8oLDT69aIAqLLSBeLc7/FXhCLl0POZoZVxH+YEjQHylu1E4ia4aAEallMlys27FaIlGVekTpGr1vpZLTCSx66jHtxyzK7buy3NFwMcxNvKdtUeOCGiLEbFQ9bAv4C5VQyaNQTlNAAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;weibo topic&quot;
+        title=&quot;weibo topic&quot;
+        src=&quot;/static/e53db35c452c52ea128c557d642ec5dc/799d3/weibo-topic.png&quot;
+        srcset=&quot;/static/e53db35c452c52ea128c557d642ec5dc/00d96/weibo-topic.png 148w,
+/static/e53db35c452c52ea128c557d642ec5dc/0b23c/weibo-topic.png 295w,
+/static/e53db35c452c52ea128c557d642ec5dc/799d3/weibo-topic.png 590w,
+/static/e53db35c452c52ea128c557d642ec5dc/3298e/weibo-topic.png 714w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;文字内容可以很简单的提取，但是热搜中出现的图片想要直接拿来显示并非易事。&lt;/p&gt;
+&lt;h3&gt;遇到问题&lt;/h3&gt;
+&lt;p&gt;图片的 src 直接可以通过解析提取，如果直接拿来在我们的域名上显示会出现一个奇怪的问题：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/ceb333806c254bf16ba3ef67d3d09a93/c2188/image-blocked.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 50.28750653423941%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABx0lEQVQoz02S13KsMBBE+f+/c9ll+8W76zWXjFAOpL4tWIeHrgGhOROawmgDaxzSsmBZ/2hbMYkRfddhGHpUVYm2qVHVNdq2Qdc16PsWI7+N4wApBQRjMcqIstL8qNB9q5OYlEc/CCYMLGiglIJhDN4fz0PfI4RwnGm+e54751E4F0hW7MYwagIUq1ms286ooG83hKpCZGIiYKYSAZGdRkJysag15pROoNSO1XL1XCGy6nwopQXWOtjLBfHzE4lJGZgIidOE+PWF6NwJZIE5xhOoHkCl3A/UmnBAD+D1iliWSNYesB9g7poFHM+jlL9ArT0Ex/UEORu4i0TQd3Rw1wsSgXMGPkae2VHiyPndP4ALRzbGovAhHV3FOCOmU4Fn87JC80JX/oOk04pJ2YBJGe5ZQLXtYYbMZnEdluC882KiAU0t0LWSmng5Oy55gR0T2NcNBJ1WdNUKAUN5wgMBIe+PUfFsaHiPhQtjwukulXeZx+/524iJI4oJ09sbytdXlC8vuD8/o2bcmQzukUnYqfr9HbenJwwfH9wh95V3tiwbtWKel1PrRvc01P2Oji53/H0aGjTyecswdrazw53jjnS85t+gaNR/i4j7VBwMC1IAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;image blocked&quot;
+        title=&quot;image blocked&quot;
+        src=&quot;/static/ceb333806c254bf16ba3ef67d3d09a93/799d3/image-blocked.png&quot;
+        srcset=&quot;/static/ceb333806c254bf16ba3ef67d3d09a93/00d96/image-blocked.png 148w,
+/static/ceb333806c254bf16ba3ef67d3d09a93/0b23c/image-blocked.png 295w,
+/static/ceb333806c254bf16ba3ef67d3d09a93/799d3/image-blocked.png 590w,
+/static/ceb333806c254bf16ba3ef67d3d09a93/2a3d6/image-blocked.png 885w,
+/static/ceb333806c254bf16ba3ef67d3d09a93/ae92f/image-blocked.png 1180w,
+/static/ceb333806c254bf16ba3ef67d3d09a93/c2188/image-blocked.png 1913w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;所有的图片都没有显示。&lt;/p&gt;
+&lt;p&gt;具体来看图片的请求：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/e39d79ea8487d7f7851c935cab76c9ef/77ac2/blocked-reason.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 58.48406546080965%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAAA7DAAAOwwHHb6hkAAABdElEQVQoz5VTi46CMBDk/z/QGBQUQcr7TaEYmZtFMfHO87wmk20WOp3d2VpZlkH3PfquQ57n8H0f9v6IUKllfz6fEQTBEuM4hmI+DEPIOfn/O6yUH7KyRDcM0OOIoiiw3zsLmRAIkiR5REGapih5pq7rH7C8nY14s0G03ULtdmj4YxQp5CQYeEnbtkuUNc/zA78tKzq40LaNznHQs5S2qpBTZcUoRMYYXK/XJ7J3sJKTh+l4xOh5MFSlqUj6J72Ssnr2d1X0TtlDYcmD4+GAgYTjnVAaXlOhmKW1fiL8U2FKhcZ1b4RsuG4axGx6QcLpcnm6ff6A1CpUeFNIjFG0ECa8ICVa9lQzd6H7i8pPSk79E4xzV8hSe1qvzgHiUKGmOdKCgWWLOR+VHNMQ41KhGMOSu7pClqdoSCSGTNOE/6zFFMORMVQ40JQqyzmgDToSdnw96xyOLFviul+x5tYRszIh4bMq+DIKRpnDV47KLK54lVvzXym1ngNpGFhzAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;blocked reason&quot;
+        title=&quot;blocked reason&quot;
+        src=&quot;/static/e39d79ea8487d7f7851c935cab76c9ef/799d3/blocked-reason.png&quot;
+        srcset=&quot;/static/e39d79ea8487d7f7851c935cab76c9ef/00d96/blocked-reason.png 148w,
+/static/e39d79ea8487d7f7851c935cab76c9ef/0b23c/blocked-reason.png 295w,
+/static/e39d79ea8487d7f7851c935cab76c9ef/799d3/blocked-reason.png 590w,
+/static/e39d79ea8487d7f7851c935cab76c9ef/2a3d6/blocked-reason.png 885w,
+/static/e39d79ea8487d7f7851c935cab76c9ef/77ac2/blocked-reason.png 1161w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;结果发现 403 被禁用，response header 中有一个 &lt;code class=&quot;language-text&quot;&gt;x-tengine-error: denied by Referer ACL&lt;/code&gt;，经过&lt;a href=&quot;https://blog.csdn.net/johnny_mu/article/details/105166878&quot;&gt;网上的搜索发现&lt;/a&gt;应该是微博为了图片不被他人使用做了防盗链的校验，但是这个措施只是相当于校验了白名单中的 referer。那么我们有没有可能为图片的请求加上 referer 这个 header 呢？&lt;/p&gt;
+&lt;h3&gt;解决方案&lt;/h3&gt;
+&lt;p&gt;由于使用了免费的后端服务，所以我们没办法添加 nginx 做反向代理。但我们还可以通过服务器来劫持对图片发起的请求：&lt;/p&gt;
+&lt;p&gt;我们指定图片的 src 是一串我们自己服务器的请求，把图片真实的地址和 referer 地址通过 query 的方式带入：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;html&quot;&gt;&lt;pre class=&quot;language-html&quot;&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;img src={`${MyAPI}?src=${src}&amp;amp;referer=${referer}`} alt=&quot;media image&quot; /&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;在服务器端我们解析 query 并通过 req.pipe 来还原真实请求结果：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; request &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;request&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;weiboAssetsHandler&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;req&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; res&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; src&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; referer &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; req&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;query&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; options &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      url&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; src&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      headers&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        Referer&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;encodeURI&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;referer&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    req&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;pipe&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;options&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;pipe&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;error&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    res&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      error&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; error&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;message&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+server&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;/assets&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; weiboAssetsHandler&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;通过这番操作，我们再来看请求：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/55a700cc419dc109c5ed363f78faf0eb/bb3cf/image-with-proxy.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 142.61119081779051%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,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&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;image with proxy&quot;
+        title=&quot;image with proxy&quot;
+        src=&quot;/static/55a700cc419dc109c5ed363f78faf0eb/799d3/image-with-proxy.png&quot;
+        srcset=&quot;/static/55a700cc419dc109c5ed363f78faf0eb/00d96/image-with-proxy.png 148w,
+/static/55a700cc419dc109c5ed363f78faf0eb/0b23c/image-with-proxy.png 295w,
+/static/55a700cc419dc109c5ed363f78faf0eb/799d3/image-with-proxy.png 590w,
+/static/55a700cc419dc109c5ed363f78faf0eb/bb3cf/image-with-proxy.png 697w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;可以看到，图片真实的出现在了我们自己的网站。&lt;/p&gt;
+&lt;p&gt;再看一下我们的请求已经可以成功返回 200：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/dc6e1336047dfeca3345162f3137de07/30a34/success-response.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 53.63540569020021%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABN0lEQVQoz5WS65KCMAyF+/4vuP5aQaGUXrgoFPB2TOLUcVcddzvzTdIOPT1JUK7awHuNSq9v0F7rHLbeCM5uEXyJJmh0rflB2/ymgvI+IIQGbdsRPbSpsd8PxIgYJ8zzgongPE6zIGcURzobx0ikGKGMMSiKLaytsdvtUFuDvu8wxYjz+YzL5XLnL0vVdU0lairbk6s9nPNomoZeG8nFhMPhgOPxKPFR/B2qKAqwaAjh5pDyvu/fOvgomOe5OOTSWYwju2WHSeDTevxGfa1WyLIMLGytFYZhoMbP0sNPPDlcZ9/iiPvGJTvnaNrtvXd86XQ6SZ5igvdPQ+EeVlUloizIJbM4u1yWRYT54qt+vXKsDPWNy2TBrusk58gTToKvSJNPMSH/YVmWIsSTZmGeMrtkYX71P+sKCBhUnh3QnIcAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;success response&quot;
+        title=&quot;success response&quot;
+        src=&quot;/static/dc6e1336047dfeca3345162f3137de07/799d3/success-response.png&quot;
+        srcset=&quot;/static/dc6e1336047dfeca3345162f3137de07/00d96/success-response.png 148w,
+/static/dc6e1336047dfeca3345162f3137de07/0b23c/success-response.png 295w,
+/static/dc6e1336047dfeca3345162f3137de07/799d3/success-response.png 590w,
+/static/dc6e1336047dfeca3345162f3137de07/2a3d6/success-response.png 885w,
+/static/dc6e1336047dfeca3345162f3137de07/ae92f/success-response.png 1180w,
+/static/dc6e1336047dfeca3345162f3137de07/30a34/success-response.png 1898w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h3&gt;总结&lt;/h3&gt;
+&lt;p&gt;虽然说这么做会有损微博的利益，但是我们也从中学到了一些处理请求转发的小技巧。
+正所谓道高一尺魔高一丈，正是有了互联网的攻防才能促进我们的行业更加安全，更能保障用户的权益。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[入门 React DOM 服务端渲染]]></title><description><![CDATA[前言 当我们需要 React 服务端渲染时，需要了解  这个对象。它能够使组件渲染成静态的 html 标记。 ReactDOMServer 提供了四个方法，其中  和  可以在浏览器和 node 环境中运行， 和  由于使用了 node 中特有的 stream…]]></description><link>https://www.keisei.top/getting-started-react-dom-server-render/</link><guid isPermaLink="false">https://www.keisei.top/getting-started-react-dom-server-render/</guid><pubDate>Fri, 17 Apr 2020 23:52:00 GMT</pubDate><content:encoded>&lt;h3&gt;前言&lt;/h3&gt;
 &lt;p&gt;当我们需要 React 服务端渲染时，需要了解 &lt;a href=&quot;https://reactjs.org/docs/react-dom-server.html#rendertostring&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;ReactDOMServer&lt;/code&gt;&lt;/a&gt; 这个对象。它能够使组件渲染成静态的 html 标记。&lt;/p&gt;
 &lt;p&gt;ReactDOMServer 提供了四个方法，其中 &lt;a href=&quot;https://reactjs.org/docs/react-dom-server.html#rendertostring&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;renderToString()&lt;/code&gt;&lt;/a&gt; 和 &lt;a href=&quot;https://reactjs.org/docs/react-dom-server.html#rendertostaticmarkup&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;renderToStaticMarkup()&lt;/code&gt;&lt;/a&gt; 可以在浏览器和 node 环境中运行，&lt;a href=&quot;https://reactjs.org/docs/react-dom-server.html#rendertonodestream&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;renderToNodeStream()&lt;/code&gt;&lt;/a&gt; 和 &lt;a href=&quot;https://reactjs.org/docs/react-dom-server.html#rendertostaticnodestream&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;renderToStaticNodeStream()&lt;/code&gt;&lt;/a&gt; 由于使用了 node 中特有的 stream，所以不能在浏览器中运行。&lt;/p&gt;
 &lt;h3&gt;&lt;code class=&quot;language-text&quot;&gt;renderToString&lt;/code&gt; 执行原理&lt;/h3&gt;
