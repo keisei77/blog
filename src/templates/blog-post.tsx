@@ -4,6 +4,7 @@ import { Link, graphql } from 'gatsby';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import Tag from '../components/tag';
+import ProgressBar from '../components/progressBar';
 
 const BlogPostTemplate = (props: any) => {
   const post = props.data.markdownRemark;
@@ -12,6 +13,7 @@ const BlogPostTemplate = (props: any) => {
   return (
     <Layout>
       <>
+        <ProgressBar />
         <SEO
           title={post.frontmatter.title}
           description={post.frontmatter.description || post.excerpt}
