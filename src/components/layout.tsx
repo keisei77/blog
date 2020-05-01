@@ -29,16 +29,19 @@ const StyledFooter = styled.footer`
   }
 `;
 
+const SCROLL_OPACITY_HEIGHT = 128;
+
 function Layout(props: LayoutProps) {
   const { children } = props;
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [scrollRate, setScrollRate] = useState<number>(0);
   const mainRef = useRef<HTMLElement>(null);
 
   const throttledScroll = throttle((event: Event) => {
-    if ((event?.target as any).documentElement?.scrollTop) {
-      setIsScrolled(true);
+    const scrollTop = (event?.target as any).documentElement?.scrollTop;
+    if (scrollTop) {
+      setScrollRate(scrollTop / SCROLL_OPACITY_HEIGHT);
     } else {
-      setIsScrolled(false);
+      setScrollRate(0);
     }
   }, 100);
   const data = useStaticQuery(graphql`
@@ -64,7 +67,7 @@ function Layout(props: LayoutProps) {
   }, [throttledScroll]);
   return (
     <div style={{ height: '100%' }}>
-      <Header isScrolled={isScrolled} title={title} />
+      <Header scrollRate={scrollRate} title={title} />
       <StyledMain ref={mainRef}>{children}</StyledMain>
       <StyledFooter>
         © {new Date().getFullYear()}, Built with

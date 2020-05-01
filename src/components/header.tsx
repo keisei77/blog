@@ -5,13 +5,13 @@ import logo from '../assets/logo.png';
 
 interface HeaderProps {
   title: string;
-  isScrolled: boolean;
+  scrollRate: number;
 }
 
-const StyledHeader = styled.header<{ isScrolled: boolean }>`
-  background: ${props => (props.isScrolled ? '#74d2ff' : '#fff')};
+const StyledHeader = styled.header<{ scrollRate: number }>`
+  background: ${props => `rgba(116, 210, 255, ${props.scrollRate})`};
   box-shadow: ${props =>
-    props.isScrolled ? '0px 0px 0.25rem rgba(0, 0, 0, 0.4)' : 'none'};
+    props.scrollRate ? '0px 0px 0.25rem rgba(0, 0, 0, 0.4)' : 'none'};
   position: fixed;
   top: 0;
   left: 0;
@@ -45,8 +45,8 @@ const StyledNav = styled.nav`
   padding: unset;
 `;
 
-const StyledLink = styled(Link)<{ isScrolled: boolean }>`
-  color: ${props => (props.isScrolled ? '#fff' : 'inherit')};
+const StyledLink = styled(Link)<{ scrollRate: number }>`
+  color: ${props => (props.scrollRate ? '#fff' : 'inherit')};
   display: flex;
   align-items: center;
   transition: color 0.1s ease-in-out;
@@ -65,8 +65,8 @@ const StyledMenu = styled(StyledLink)`
     padding-right: 0;
   }
 `;
-const StyledAnchor = styled.a<{ isScrolled: boolean }>`
-  color: ${props => (props.isScrolled ? '#fff' : 'inherit')};
+const StyledAnchor = styled.a<{ scrollRate: number }>`
+  color: ${props => (props.scrollRate ? '#fff' : 'inherit')};
   display: flex;
   align-items: center;
   transition: color 0.1s ease-in-out;
@@ -74,30 +74,30 @@ const StyledAnchor = styled.a<{ isScrolled: boolean }>`
 `;
 
 function Header(props: HeaderProps) {
-  const { title, isScrolled } = props;
+  const { title, scrollRate } = props;
 
   return (
-    <StyledHeader isScrolled={isScrolled}>
+    <StyledHeader scrollRate={scrollRate}>
       <StyledHeaderContainer>
-        <StyledLink isScrolled={isScrolled} to={`/`}>
+        <StyledLink scrollRate={scrollRate} to={`/`}>
           <StyledLogo src={logo} alt="logo" />
           <span className="title">{title}</span>
         </StyledLink>
         <StyledNav>
-          <StyledMenu isScrolled={isScrolled} to="/tags">
+          <StyledMenu scrollRate={scrollRate} to="/tags">
             标签
           </StyledMenu>
           {/* <StyledMenu isScrolled={isScrolled} to="/timeline">
           归档
         </StyledMenu> */}
           <StyledAnchor
-            isScrolled={isScrolled}
+            scrollRate={scrollRate}
             href="https://keisei.now.sh/ncov"
             target="blank"
           >
             疫情数据
           </StyledAnchor>
-          <StyledMenu isScrolled={isScrolled} to="/about">
+          <StyledMenu scrollRate={scrollRate} to="/about">
             关于
           </StyledMenu>
         </StyledNav>
