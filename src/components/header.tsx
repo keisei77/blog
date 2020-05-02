@@ -11,7 +11,12 @@ interface HeaderProps {
 const StyledHeader = styled.header<{ scrollRate: number }>`
   background: ${props => `rgba(116, 210, 255, ${props.scrollRate})`};
   box-shadow: ${props =>
-    props.scrollRate ? '0px 0px 0.25rem rgba(0, 0, 0, 0.4)' : 'none'};
+    props.scrollRate
+      ? `0px 0px 0.25rem rgba(0, 0, 0, ${Math.min(
+          0.4,
+          0.4 * props.scrollRate
+        )})`
+      : 'none'};
   position: fixed;
   top: 0;
   left: 0;
