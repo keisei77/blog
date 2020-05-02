@@ -1,14 +1,25 @@
 import React from 'react';
 import { Link } from 'gatsby';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import logo from '../assets/logo.png';
 
-interface HeaderProps {
-  title: string;
+interface ScrollRate {
   scrollRate: number;
 }
 
+interface HeaderProps extends ScrollRate {
+  title: string;
+}
+
+const SharedGradientColor = ({ scrollRate }: ScrollRate) => css`
+  color: ${() => {
+    const color = Math.min(255, 255 * scrollRate);
+    return scrollRate ? `rgb(${color}, ${color}, ${color})` : '#000';
+  }};
+`;
+
 const StyledHeader = styled.header<{ scrollRate: number }>`
+  ${SharedGradientColor};
   background: ${props => `rgba(116, 210, 255, ${props.scrollRate})`};
   box-shadow: ${props =>
     props.scrollRate
@@ -51,7 +62,6 @@ const StyledNav = styled.nav`
 `;
 
 const StyledLink = styled(Link)<{ scrollRate: number }>`
-  color: ${props => (props.scrollRate ? '#fff' : 'inherit')};
   display: flex;
   align-items: center;
   transition: color 0.1s ease-in-out;
@@ -71,7 +81,6 @@ const StyledMenu = styled(StyledLink)`
   }
 `;
 const StyledAnchor = styled.a<{ scrollRate: number }>`
-  color: ${props => (props.scrollRate ? '#fff' : 'inherit')};
   display: flex;
   align-items: center;
   transition: color 0.1s ease-in-out;
