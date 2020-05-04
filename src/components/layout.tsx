@@ -39,7 +39,7 @@ function Layout(props: LayoutProps) {
   const throttledScroll = throttle((event: Event) => {
     const scrollTop = (event?.target as any).documentElement?.scrollTop;
     if (scrollTop) {
-      setScrollRate(scrollTop / SCROLL_OPACITY_HEIGHT);
+      setScrollRate(Math.min(1, scrollTop / SCROLL_OPACITY_HEIGHT));
     } else {
       setScrollRate(0);
     }

@@ -13,20 +13,19 @@ interface HeaderProps extends ScrollRate {
 
 const SharedGradientColor = ({ scrollRate }: ScrollRate) => css`
   color: ${() => {
-    const color = Math.min(255, 255 * scrollRate);
-    return scrollRate ? `rgb(${color}, ${color}, ${color})` : '#000';
+    const red = 116 + 136 * scrollRate;
+    const green = 210 + 37 * scrollRate;
+    const blue = 255 + -103 * scrollRate;
+
+    return scrollRate ? `rgb(${red}, ${green}, ${blue})` : '#74d2ff';
   }};
 `;
 
 const StyledHeader = styled.header<{ scrollRate: number }>`
-  ${SharedGradientColor};
   background: ${props => `rgba(116, 210, 255, ${props.scrollRate})`};
   box-shadow: ${props =>
     props.scrollRate
-      ? `0px 0px 0.25rem rgba(0, 0, 0, ${Math.min(
-          0.4,
-          0.4 * props.scrollRate
-        )})`
+      ? `0px 0px 0.25rem rgba(0, 0, 0, ${0.4 * props.scrollRate})`
       : 'none'};
   position: fixed;
   top: 0;
@@ -62,6 +61,7 @@ const StyledNav = styled.nav`
 `;
 
 const StyledLink = styled(Link)<{ scrollRate: number }>`
+  ${SharedGradientColor};
   display: flex;
   align-items: center;
   transition: color 0.1s ease-in-out;
@@ -74,6 +74,7 @@ const StyledLogo = styled.img`
 `;
 
 const StyledMenu = styled(StyledLink)`
+  ${SharedGradientColor};
   padding: 0 8px;
 
   &:last-child {
@@ -81,6 +82,7 @@ const StyledMenu = styled(StyledLink)`
   }
 `;
 const StyledAnchor = styled.a<{ scrollRate: number }>`
+  ${SharedGradientColor};
   display: flex;
   align-items: center;
   transition: color 0.1s ease-in-out;
