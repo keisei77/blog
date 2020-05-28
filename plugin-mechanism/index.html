@@ -70,7 +70,206 @@
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
 <span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre></div>
 <p>可以看到 rollup 可以输出多种模块依赖方式，而只需指定 <code class="language-text">inputundefined outputundefined externalundefined plugins</code> 等。</p>
-<p>那么我们就来看一下 rollup 的 <code class="language-text">plugins</code> 是怎么实现的。</p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/plugin mechanism">plugin mechanism</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/load-image-denied-solution/">如何绕过图片防盗链的校验<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
+<p>那么我们就来看一下 rollup 的 <code class="language-text">plugins</code> 是怎么实现的。</p>
+<p>首先我们需要了解 rollup 是怎么运行的，入口文件为 <a href="https://github.com/rollup/rollup/blob/462bff7b1a0c384ecc3e278b1ea877e637c70f41/src/rollup/rollup.ts#L136"><code class="language-text">src/rollup/rollup.ts</code></a></p>
+<p>在 <code class="language-text">rollup()</code> 中执行了 <code class="language-text">rollupInternal()</code> 函数，在该函数中运行了实际的构建细节。</p>
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">rollupInternal</span><span class="token punctuation">(</span>
+  <span class="token parameter">rawInputOptions<span class="token punctuation">:</span> GenericConfigObject<span class="token punctuation">,</span>
+  watcher<span class="token punctuation">:</span> RollupWatcher <span class="token operator">|</span> <span class="token keyword">null</span></span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>RollupBuild<span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> inputOptions <span class="token operator">=</span> <span class="token function">getInputOptions</span><span class="token punctuation">(</span>rawInputOptions<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">initialiseTimers</span><span class="token punctuation">(</span>inputOptions<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> graph <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Graph</span><span class="token punctuation">(</span>inputOptions<span class="token punctuation">,</span> watcher<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// remove the cache option from the memory after graph creation (cache is not used anymore)</span>
+  <span class="token keyword">const</span> useCache <span class="token operator">=</span> rawInputOptions<span class="token punctuation">.</span>cache <span class="token operator">!==</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">delete</span> inputOptions<span class="token punctuation">.</span>cache<span class="token punctuation">;</span>
+  <span class="token keyword">delete</span> rawInputOptions<span class="token punctuation">.</span>cache<span class="token punctuation">;</span>
+
+  <span class="token function">timeStart</span><span class="token punctuation">(</span><span class="token string">'BUILD'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">let</span> chunks<span class="token punctuation">:</span> Chunk<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">await</span> graph<span class="token punctuation">.</span>pluginDriver<span class="token punctuation">.</span><span class="token function">hookParallel</span><span class="token punctuation">(</span><span class="token string">'buildStart'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>inputOptions<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    chunks <span class="token operator">=</span> <span class="token keyword">await</span> graph<span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span>
+      inputOptions<span class="token punctuation">.</span>input <span class="token keyword">as</span> <span class="token builtin">string</span> <span class="token operator">|</span> <span class="token builtin">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">|</span> Record<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">string</span><span class="token operator">></span><span class="token punctuation">,</span>
+      inputOptions<span class="token punctuation">.</span>manualChunks<span class="token punctuation">,</span>
+      inputOptions<span class="token punctuation">.</span>inlineDynamicImports<span class="token operator">!</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> watchFiles <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>graph<span class="token punctuation">.</span>watchFiles<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>watchFiles<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      err<span class="token punctuation">.</span>watchFiles <span class="token operator">=</span> watchFiles<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">await</span> graph<span class="token punctuation">.</span>pluginDriver<span class="token punctuation">.</span><span class="token function">hookParallel</span><span class="token punctuation">(</span><span class="token string">'buildEnd'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>err<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">throw</span> err<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">await</span> graph<span class="token punctuation">.</span>pluginDriver<span class="token punctuation">.</span><span class="token function">hookParallel</span><span class="token punctuation">(</span><span class="token string">'buildEnd'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">timeEnd</span><span class="token punctuation">(</span><span class="token string">'BUILD'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>在这我们截取了部分逻辑，首先 rollup 会根据配置信息（入口、输出类型、插件等字段）构建 <code class="language-text">Graph</code> 对象，在 <code class="language-text">Graph</code> 构造函数内部初始化了 rollup 构建所需要的各种信息：</p>
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">class</span> <span class="token class-name">Graph</span> <span class="token punctuation">{</span>
+  <span class="token comment">// ...</span>
+
+  <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token parameter">options<span class="token punctuation">:</span> InputOptions<span class="token punctuation">,</span> watcher<span class="token punctuation">:</span> RollupWatcher <span class="token operator">|</span> <span class="token keyword">null</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>options<span class="token punctuation">.</span>cache <span class="token operator">!==</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>pluginCache <span class="token operator">=</span>
+        <span class="token punctuation">(</span>options<span class="token punctuation">.</span>cache <span class="token operator">&amp;&amp;</span> options<span class="token punctuation">.</span>cache<span class="token punctuation">.</span>plugins<span class="token punctuation">)</span> <span class="token operator">||</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">// increment access counter</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> name <span class="token keyword">in</span> <span class="token keyword">this</span><span class="token punctuation">.</span>pluginCache<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> cache <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>pluginCache<span class="token punctuation">[</span>name<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> key <span class="token keyword">of</span> Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>cache<span class="token punctuation">)</span><span class="token punctuation">)</span> cache<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">++</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// ...</span>
+
+    <span class="token keyword">this</span><span class="token punctuation">.</span>pluginDriver <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PluginDriver</span><span class="token punctuation">(</span>
+      <span class="token keyword">this</span><span class="token punctuation">,</span>
+      options<span class="token punctuation">.</span>plugins<span class="token operator">!</span><span class="token punctuation">,</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>pluginCache
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>可以看到这里根据配置项来决定插件是否采用缓存机制，而真实的插件注入是在 <code class="language-text">PluginDriver</code> 类中实现的，</p>
+<p>下面我们来看一下 <code class="language-text">PluginDriver</code> 的实现：</p>
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">class</span> <span class="token class-name">PluginDriver</span> <span class="token punctuation">{</span>
+  <span class="token keyword">public</span> emitFile<span class="token punctuation">:</span> EmitFile<span class="token punctuation">;</span>
+  <span class="token keyword">public</span> <span class="token function-variable function">finaliseAssets</span><span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">void</span><span class="token punctuation">;</span>
+  <span class="token keyword">public</span> <span class="token function-variable function">getFileName</span><span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token parameter">fileReferenceId<span class="token punctuation">:</span> <span class="token builtin">string</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  <span class="token keyword">public</span> <span class="token function-variable function">setOutputBundle</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>
+    <span class="token parameter">outputBundle<span class="token punctuation">:</span> OutputBundleWithPlaceholders<span class="token punctuation">,</span>
+    assetFileNames<span class="token punctuation">:</span> <span class="token builtin">string</span></span>
+  <span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">void</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">private</span> fileEmitter<span class="token punctuation">:</span> FileEmitter<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> graph<span class="token punctuation">:</span> Graph<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> pluginCache<span class="token punctuation">:</span> Record<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token punctuation">,</span> SerializablePluginCache<span class="token operator">></span> <span class="token operator">|</span> undefined<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> pluginContexts<span class="token punctuation">:</span> PluginContext<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">private</span> plugins<span class="token punctuation">:</span> Plugin<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">constructor</span><span class="token punctuation">(</span>
+    <span class="token parameter">graph<span class="token punctuation">:</span> Graph<span class="token punctuation">,</span>
+    userPlugins<span class="token punctuation">:</span> Plugin<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    pluginCache<span class="token punctuation">:</span> Record<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token punctuation">,</span> SerializablePluginCache<span class="token operator">></span> <span class="token operator">|</span> undefined<span class="token punctuation">,</span>
+    basePluginDriver<span class="token operator">?</span><span class="token punctuation">:</span> PluginDriver</span>
+  <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">warnDeprecatedHooks</span><span class="token punctuation">(</span>userPlugins<span class="token punctuation">,</span> graph<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>graph <span class="token operator">=</span> graph<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>pluginCache <span class="token operator">=</span> pluginCache<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>fileEmitter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileEmitter</span><span class="token punctuation">(</span>
+      graph<span class="token punctuation">,</span>
+      basePluginDriver <span class="token operator">&amp;&amp;</span> basePluginDriver<span class="token punctuation">.</span>fileEmitter
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>emitFile <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fileEmitter<span class="token punctuation">.</span>emitFile<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>getFileName <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fileEmitter<span class="token punctuation">.</span>getFileName<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>finaliseAssets <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fileEmitter<span class="token punctuation">.</span>assertAssetsFinalized<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>setOutputBundle <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fileEmitter<span class="token punctuation">.</span>setOutputBundle<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>plugins <span class="token operator">=</span> userPlugins<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>
+      basePluginDriver <span class="token operator">?</span> basePluginDriver<span class="token punctuation">.</span>plugins <span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>pluginContexts <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>plugins<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>
+      <span class="token function">getPluginContexts</span><span class="token punctuation">(</span>pluginCache<span class="token punctuation">,</span> graph<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fileEmitter<span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>basePluginDriver<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> plugin <span class="token keyword">of</span> userPlugins<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> hook <span class="token keyword">of</span> inputHooks<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>hook <span class="token keyword">in</span> plugin<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            graph<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span><span class="token function">errInputHookInOutputPlugin</span><span class="token punctuation">(</span>plugin<span class="token punctuation">.</span>name<span class="token punctuation">,</span> hook<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>注意这里构造函数中传入了 <code class="language-text">Graph</code> 实例，这样方便后续对 <code class="language-text">Graph</code> 实例属性的存取。</p>
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">private</span> runHook<span class="token operator">&lt;</span><span class="token constant">H</span> <span class="token keyword">extends</span> <span class="token class-name">AsyncPluginHooks</span><span class="token operator">></span><span class="token punctuation">(</span>
+  hookName<span class="token punctuation">:</span> <span class="token constant">H</span><span class="token punctuation">,</span>
+  args<span class="token punctuation">:</span> Parameters<span class="token operator">&lt;</span>PluginHooks<span class="token punctuation">[</span><span class="token constant">H</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span>
+  pluginIndex<span class="token punctuation">:</span> <span class="token builtin">number</span><span class="token punctuation">,</span>
+  permitValues<span class="token punctuation">:</span> <span class="token builtin">boolean</span><span class="token punctuation">,</span>
+  hookContext<span class="token operator">?</span><span class="token punctuation">:</span> ReplaceContext <span class="token operator">|</span> <span class="token keyword">null</span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span> EnsurePromise<span class="token operator">&lt;</span>ReturnType<span class="token operator">&lt;</span>PluginHooks<span class="token punctuation">[</span><span class="token constant">H</span><span class="token punctuation">]</span><span class="token operator">>></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> plugin <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>plugins<span class="token punctuation">[</span>pluginIndex<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> hook <span class="token operator">=</span> plugin<span class="token punctuation">[</span>hookName<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>hook<span class="token punctuation">)</span> <span class="token keyword">return</span> undefined <span class="token keyword">as</span> <span class="token builtin">any</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">let</span> context <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>pluginContexts<span class="token punctuation">[</span>pluginIndex<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>hookContext<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    context <span class="token operator">=</span> <span class="token function">hookContext</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> plugin<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> <span class="token builtin">Promise</span><span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      <span class="token comment">// permit values allows values to be returned instead of a functional hook</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> hook <span class="token operator">!==</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>permitValues<span class="token punctuation">)</span> <span class="token keyword">return</span> hook<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token function">throwInvalidHookError</span><span class="token punctuation">(</span>hookName<span class="token punctuation">,</span> plugin<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> <span class="token punctuation">(</span>hook <span class="token keyword">as</span> <span class="token builtin">Function</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token parameter">err</span> <span class="token operator">=></span> <span class="token function">throwPluginError</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> plugin<span class="token punctuation">.</span>name<span class="token punctuation">,</span> <span class="token punctuation">{</span> hook<span class="token punctuation">:</span> hookName <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> runHookSync<span class="token operator">&lt;</span><span class="token constant">H</span> <span class="token keyword">extends</span> <span class="token class-name">SyncPluginHooks</span><span class="token operator">></span><span class="token punctuation">(</span>
+  hookName<span class="token punctuation">:</span> <span class="token constant">H</span><span class="token punctuation">,</span>
+  args<span class="token punctuation">:</span> Parameters<span class="token operator">&lt;</span>PluginHooks<span class="token punctuation">[</span><span class="token constant">H</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">,</span>
+  pluginIndex<span class="token punctuation">:</span> <span class="token builtin">number</span><span class="token punctuation">,</span>
+  hookContext<span class="token operator">?</span><span class="token punctuation">:</span> ReplaceContext
+<span class="token punctuation">)</span><span class="token punctuation">:</span> ReturnType<span class="token operator">&lt;</span>PluginHooks<span class="token punctuation">[</span><span class="token constant">H</span><span class="token punctuation">]</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> plugin <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>plugins<span class="token punctuation">[</span>pluginIndex<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> hook <span class="token operator">=</span> plugin<span class="token punctuation">[</span>hookName<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>hook<span class="token punctuation">)</span> <span class="token keyword">return</span> undefined <span class="token keyword">as</span> <span class="token builtin">any</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">let</span> context <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>pluginContexts<span class="token punctuation">[</span>pluginIndex<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>hookContext<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    context <span class="token operator">=</span> <span class="token function">hookContext</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> plugin<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token comment">// permit values allows values to be returned instead of a functional hook</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> hook <span class="token operator">!==</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token function">throwInvalidHookError</span><span class="token punctuation">(</span>hookName<span class="token punctuation">,</span> plugin<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>hook <span class="token keyword">as</span> <span class="token builtin">Function</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">throwPluginError</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> plugin<span class="token punctuation">.</span>name<span class="token punctuation">,</span> <span class="token punctuation">{</span> hook<span class="token punctuation">:</span> hookName <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>这里我们选取了 <code class="language-text">PluginDriver</code> 类的两个私有方法，<code class="language-text">runHookSync()</code> 根据 <code class="language-text">node.js</code> 通用的命名约定，sync 结尾的表明为同步执行，而 <code class="language-text">runHook()</code> 根据返回类型为 <code class="language-text">Promise</code> 也可以看出是异步执行的。</p>
+<p>由于 <code class="language-text">runHookSync()</code> 和 <code class="language-text">runHook()</code> 是仅供 <code class="language-text">PluginDriver</code> 内部使用的，也是执行插件逻辑的地方，而调用该私有方法的入口则是分散在 rollup 构建的各种生命周期/广播的事件中：</p>
+<div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token comment">// 并行执行</span>
+<span class="token keyword">await</span> graph<span class="token punctuation">.</span>pluginDriver<span class="token punctuation">.</span><span class="token function">hookParallel</span><span class="token punctuation">(</span><span class="token string">'buildStart'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>inputOptions<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 顺序执行</span>
+<span class="token keyword">await</span> outputPluginDriver<span class="token punctuation">.</span><span class="token function">hookSeq</span><span class="token punctuation">(</span><span class="token string">'generateBundle'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+  outputOptions<span class="token punctuation">,</span>
+  outputBundle<span class="token punctuation">,</span>
+  isWrite<span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 同步执行并把前一次的结果作为参数传入下一个插件</span>
+<span class="token keyword">const</span> hashAugmentation <span class="token operator">=</span> outputPluginDriver<span class="token punctuation">.</span><span class="token function">hookReduceValueSync</span><span class="token punctuation">(</span>
+  <span class="token string">'augmentChunkHash'</span><span class="token punctuation">,</span>
+  <span class="token string">''</span><span class="token punctuation">,</span>
+  <span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getPrerenderedChunk</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span><span class="token parameter">hashAugmentation<span class="token punctuation">,</span> pluginHash</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>pluginHash<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      hashAugmentation <span class="token operator">+=</span> pluginHash<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> hashAugmentation<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
+<h3>总结</h3>
+<p>插件机制可以保证在系统提供的能力范围内参与系统内部定制化的改造，这为第三方开发提供了更便利的条件，而且这种机制的存在可以激发更多的想法，促进整个生态的发展。</p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/plugin mechanism">plugin mechanism</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/load-image-denied-solution/">如何绕过图片防盗链的校验<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   
   
   if(true) {
