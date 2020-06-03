@@ -63,7 +63,109 @@ window<span class="token punctuation">.</span><span class="token function">addEv
     <span class="token operator">&lt;</span><span class="token operator">/</span>TransitionGroup<span class="token operator">></span>
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre></div>
-<p>由 render()方法可以看到，其底层实际还是依赖了三方库：<a href="https://github.com/reactjs/react-transition-group">react-transition-group</a>。</p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/React">React</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/transition">transition</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/plugin-mechanism/">前端插件机制的探索<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
+<p>由 render()方法可以看到，其底层实际还是依赖了三方库：<a href="https://github.com/reactjs/react-transition-group">react-transition-group</a>。</p>
+<p>虽然 <code class="language-text">react-transition-group</code> 提供了过渡的能力，即提供了 dom 元素进入退出的多个周期节点。为了丝滑的体验，需要对每个时间节点设定样式，这样不免会写出很多的重复或相似的 css 代码。而 panel-stack 封装了<a href="https://github.com/palantir/blueprint/blob/7bb4548b1241d1ac4f5a97a07b57f23b8d8afed2/packages/core/src/common/_react-transition.scss">scss 的过渡函数</a>，非常的强大：</p>
+<div class="gatsby-highlight" data-language="scss"><pre class="language-scss"><code class="language-scss"><span class="token keyword">@mixin</span> <span class="token function">react-transition</span><span class="token punctuation">(</span>
+  <span class="token variable">$name</span><span class="token punctuation">,</span>
+  <span class="token variable">$properties</span><span class="token punctuation">,</span>
+  <span class="token property"><span class="token variable">$duration</span></span><span class="token punctuation">:</span> <span class="token variable">$pt-transition-duration</span><span class="token punctuation">,</span>
+  <span class="token property"><span class="token variable">$easing</span></span><span class="token punctuation">:</span> <span class="token variable">$pt-transition-ease</span><span class="token punctuation">,</span>
+  <span class="token property"><span class="token variable">$delay</span></span><span class="token punctuation">:</span> 0<span class="token punctuation">,</span>
+  <span class="token property"><span class="token variable">$before</span></span><span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+  <span class="token property"><span class="token variable">$after</span></span><span class="token punctuation">:</span> <span class="token string">''</span>
+<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">@include</span> <span class="token function">each-prop</span><span class="token punctuation">(</span><span class="token variable">$properties</span><span class="token punctuation">,</span> 2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">@include</span> <span class="token function">react-transition-phase</span><span class="token punctuation">(</span>
+    <span class="token variable">$name</span><span class="token punctuation">,</span>
+    <span class="token string">'enter'</span><span class="token punctuation">,</span>
+    <span class="token variable">$properties</span><span class="token punctuation">,</span>
+    <span class="token variable">$duration</span><span class="token punctuation">,</span>
+    <span class="token variable">$easing</span><span class="token punctuation">,</span>
+    <span class="token variable">$delay</span><span class="token punctuation">,</span>
+    <span class="token variable">$before</span><span class="token punctuation">,</span>
+    <span class="token variable">$after</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">@include</span> <span class="token function">react-transition-phase</span><span class="token punctuation">(</span>
+    <span class="token variable">$name</span><span class="token punctuation">,</span>
+    <span class="token string">'exit'</span><span class="token punctuation">,</span>
+    <span class="token variable">$properties</span><span class="token punctuation">,</span>
+    <span class="token variable">$duration</span><span class="token punctuation">,</span>
+    <span class="token variable">$easing</span><span class="token punctuation">,</span>
+    <span class="token variable">$delay</span><span class="token punctuation">,</span>
+    <span class="token variable">$before</span><span class="token punctuation">,</span>
+    <span class="token variable">$after</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>大概就是根据节点进入/退出，通过函数调用来生成最终 css 代码。由于我们项目使用了 less 预处理样式，所以经过几番查阅文档将 scss 转成了 less 的实现：</p>
+<div class="gatsby-highlight" data-language="less"><pre class="language-less"><code class="language-less"><span class="token selector">.each-prop(<span class="token variable">@properties</span>, <span class="token variable">@idx</span>)</span> <span class="token punctuation">{</span>
+  <span class="token function">each</span><span class="token punctuation">(</span><span class="token atrule">@properties,</span> <span class="token punctuation">{</span>
+    <span class="token property">@{key}</span><span class="token punctuation">:</span> <span class="token function">extract</span><span class="token punctuation">(</span><span class="token variable">@value</span><span class="token punctuation">,</span> <span class="token variable">@idx</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.extract-prop(<span class="token variable">@properties</span>)</span> <span class="token punctuation">{</span>
+  <span class="token function">each</span><span class="token punctuation">(</span><span class="token atrule">@properties,</span> <span class="token punctuation">{</span>
+    <span class="token property">transition-property+</span><span class="token punctuation">:</span> <span class="token variable">@key</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.react-transition-phase(<span class="token variable">@name</span>, <span class="token variable">@phase</span>, <span class="token variable">@properties</span>, <span class="token variable">@duration</span>, <span class="token variable">@easing</span>)</span> <span class="token punctuation">{</span>
+  <span class="token variable">@start-index<span class="token punctuation">:</span></span> <span class="token function">if</span><span class="token punctuation">(</span><span class="token variable">@phase</span> = <span class="token string">'enter'</span><span class="token punctuation">,</span> 1<span class="token punctuation">,</span> 2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token variable">@end-index<span class="token punctuation">:</span></span> <span class="token function">if</span><span class="token punctuation">(</span><span class="token variable">@phase</span> = <span class="token string">'enter'</span><span class="token punctuation">,</span> 2<span class="token punctuation">,</span> 1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token atrule">@class<span class="token punctuation">:</span> ~".@</span><span class="token punctuation">{</span>name<span class="token punctuation">}</span><span class="token operator">-</span>@<span class="token punctuation">{</span>phase<span class="token punctuation">}</span>"<span class="token punctuation">;</span>
+  <span class="token atrule">@class-active<span class="token punctuation">:</span> ~".@</span><span class="token punctuation">{</span>name<span class="token punctuation">}</span><span class="token operator">-</span>@<span class="token punctuation">{</span>phase<span class="token punctuation">}</span><span class="token operator">-</span>active"<span class="token punctuation">;</span>
+
+  <span class="token selector">@{class}</span> <span class="token punctuation">{</span>
+    <span class="token mixin-usage function">.each-prop</span><span class="token punctuation">(</span><span class="token variable">@properties</span><span class="token punctuation">,</span> <span class="token variable">@start-index</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token selector">@{class-active}</span> <span class="token punctuation">{</span>
+    <span class="token mixin-usage function">.each-prop</span><span class="token punctuation">(</span><span class="token variable">@properties</span><span class="token punctuation">,</span> <span class="token variable">@end-index</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token mixin-usage function">.extract-prop</span><span class="token punctuation">(</span><span class="token variable">@properties</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token property">transition-duration</span><span class="token punctuation">:</span> <span class="token variable">@duration</span><span class="token punctuation">;</span>
+    <span class="token property">transition-timing-function</span><span class="token punctuation">:</span> <span class="token variable">@easing</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>这样在使用时，可以减少许多冗余的代码：</p>
+<div class="gatsby-highlight" data-language="less"><pre class="language-less"><code class="language-less"><span class="token selector">.layer-list</span> <span class="token punctuation">{</span>
+  <span class="token property">height</span><span class="token punctuation">:</span> 100%<span class="token punctuation">;</span>
+  <span class="token property">overflow</span><span class="token punctuation">:</span> hidden<span class="token punctuation">;</span>
+  <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+
+  <span class="token selector">&amp;.layer-list-push</span> <span class="token punctuation">{</span>
+    <span class="token selector">.react-transition-phase(
+      'layer-item',
+      'enter',</span>
+      <span class="token punctuation">{</span><span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateX</span><span class="token punctuation">(</span>100%<span class="token punctuation">)</span> <span class="token function">translate</span><span class="token punctuation">(</span>0%<span class="token punctuation">)</span> <span class="token punctuation">;</span> <span class="token property">opacity</span><span class="token punctuation">:</span> 0 1<span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+      0.4s<span class="token punctuation">,</span>
+      ease
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token selector">.react-transition-phase(
+      'layer-item',
+      'exit',</span>
+      <span class="token punctuation">{</span><span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateX</span><span class="token punctuation">(</span><span class="token operator">-</span>50%<span class="token punctuation">)</span> <span class="token function">translate</span><span class="token punctuation">(</span>0%<span class="token punctuation">)</span> <span class="token punctuation">;</span> <span class="token property">opacity</span><span class="token punctuation">:</span> 0 1<span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+      0.4s<span class="token punctuation">,</span>
+      ease
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token selector">&amp;.layer-list-pop</span> <span class="token punctuation">{</span>
+    <span class="token selector">.react-transition-phase(
+      'layer-item',
+      'enter',</span>
+      <span class="token punctuation">{</span><span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateX</span><span class="token punctuation">(</span><span class="token operator">-</span>50%<span class="token punctuation">)</span> <span class="token function">translate</span><span class="token punctuation">(</span>0%<span class="token punctuation">)</span> <span class="token punctuation">;</span> <span class="token property">opacity</span><span class="token punctuation">:</span> 0 1<span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+      0.4s<span class="token punctuation">,</span>
+      ease
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token selector">.react-transition-phase(
+      'layer-item',
+      'exit',</span>
+      <span class="token punctuation">{</span><span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateX</span><span class="token punctuation">(</span>100%<span class="token punctuation">)</span> <span class="token function">translate</span><span class="token punctuation">(</span>0<span class="token punctuation">)</span> <span class="token punctuation">;</span> <span class="token property">opacity</span><span class="token punctuation">:</span> 0 1<span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+      0.4s<span class="token punctuation">,</span>
+      ease
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/React">React</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/transition">transition</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/plugin-mechanism/">前端插件机制的探索<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   
   
   if(true) {
