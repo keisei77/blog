@@ -56,3 +56,117 @@ public render() {
 ```
 
 由 render()方法可以看到，其底层实际还是依赖了三方库：[react-transition-group](https://github.com/reactjs/react-transition-group)。
+
+虽然 `react-transition-group` 提供了过渡的能力，即提供了 dom 元素进入退出的多个周期节点。为了丝滑的体验，需要对每个时间节点设定样式，这样不免会写出很多的重复或相似的 css 代码。而 panel-stack 封装了[scss 的过渡函数](https://github.com/palantir/blueprint/blob/7bb4548b1241d1ac4f5a97a07b57f23b8d8afed2/packages/core/src/common/_react-transition.scss)，非常的强大：
+
+```scss
+@mixin react-transition(
+  $name,
+  $properties,
+  $duration: $pt-transition-duration,
+  $easing: $pt-transition-ease,
+  $delay: 0,
+  $before: '',
+  $after: ''
+) {
+  @include each-prop($properties, 2);
+  @include react-transition-phase(
+    $name,
+    'enter',
+    $properties,
+    $duration,
+    $easing,
+    $delay,
+    $before,
+    $after
+  );
+  @include react-transition-phase(
+    $name,
+    'exit',
+    $properties,
+    $duration,
+    $easing,
+    $delay,
+    $before,
+    $after
+  );
+}
+```
+
+大概就是根据节点进入/退出，通过函数调用来生成最终 css 代码。由于我们项目使用了 less 预处理样式，所以经过几番查阅文档将 scss 转成了 less 的实现：
+
+```less
+.each-prop(@properties, @idx) {
+  each(@properties, {
+    @{key}: extract(@value, @idx);
+  })
+}
+
+.extract-prop(@properties) {
+  each(@properties, {
+    transition-property+: @key;
+  })
+}
+
+.react-transition-phase(@name, @phase, @properties, @duration, @easing) {
+  @start-index: if(@phase = 'enter', 1, 2);
+  @end-index: if(@phase = 'enter', 2, 1);
+  @class: ~".@{name}-@{phase}";
+  @class-active: ~".@{name}-@{phase}-active";
+
+  @{class} {
+    .each-prop(@properties, @start-index);
+  }
+
+  @{class-active} {
+    .each-prop(@properties, @end-index);
+    .extract-prop(@properties);
+    transition-duration: @duration;
+    transition-timing-function: @easing;
+  }
+}
+```
+
+这样在使用时，可以减少许多冗余的代码：
+
+```less
+.layer-list {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+
+  &.layer-list-push {
+    .react-transition-phase(
+      'layer-item',
+      'enter',
+      {transform: translateX(100%) translate(0%) ; opacity: 0 1;},
+      0.4s,
+      ease
+    );
+    .react-transition-phase(
+      'layer-item',
+      'exit',
+      {transform: translateX(-50%) translate(0%) ; opacity: 0 1;},
+      0.4s,
+      ease
+    );
+  }
+
+  &.layer-list-pop {
+    .react-transition-phase(
+      'layer-item',
+      'enter',
+      {transform: translateX(-50%) translate(0%) ; opacity: 0 1;},
+      0.4s,
+      ease
+    );
+    .react-transition-phase(
+      'layer-item',
+      'exit',
+      {transform: translateX(100%) translate(0) ; opacity: 0 1;},
+      0.4s,
+      ease
+    );
+  }
+}
+```
