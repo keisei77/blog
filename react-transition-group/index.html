@@ -48,7 +48,7 @@ window<span class="token punctuation">.</span><span class="token function">addEv
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div>
 <p>根据上面的路由和 layer 的关系，我们就可以构造出 panel stack 依赖的 <code class="language-text">stack: { component: React.ComponentTypeundefined title: string }[]</code>数据结构了。
 再结合 header，那么大体上我们就满足了需求。</p>
-<h3>探究</h3>
+<h3>搬运</h3>
 <p>了解 panel stack 的用法，那么其实现是怎样的呢？</p>
 <p>我们来看一下 <a href="https://github.com/palantir/blueprint/blob/7bb4548b1241d1ac4f5a97a07b57f23b8d8afed2/packages/core/src/components/panel-stack/panelStack.tsx#L79">PanelStack</a> 的代码：</p>
 <div class="gatsby-highlight" data-language="typescript"><pre class="language-typescript"><code class="language-typescript"><span class="token keyword">public</span> <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -59,7 +59,13 @@ window<span class="token punctuation">.</span><span class="token function">addEv
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token keyword">return</span> <span class="token punctuation">(</span>
     <span class="token operator">&lt;</span>TransitionGroup className<span class="token operator">=</span><span class="token punctuation">{</span>classes<span class="token punctuation">}</span> component<span class="token operator">=</span><span class="token string">"div"</span><span class="token operator">></span>
-      <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">renderPanels</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+     <span class="token operator">&lt;</span>CSSTransition
+        key<span class="token operator">=</span><span class="token punctuation">{</span>id<span class="token punctuation">}</span>
+        timeout<span class="token operator">=</span><span class="token punctuation">{</span><span class="token number">500</span><span class="token punctuation">}</span>
+        classNames<span class="token operator">=</span><span class="token string">"item"</span>
+      <span class="token operator">></span>
+        <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">renderPanels</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>CSSTransition<span class="token operator">></span>
     <span class="token operator">&lt;</span><span class="token operator">/</span>TransitionGroup<span class="token operator">></span>
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre></div>
@@ -132,6 +138,7 @@ window<span class="token punctuation">.</span><span class="token function">addEv
   <span class="token property">overflow</span><span class="token punctuation">:</span> hidden<span class="token punctuation">;</span>
   <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
 
+  <span class="token comment">// 这里为节点新增时</span>
   <span class="token selector">&amp;.layer-list-push</span> <span class="token punctuation">{</span>
     <span class="token selector">.react-transition-phase(
       'layer-item',
@@ -149,6 +156,7 @@ window<span class="token punctuation">.</span><span class="token function">addEv
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
 
+  <span class="token comment">// 这里为节点删除时</span>
   <span class="token selector">&amp;.layer-list-pop</span> <span class="token punctuation">{</span>
     <span class="token selector">.react-transition-phase(
       'layer-item',
@@ -165,7 +173,108 @@ window<span class="token punctuation">.</span><span class="token function">addEv
       ease
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
-<span class="token punctuation">}</span></code></pre></div></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/React">React</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/transition">transition</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/plugin-mechanism/">前端插件机制的探索<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
+<span class="token punctuation">}</span></code></pre></div>
+<h3>探究</h3>
+<p>现在我们就来追根溯源，来看一下 <code class="language-text">react-transition-group</code> 的内部实现：</p>
+<p><a href="https://github.com/reactjs/react-transition-group/blob/master/src/Transition.js">Transition.js</a>中说明， <code class="language-text">Transition</code> 组件默认不会修改内部组件的行为，它只会记录组件的“进入”和“退出”的状态。</p>
+<p><code class="language-text">Transition</code> 存在四种过渡状态：</p>
+<ul>
+<li><code class="language-text">&#39;entering&#39;</code></li>
+<li><code class="language-text">&#39;entered&#39;</code></li>
+<li><code class="language-text">&#39;exiting&#39;</code></li>
+<li><code class="language-text">&#39;exited&#39;</code></li>
+</ul>
+<p><code class="language-text">Transition</code> 通过 <code class="language-text">in</code> 这个 prop 来决定组件的方向，即当 <code class="language-text">in</code> 为 <code class="language-text">true</code> 时，组件状态会开始变为 <code class="language-text">&#39;enter&#39;</code>，然后会在间隔时间内变为 <code class="language-text">&#39;entering&#39;</code> 状态，完成后会变为 <code class="language-text">&#39;entered&#39;</code> 状态。当 <code class="language-text">in</code> 为 <code class="language-text">false</code> 时，组件会进行类似的行为，只不过从 <code class="language-text">&#39;exiting&#39;</code> 过渡到 <code class="language-text">&#39;exited&#39;</code>。</p>
+<p>在我们的需求中，我们需要用到 <code class="language-text">&lt;TransitionGroup&gt;</code> 和 <code class="language-text">&lt;CSSTransition&gt;</code> 组件，<code class="language-text">&lt;TransitionGroup&gt;</code> 是用来维护一组子组件的进出状态的集合，它本身不会定义过渡效果。</p>
+<p><code class="language-text">&lt;TransitionGroup&gt;</code> 中使用了<a href="https://github.com/reactjs/react-transition-group/blob/master/src/utils/ChildMapping.js">childMapping.js</a> 中的 <code class="language-text">getChildMappingundefined getInitialChildMappingundefined getNextChildMapping</code> 来决定各个子组件的进出状态。</p>
+<p>这里根据每个子组件的顺序，依次赋予 props 各个状态。这里用到了 <code class="language-text">React.cloneElement()</code>，复制原组件并传入新的 props。</p>
+<p>在 <code class="language-text">&lt;CSSTransition&gt;</code> 中，定义了</p>
+<div class="gatsby-highlight" data-language="jsx"><pre class="language-jsx"><code class="language-jsx"><span class="token function-variable function">onEnter</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">maybeNode<span class="token punctuation">,</span> maybeAppearing</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>node<span class="token punctuation">,</span> appearing<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">resolveArguments</span><span class="token punctuation">(</span>maybeNode<span class="token punctuation">,</span> maybeAppearing<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">removeClasses</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> <span class="token string">'exit'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">addClass</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> appearing <span class="token operator">?</span> <span class="token string">'appear'</span> <span class="token punctuation">:</span> <span class="token string">'enter'</span><span class="token punctuation">,</span> <span class="token string">'base'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>onEnter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">onEnter</span><span class="token punctuation">(</span>maybeNode<span class="token punctuation">,</span> maybeAppearing<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Transition</span></span>
+  <span class="token spread"><span class="token punctuation">{</span><span class="token punctuation">...</span><span class="token attr-value">props</span><span class="token punctuation">}</span></span>
+  <span class="token attr-name">onEnter</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onEnter<span class="token punctuation">}</span></span>
+  <span class="token attr-name">onEntered</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onEntered<span class="token punctuation">}</span></span>
+  <span class="token attr-name">onEntering</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onEntering<span class="token punctuation">}</span></span>
+  <span class="token attr-name">onExit</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onExit<span class="token punctuation">}</span></span>
+  <span class="token attr-name">onExiting</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onExiting<span class="token punctuation">}</span></span>
+  <span class="token attr-name">onExited</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onExited<span class="token punctuation">}</span></span>
+<span class="token punctuation">/></span></span><span class="token punctuation">;</span></code></pre></div>
+<p>这里以 <code class="language-text">onEnter</code> 为例，当处于 <code class="language-text">&#39;enter&#39;</code> 状态时，在组件上增加 <code class="language-text">{prefix}-enter</code> 的 class。</p>
+<p>在 <code class="language-text">&lt;Transition&gt;</code> 中，当 props 有变化时，会执行 <code class="language-text">componentDidUpdate()</code> 周期函数：</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token function">componentDidUpdate</span><span class="token punctuation">(</span><span class="token parameter">prevProps</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> nextStatus <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>prevProps <span class="token operator">!==</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> status <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>in<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>status <span class="token operator">!==</span> <span class="token constant">ENTERING</span> <span class="token operator">&amp;&amp;</span> status <span class="token operator">!==</span> <span class="token constant">ENTERED</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        nextStatus <span class="token operator">=</span> <span class="token constant">ENTERING</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>status <span class="token operator">===</span> <span class="token constant">ENTERING</span> <span class="token operator">||</span> status <span class="token operator">===</span> <span class="token constant">ENTERED</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        nextStatus <span class="token operator">=</span> <span class="token constant">EXITING</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updateStatus</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> nextStatus<span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>该函数来确定当前组件应该进入的下一个状态是什么，并执行 <code class="language-text">updateStatus()</code> 方法，该方法根据 <code class="language-text">nextStatus</code> 来执行具体的逻辑：</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token function">updateStatus</span><span class="token punctuation">(</span><span class="token parameter">mounting <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span> nextStatus</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>nextStatus <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">cancelNextCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nextStatus <span class="token operator">===</span> <span class="token constant">ENTERING</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">performEnter</span><span class="token punctuation">(</span>mounting<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">performExit</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>unmountOnExit <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>status <span class="token operator">===</span> <span class="token constant">EXITED</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> status<span class="token punctuation">:</span> <span class="token constant">UNMOUNTED</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">performEnter</span><span class="token punctuation">(</span><span class="token parameter">mounting</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> enter <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props
+  <span class="token keyword">const</span> appearing <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>context <span class="token operator">?</span> <span class="token keyword">this</span><span class="token punctuation">.</span>context<span class="token punctuation">.</span>isMounting <span class="token punctuation">:</span> mounting
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>maybeNode<span class="token punctuation">,</span> maybeAppearing<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>nodeRef
+    <span class="token operator">?</span> <span class="token punctuation">[</span>appearing<span class="token punctuation">]</span>
+    <span class="token punctuation">:</span> <span class="token punctuation">[</span>ReactDOM<span class="token punctuation">.</span><span class="token function">findDOMNode</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">,</span> appearing<span class="token punctuation">]</span>
+
+  <span class="token keyword">const</span> timeouts <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getTimeouts</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> enterTimeout <span class="token operator">=</span> appearing <span class="token operator">?</span> timeouts<span class="token punctuation">.</span>appear <span class="token punctuation">:</span> timeouts<span class="token punctuation">.</span>enter
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">!</span>mounting <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>enter<span class="token punctuation">)</span> <span class="token operator">||</span> config<span class="token punctuation">.</span>disabled<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">safeSetState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> status<span class="token punctuation">:</span> <span class="token constant">ENTERED</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">onEntered</span><span class="token punctuation">(</span>maybeNode<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">onEnter</span><span class="token punctuation">(</span>maybeNode<span class="token punctuation">,</span> maybeAppearing<span class="token punctuation">)</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">safeSetState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> status<span class="token punctuation">:</span> <span class="token constant">ENTERING</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">onEntering</span><span class="token punctuation">(</span>maybeNode<span class="token punctuation">,</span> maybeAppearing<span class="token punctuation">)</span>
+
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">onTransitionEnd</span><span class="token punctuation">(</span>enterTimeout<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">safeSetState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> status<span class="token punctuation">:</span> <span class="token constant">ENTERED</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">onEntered</span><span class="token punctuation">(</span>maybeNode<span class="token punctuation">,</span> maybeAppearing<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>以 <code class="language-text">performEnter()</code> 方法为例，根据状态执行我们在<code class="language-text">&lt;CSSTransition&gt;</code>中传入的 <code class="language-text">props.onEntered()</code>，或执行 <code class="language-text">props.onEnter()</code> 并进一步执行 <code class="language-text">props.onEntering()</code>。
+由此，我们可以完整得出 transition 的全部过程。</p>
+<h3>总结</h3>
+<p>从一个小需求出发，我们可以从类似的解决方案中收获非常多的知识和技巧。有时候完成一项工作只是基本要求，更重要的是它的原理和底层实现。这样在以后遇到更复杂的需求时，也能不乱阵脚，根据以往的经验来轻松应对。</p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/React">React</a><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/transition">transition</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/plugin-mechanism/">前端插件机制的探索<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   
   
   if(true) {
