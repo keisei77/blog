@@ -34,7 +34,7 @@ const RouterWrapper = React.memo(() => {
 根据上面的路由和 layer 的关系，我们就可以构造出 panel stack 依赖的 `stack: { component: React.ComponentType, title: string }[]`数据结构了。
 再结合 header，那么大体上我们就满足了需求。
 
-### 探究
+### 搬运
 
 了解 panel stack 的用法，那么其实现是怎样的呢？
 
@@ -49,7 +49,13 @@ public render() {
   );
   return (
     <TransitionGroup className={classes} component="div">
-      {this.renderPanels()}
+     <CSSTransition
+        key={id}
+        timeout={500}
+        classNames="item"
+      >
+        {this.renderPanels()}
+      </CSSTransition>
     </TransitionGroup>
   );
 }
@@ -135,6 +141,7 @@ public render() {
   overflow: hidden;
   position: relative;
 
+  // 这里为节点新增时
   &.layer-list-push {
     .react-transition-phase(
       'layer-item',
@@ -152,6 +159,7 @@ public render() {
     );
   }
 
+  // 这里为节点删除时
   &.layer-list-pop {
     .react-transition-phase(
       'layer-item',
@@ -170,3 +178,127 @@ public render() {
   }
 }
 ```
+
+### 探究
+
+现在我们就来追根溯源，来看一下 `react-transition-group` 的内部实现：
+
+[Transition.js](https://github.com/reactjs/react-transition-group/blob/master/src/Transition.js)中说明， `Transition` 组件默认不会修改内部组件的行为，它只会记录组件的“进入”和“退出”的状态。
+
+`Transition` 存在四种过渡状态：
+
+- `'entering'`
+- `'entered'`
+- `'exiting'`
+- `'exited'`
+
+`Transition` 通过 `in` 这个 prop 来决定组件的方向，即当 `in` 为 `true` 时，组件状态会开始变为 `'enter'`，然后会在间隔时间内变为 `'entering'` 状态，完成后会变为 `'entered'` 状态。当 `in` 为 `false` 时，组件会进行类似的行为，只不过从 `'exiting'` 过渡到 `'exited'`。
+
+在我们的需求中，我们需要用到 `<TransitionGroup>` 和 `<CSSTransition>` 组件，`<TransitionGroup>` 是用来维护一组子组件的进出状态的集合，它本身不会定义过渡效果。
+
+`<TransitionGroup>` 中使用了[childMapping.js](https://github.com/reactjs/react-transition-group/blob/master/src/utils/ChildMapping.js) 中的 `getChildMapping, getInitialChildMapping, getNextChildMapping` 来决定各个子组件的进出状态。
+
+这里根据每个子组件的顺序，依次赋予 props 各个状态。这里用到了 `React.cloneElement()`，复制原组件并传入新的 props。
+
+在 `<CSSTransition>` 中，定义了
+
+```jsx
+onEnter = (maybeNode, maybeAppearing) => {
+  const [node, appearing] = this.resolveArguments(maybeNode, maybeAppearing);
+  this.removeClasses(node, 'exit');
+  this.addClass(node, appearing ? 'appear' : 'enter', 'base');
+
+  if (this.props.onEnter) {
+    this.props.onEnter(maybeNode, maybeAppearing);
+  }
+};
+
+<Transition
+  {...props}
+  onEnter={this.onEnter}
+  onEntered={this.onEntered}
+  onEntering={this.onEntering}
+  onExit={this.onExit}
+  onExiting={this.onExiting}
+  onExited={this.onExited}
+/>;
+```
+
+这里以 `onEnter` 为例，当处于 `'enter'` 状态时，在组件上增加 `{prefix}-enter` 的 class。
+
+在 `<Transition>` 中，当 props 有变化时，会执行 `componentDidUpdate()` 周期函数：
+
+```javascript
+componentDidUpdate(prevProps) {
+  let nextStatus = null
+  if (prevProps !== this.props) {
+    const { status } = this.state
+
+    if (this.props.in) {
+      if (status !== ENTERING && status !== ENTERED) {
+        nextStatus = ENTERING
+      }
+    } else {
+      if (status === ENTERING || status === ENTERED) {
+        nextStatus = EXITING
+      }
+    }
+  }
+  this.updateStatus(false, nextStatus)
+}
+```
+
+该函数来确定当前组件应该进入的下一个状态是什么，并执行 `updateStatus()` 方法，该方法根据 `nextStatus` 来执行具体的逻辑：
+
+```javascript
+updateStatus(mounting = false, nextStatus) {
+  if (nextStatus !== null) {
+    this.cancelNextCallback()
+
+    if (nextStatus === ENTERING) {
+      this.performEnter(mounting)
+    } else {
+      this.performExit()
+    }
+  } else if (this.props.unmountOnExit && this.state.status === EXITED) {
+    this.setState({ status: UNMOUNTED })
+  }
+}
+
+performEnter(mounting) {
+  const { enter } = this.props
+  const appearing = this.context ? this.context.isMounting : mounting
+  const [maybeNode, maybeAppearing] = this.props.nodeRef
+    ? [appearing]
+    : [ReactDOM.findDOMNode(this), appearing]
+
+  const timeouts = this.getTimeouts()
+  const enterTimeout = appearing ? timeouts.appear : timeouts.enter
+
+  if ((!mounting && !enter) || config.disabled) {
+    this.safeSetState({ status: ENTERED }, () => {
+      this.props.onEntered(maybeNode)
+    })
+    return
+  }
+
+  this.props.onEnter(maybeNode, maybeAppearing)
+
+  this.safeSetState({ status: ENTERING }, () => {
+    this.props.onEntering(maybeNode, maybeAppearing)
+
+    this.onTransitionEnd(enterTimeout, () => {
+      this.safeSetState({ status: ENTERED }, () => {
+        this.props.onEntered(maybeNode, maybeAppearing)
+      })
+    })
+  })
+}
+```
+
+以 `performEnter()` 方法为例，根据状态执行我们在`<CSSTransition>`中传入的 `props.onEntered()`，或执行 `props.onEnter()` 并进一步执行 `props.onEntering()`。
+由此，我们可以完整得出 transition 的全部过程。
+
+### 总结
+
+从一个小需求出发，我们可以从类似的解决方案中收获非常多的知识和技巧。有时候完成一项工作只是基本要求，更重要的是它的原理和底层实现。这样在以后遇到更复杂的需求时，也能不乱阵脚，根据以往的经验来轻松应对。
