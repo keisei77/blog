@@ -129,6 +129,86 @@ function MyIcon(props) {
 
 ![dark mode](2.-Home-Setting-Dark-Mode.webp)
 
+### JavaScript 代码分割提高性能
+
+单页面应用中 JavaScript 代码大小是最需要衡量的指标之一，它对于页面加载的性能起着非常大的作用。
+
+### 当需要时再发布所需的增量代码
+
+当用户等待页面加载时，首先立即反馈给用户一个当前渲染页面的骨架屏。骨架屏只需要非常少的资源，但是如果将代码都打包到一个单文件中，那就没有办法提前渲染了。需要根据该页面显示的内容顺序将代码分割到多个文件中。但是，如果真的简单这么做（即通过渲染时[动态加载](https://github.com/tc39/proposal-dynamic-import)代码），这可能会损失而不是提高性能。Facebook 团队对于 JavaScript 加载定义了优先级：通过声明式的、静态分析的 API 将 JavaScript 代码的加载分为 3 个等级。
+
+一级是最基本的开屏画面的布局，包括初次加载中状态的 UI 骨架屏：
+
+![skeleton](3.-Tier-1.webp)
+
+一级使用标准的 `import` 语法：
+
+```javascript
+import ModuleA from 'ModuleA';
+```
+
+二级包含页面渲染所需的所有 JavaScript。经过二级加载，当前页面上应该没有任何代码加载导致的视觉变化。
+
+![full content](4.-Tier-2.webp)
+
+```javascript
+importForDisplay ModuleBDeferred from 'ModuleB';
+```
+
+一旦遇到 `importForDisplay` ，它和它的依赖被移到等级 2。当它加载完会返回一个 promise 包装的结果提供模块的访问。
+
+三级包含任何不需要影响当前渲染结果的代码，如日志代码、实时更新数据的订阅。
+
+```javascript
+importForAfterDisplay ModuleCDeferred from 'ModuleC';
+
+// ...
+
+function onClick(e) {
+  ModuleCDeferred.onReady(ModuleC => {
+    ModuleC.log('Click happened! ', e);
+  });
+}
+```
+
+同样当遇到 `importForAfterDisplay` 时，它和它的依赖被移到等级 3。当它加载完会返回一个 promise 包装的结果提供模块的访问。
+
+一个 500KB 的 JavaScript 页面可能会有 50KB 在一级，150KB 在二级，300KB 在三级。通过这种方式的代码分割，可以提高首屏渲染的时间。
+
+### 只在需要时加载实验性的依赖
+
+有时会需要渲染相同 UI 的两个版本，如在 A/B 测试中。最简单的方式是为所有用户提供两种版本的代码下载，但这意味着会下载一些从不会执行的代码。一个稍微好一点的方式是在渲染时动态加载，但这可能会变慢。
+
+根据越小越好，越早越好的原则，Facebook 团队开发了声明式的 API 来警示开发者尽早做出决定并且将这些代码编码到依赖图中。一旦页面加载时，服务器去检测实验性的功能并只响应对应版本的代码。
+
+```javascript
+const Composer = importCond('NewComposerExperiment', {
+  true: 'NewComposer',
+  false: 'OldComposer',
+});
+```
+
+这对如 A/B 测试、国际化或者不同设备对不同的用户加载页面时是非常有效的。
+
+### 只在需要时加载数据所需的依赖
+
+某些不是静态文件的代码应该如何加载呢？例如，为所有不同的类型去请求所有的渲染代码然后在结合信息流卡片组件渲染可能会使页面的 JavaScript 代码爆炸。
+
+这些依赖取决于运行时后端返回的数据。通过[Relay](https://github.com/facebook/relay)的功能来根据返回的数据决定哪些渲染代码是必要的。如果某条数据有特殊的附件，如图片，那么就需要 PhotoComponent 来渲染该图片。
+
+```graphql
+... on Post {
+  ... on PhotoPost {
+    @module('PhotoComponent.js')
+    photo_data
+  }
+  ... on VideoPost {
+    @module('VideoComponent.js')
+    video_data
+  }
+}
+```
+
 ## 原文
 
 <https://engineering.fb.com/web/facebook-redesign/>
