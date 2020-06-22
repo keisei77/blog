@@ -209,6 +209,43 @@ const Composer = importCond('NewComposerExperiment', {
 }
 ```
 
+## 尽可能早地请求数据
+
+Facebook.com 现在采用 Relay 结合 GraphQL 来请求所有的数据。
+
+### 在初始化服务器请求时预加载数据来提高响应时间
+
+许多 web 应用需要等到所有 JavaScript 下载完成并执行之后再去向服务端请求数据。结合 Relay，可以静态分析出页面需要的数据。这就是说一旦服务端接收到请求，就可以立即开始准备所需的数据并通过所需的代码并行下载数据。将数据以流式传输客户端可以避免额外的往返延时并且尽早渲染出最终内容。
+
+### 流式数据减少往返时延尽快呈现
+
+当加载完页面时，有些内容可能最初是被隐藏的或者渲染到视窗外的。例如，许多屏幕下能显示 1-2 条信息流，但是并不知道能适配多少条。此外，当页面滚动时可能会有一系列的请求来获取数据。另外如果在一条 query 语句中获取越多的数据，响应就会更慢，这会导致更长的查询时间和更久的视觉呈现时间。
+
+为解决此问题，采用了 GraphQL 的内部扩展，`@stream`，客户端连接信息流来获取初始加载和后续滚动分页的数据。这样可以在一个查询语句中挨个发送每条数据。
+
+```graphql
+fragment HomepageData on User {
+  newsFeed(first: 10) {
+    edges @stream
+  }
+  ...AdditionalData
+}
+```
+
+### 延迟非必需的数据请求
+
+不同的查询可能会比其他用时更久。例如，查看个人信息，相对来说查询用户昵称和头像比较快，而获取个人的时间线内容会更久。
+
+在单个查询条件中获取不同部分的数据，使用 `@defer` 关键字，这可以使不同部分数据一旦准备好就流式返回。这可以拿到初始数据尽快渲染出 UI，然后后续的数据先已 loading 的形式展示。结合 [React Suspense](https://reactjs.org/docs/concurrent-mode-suspense.html)，可以更顺畅地从 loading 状态自顶向下展示页面内容。
+
+```graphql
+fragment ProfileData on User {
+  name
+  profile_picture { ... }
+  ...AdditionalData @defer
+}
+```
+
 ## 原文
 
 <https://engineering.fb.com/web/facebook-redesign/>
