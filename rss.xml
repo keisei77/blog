@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 21 Jun 2020 14:46:13 GMT</lastBuildDate><item><title><![CDATA[Facebook.com 新网站的技术栈]]></title><description><![CDATA[前言 Facebook.com 在 2004 年发布时还是简单的服务端渲染的 PHP…]]></description><link>https://www.keisei.top/rebuild-tech-stack-facebook/</link><guid isPermaLink="false">https://www.keisei.top/rebuild-tech-stack-facebook/</guid><pubDate>Fri, 19 Jun 2020 23:42:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 22 Jun 2020 13:45:32 GMT</lastBuildDate><item><title><![CDATA[Facebook.com 新网站的技术栈]]></title><description><![CDATA[前言 Facebook.com 在 2004 年发布时还是简单的服务端渲染的 PHP…]]></description><link>https://www.keisei.top/rebuild-tech-stack-facebook/</link><guid isPermaLink="false">https://www.keisei.top/rebuild-tech-stack-facebook/</guid><pubDate>Fri, 19 Jun 2020 23:42:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;Facebook.com 在 2004 年发布时还是简单的服务端渲染的 PHP 网站。随着时间的发展，陆续增加了许多新的技术来提供更好的体验：每个新的功能都使得网站变慢而且变得更难维护。后来就难以增加新的功能了。像黑暗模式、保存信息流的位置，没有直接的技术方案来实现。&lt;/p&gt;
 &lt;p&gt;当开始思考如何为现代浏览器构建新的 web 应用，同时带来用户期待的新功能时，之前的技术栈不能够带来类 APP 的体验和性能。Facebook 的团队开始采用 &lt;a href=&quot;https://reactjs.org/&quot;&gt;React&lt;/a&gt; 和 &lt;a href=&quot;https://relay.dev/&quot;&gt;Relay&lt;/a&gt; 来重新设计架构。&lt;/p&gt;
 &lt;h2&gt;开始&lt;/h2&gt;
@@ -242,6 +242,27 @@
     &lt;span class=&quot;token directive function&quot;&gt;@module&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&apos;VideoComponent.js&apos;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
     video_data
   &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;尽可能早地请求数据&lt;/h2&gt;
+&lt;p&gt;Facebook.com 现在采用 Relay 结合 GraphQL 来请求所有的数据。&lt;/p&gt;
+&lt;h3&gt;在初始化服务器请求时预加载数据来提高响应时间&lt;/h3&gt;
+&lt;p&gt;许多 web 应用需要等到所有 JavaScript 下载完成并执行之后再去向服务端请求数据。结合 Relay，可以静态分析出页面需要的数据。这就是说一旦服务端接收到请求，就可以立即开始准备所需的数据并通过所需的代码并行下载数据。将数据以流式传输客户端可以避免额外的往返延时并且尽早渲染出最终内容。&lt;/p&gt;
+&lt;h3&gt;流式数据减少往返时延尽快呈现&lt;/h3&gt;
+&lt;p&gt;当加载完页面时，有些内容可能最初是被隐藏的或者渲染到视窗外的。例如，许多屏幕下能显示 1-2 条信息流，但是并不知道能适配多少条。此外，当页面滚动时可能会有一系列的请求来获取数据。另外如果在一条 query 语句中获取越多的数据，响应就会更慢，这会导致更长的查询时间和更久的视觉呈现时间。&lt;/p&gt;
+&lt;p&gt;为解决此问题，采用了 GraphQL 的内部扩展，&lt;code class=&quot;language-text&quot;&gt;@stream&lt;/code&gt;，客户端连接信息流来获取初始加载和后续滚动分页的数据。这样可以在一个查询语句中挨个发送每条数据。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;graphql&quot;&gt;&lt;pre class=&quot;language-graphql&quot;&gt;&lt;code class=&quot;language-graphql&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;fragment&lt;/span&gt; &lt;span class=&quot;token fragment function&quot;&gt;HomepageData&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  newsFeed&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token attr-name&quot;&gt;first&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    edges &lt;span class=&quot;token directive function&quot;&gt;@stream&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;token fragment function&quot;&gt;AdditionalData&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;延迟非必需的数据请求&lt;/h3&gt;
+&lt;p&gt;不同的查询可能会比其他用时更久。例如，查看个人信息，相对来说查询用户昵称和头像比较快，而获取个人的时间线内容会更久。&lt;/p&gt;
+&lt;p&gt;在单个查询条件中获取不同部分的数据，使用 &lt;code class=&quot;language-text&quot;&gt;@defer&lt;/code&gt; 关键字，这可以使不同部分数据一旦准备好就流式返回。这可以拿到初始数据尽快渲染出 UI，然后后续的数据先已 loading 的形式展示。结合 &lt;a href=&quot;https://reactjs.org/docs/concurrent-mode-suspense.html&quot;&gt;React Suspense&lt;/a&gt;，可以更顺畅地从 loading 状态自顶向下展示页面内容。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;graphql&quot;&gt;&lt;pre class=&quot;language-graphql&quot;&gt;&lt;code class=&quot;language-graphql&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;fragment&lt;/span&gt; &lt;span class=&quot;token fragment function&quot;&gt;ProfileData&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  name
+  profile_picture &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;token fragment function&quot;&gt;AdditionalData&lt;/span&gt; &lt;span class=&quot;token directive function&quot;&gt;@defer&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2&gt;原文&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://engineering.fb.com/web/facebook-redesign/&quot;&gt;https://engineering.fb.com/web/facebook-redesign/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[React 过渡]]></title><description><![CDATA[前言 笔者最近在做移动端的项目，项目经理某天给我发了一个链接panel-stack，我试用了一下感觉蛮不错的，每层（stack）切换时非常丝滑。在我们的项目中，针对路由做了一层包装，当用户点击链接时，我们会在 dom 上 append…]]></description><link>https://www.keisei.top/react-transition-group/</link><guid isPermaLink="false">https://www.keisei.top/react-transition-group/</guid><pubDate>Mon, 01 Jun 2020 23:21:00 GMT</pubDate><content:encoded>&lt;h3&gt;前言&lt;/h3&gt;
