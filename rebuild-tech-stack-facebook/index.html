@@ -292,6 +292,109 @@
   profile_picture <span class="token punctuation">{</span> <span class="token operator">...</span> <span class="token punctuation">}</span>
   <span class="token operator">...</span><span class="token fragment function">AdditionalData</span> <span class="token directive function">@defer</span>
 <span class="token punctuation">}</span></code></pre></div>
+<h2>定义路由以快速跳转</h2>
+<p>快速跳转对单页应用来说是重要的功能之一。当跳转到一个新的路由，需要向服务端获取各种代码、数据来渲染页面。为了减少每次加载新页面的往返时延，客户端需要提前知道每个路由所加载的资源。</p>
+<h3>尽早请求资源</h3>
+<p>对客户端渲染的应用来说等待 React 渲染完成是非常常见的。通常可以使用 <a href="https://reactjs.org/docs/code-splitting.html#reactlazy">React.lazy</a> 来实现懒加载。这会使页面跳转变慢，相反在点击发送资源请求之前就开始预加载：</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/57e483352bb4f29ab1706aac8e88ef50/a9a89/Comet-01.webp"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 56.34765625%; position: relative; bottom: 0; left: 0; background-image: url('data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAADQAwCdASoUAAsAPtFUpEuoJKOhsAgBABoJbACdACFQ9uLLm+yScoAA/thx389m19Ys+jnucey3vMz5HpYYWPdtwvRMKkqRPbJ2a6neHgwDfO7+9HmHmKGGRbkaDBpHeX97SnCCMbP4sBz6nrwPTc4fWB41RPVW7dmNdePS1XqULJ+56eZvqOtRqAAAAA=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="preload"
+        title="preload"
+        src="/static/57e483352bb4f29ab1706aac8e88ef50/5ca24/Comet-01.webp"
+        srcset="/static/57e483352bb4f29ab1706aac8e88ef50/cbe2e/Comet-01.webp 148w,
+/static/57e483352bb4f29ab1706aac8e88ef50/3084c/Comet-01.webp 295w,
+/static/57e483352bb4f29ab1706aac8e88ef50/5ca24/Comet-01.webp 590w,
+/static/57e483352bb4f29ab1706aac8e88ef50/dad35/Comet-01.webp 885w,
+/static/57e483352bb4f29ab1706aac8e88ef50/a9a89/Comet-01.webp 1024w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>提前开始请求，当 hover 或 focus 时预加载（preload），鼠标按下去时发起请求（fetch）。</p>
+<p>为了提供更流畅的跳转体验，使用<a href="https://reactjs.org/docs/concurrent-mode-patterns.html#transitions">React Suspense transitions</a> 来继续加载前一页面直到显示下页面的 loading 状态或渲染完成的新页面。</p>
+<h3>并行加载代码和请求数据</h3>
+<p>如果懒加载某路由的代码然后在发起数据请求，那么会出现链式加载。</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/36c1148853b79dc39370eca0835f3c96/a9a89/Comet-02.webp"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 28.515625%; position: relative; bottom: 0; left: 0; background-image: url('data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAADwAwCdASoUAAYAPtFWpEwoJKOiMAgBABoJQBOja/23+A99ETWqSPUgAP6bhvfWhcI2r6n6TGh9+gn6uB38ZnKiQaMCvsY7UsphhzI92jLgHw+F4Je7xAura9TrIvuBEcnq4EhzRcJ5MAOYScAAAA=='); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="linked load"
+        title="linked load"
+        src="/static/36c1148853b79dc39370eca0835f3c96/5ca24/Comet-02.webp"
+        srcset="/static/36c1148853b79dc39370eca0835f3c96/cbe2e/Comet-02.webp 148w,
+/static/36c1148853b79dc39370eca0835f3c96/3084c/Comet-02.webp 295w,
+/static/36c1148853b79dc39370eca0835f3c96/5ca24/Comet-02.webp 590w,
+/static/36c1148853b79dc39370eca0835f3c96/dad35/Comet-02.webp 885w,
+/static/36c1148853b79dc39370eca0835f3c96/a9a89/Comet-02.webp 1024w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>为了解决此问题，Facebook 提出了 EntryPoints，它们是包装代码分割点并将输入转换为查询的文件。这些文件非常小，并且在任何代码拆分点处都可以提前下载。</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;"
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/b27d0d24b660a6b392ac82b27026cf71/a9a89/Comet-03-1.webp"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 38.76953125%; position: relative; bottom: 0; left: 0; background-image: url('data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAADQAwCdASoUAAgAPtFUo0uoJKMhsAgBABoJYwBUfoga9Si/Xltt//AA/uiKZfnNArae5D4do9x6M7jUMB/DmMIs7l8T9PRlxj9PcD6qCIJc7/T3jtNU8jzBsmq41sx9+MLXWJelg2xqME1Km3FOAAAA'); background-size: cover; display: block;"
+  ></span>
+  <img
+        class="gatsby-resp-image-image"
+        alt="parallel load"
+        title="parallel load"
+        src="/static/b27d0d24b660a6b392ac82b27026cf71/5ca24/Comet-03-1.webp"
+        srcset="/static/b27d0d24b660a6b392ac82b27026cf71/cbe2e/Comet-03-1.webp 148w,
+/static/b27d0d24b660a6b392ac82b27026cf71/3084c/Comet-03-1.webp 295w,
+/static/b27d0d24b660a6b392ac82b27026cf71/5ca24/Comet-03-1.webp 590w,
+/static/b27d0d24b660a6b392ac82b27026cf71/dad35/Comet-03-1.webp 885w,
+/static/b27d0d24b660a6b392ac82b27026cf71/a9a89/Comet-03-1.webp 1024w"
+        sizes="(max-width: 590px) 100vw, 590px"
+        style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+        loading="lazy"
+      />
+  </a>
+    </span></p>
+<p>GraphQL 查询仍与视图位于同一位置，但是 EntryPoint 封装了何时需要该查询以及如何将输入转换为正确的变量。 web 应用使用这些 EntryPoints 来自动决定何时获取资源。</p>
 <h2>原文</h2>
 <p><a href="https://engineering.fb.com/web/facebook-redesign/">https://engineering.fb.com/web/facebook-redesign/</a></p></section><footer><pre class="tag__StyledPre-sc-3nz3a9-1 eMzzfH"><label class="tag__StyledLabel-sc-3nz3a9-2 cpRIIU">标签：</label><a class="tag__StyledLink-sc-3nz3a9-0 iHkcoF" href="/tags/Tech Stack">Tech Stack</a></pre></footer></article><nav><ul style="display:flex;flex-wrap:wrap;justify-content:space-between;list-style:none;padding:0"><li style="flex-basis:50%;text-align:left"></li><li style="flex-basis:50%;text-align:right"><a rel="next" href="/react-transition-group/">React 过渡<!-- --> →</a></li></ul></nav></main><footer class="layout__StyledFooter-ccgz52-1 eVlgNw">© <!-- -->2020<!-- -->, Built with<!-- --> <a href="https://www.gatsbyjs.org">Gatsby</a></footer></div></div></div><script>
   

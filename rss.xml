@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 22 Jun 2020 13:45:32 GMT</lastBuildDate><item><title><![CDATA[Facebook.com 新网站的技术栈]]></title><description><![CDATA[前言 Facebook.com 在 2004 年发布时还是简单的服务端渲染的 PHP…]]></description><link>https://www.keisei.top/rebuild-tech-stack-facebook/</link><guid isPermaLink="false">https://www.keisei.top/rebuild-tech-stack-facebook/</guid><pubDate>Fri, 19 Jun 2020 23:42:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 23 Jun 2020 14:01:46 GMT</lastBuildDate><item><title><![CDATA[Facebook.com 新网站的技术栈]]></title><description><![CDATA[前言 Facebook.com 在 2004 年发布时还是简单的服务端渲染的 PHP…]]></description><link>https://www.keisei.top/rebuild-tech-stack-facebook/</link><guid isPermaLink="false">https://www.keisei.top/rebuild-tech-stack-facebook/</guid><pubDate>Fri, 19 Jun 2020 23:42:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;Facebook.com 在 2004 年发布时还是简单的服务端渲染的 PHP 网站。随着时间的发展，陆续增加了许多新的技术来提供更好的体验：每个新的功能都使得网站变慢而且变得更难维护。后来就难以增加新的功能了。像黑暗模式、保存信息流的位置，没有直接的技术方案来实现。&lt;/p&gt;
 &lt;p&gt;当开始思考如何为现代浏览器构建新的 web 应用，同时带来用户期待的新功能时，之前的技术栈不能够带来类 APP 的体验和性能。Facebook 的团队开始采用 &lt;a href=&quot;https://reactjs.org/&quot;&gt;React&lt;/a&gt; 和 &lt;a href=&quot;https://relay.dev/&quot;&gt;Relay&lt;/a&gt; 来重新设计架构。&lt;/p&gt;
 &lt;h2&gt;开始&lt;/h2&gt;
@@ -264,6 +264,109 @@
   profile_picture &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
   &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;token fragment function&quot;&gt;AdditionalData&lt;/span&gt; &lt;span class=&quot;token directive function&quot;&gt;@defer&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;定义路由以快速跳转&lt;/h2&gt;
+&lt;p&gt;快速跳转对单页应用来说是重要的功能之一。当跳转到一个新的路由，需要向服务端获取各种代码、数据来渲染页面。为了减少每次加载新页面的往返时延，客户端需要提前知道每个路由所加载的资源。&lt;/p&gt;
+&lt;h3&gt;尽早请求资源&lt;/h3&gt;
+&lt;p&gt;对客户端渲染的应用来说等待 React 渲染完成是非常常见的。通常可以使用 &lt;a href=&quot;https://reactjs.org/docs/code-splitting.html#reactlazy&quot;&gt;React.lazy&lt;/a&gt; 来实现懒加载。这会使页面跳转变慢，相反在点击发送资源请求之前就开始预加载：&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/57e483352bb4f29ab1706aac8e88ef50/a9a89/Comet-01.webp&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 56.34765625%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAADQAwCdASoUAAsAPtFUpEuoJKOhsAgBABoJbACdACFQ9uLLm+yScoAA/thx389m19Ys+jnucey3vMz5HpYYWPdtwvRMKkqRPbJ2a6neHgwDfO7+9HmHmKGGRbkaDBpHeX97SnCCMbP4sBz6nrwPTc4fWB41RPVW7dmNdePS1XqULJ+56eZvqOtRqAAAAA==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;preload&quot;
+        title=&quot;preload&quot;
+        src=&quot;/static/57e483352bb4f29ab1706aac8e88ef50/5ca24/Comet-01.webp&quot;
+        srcset=&quot;/static/57e483352bb4f29ab1706aac8e88ef50/cbe2e/Comet-01.webp 148w,
+/static/57e483352bb4f29ab1706aac8e88ef50/3084c/Comet-01.webp 295w,
+/static/57e483352bb4f29ab1706aac8e88ef50/5ca24/Comet-01.webp 590w,
+/static/57e483352bb4f29ab1706aac8e88ef50/dad35/Comet-01.webp 885w,
+/static/57e483352bb4f29ab1706aac8e88ef50/a9a89/Comet-01.webp 1024w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;提前开始请求，当 hover 或 focus 时预加载（preload），鼠标按下去时发起请求（fetch）。&lt;/p&gt;
+&lt;p&gt;为了提供更流畅的跳转体验，使用&lt;a href=&quot;https://reactjs.org/docs/concurrent-mode-patterns.html#transitions&quot;&gt;React Suspense transitions&lt;/a&gt; 来继续加载前一页面直到显示下页面的 loading 状态或渲染完成的新页面。&lt;/p&gt;
+&lt;h3&gt;并行加载代码和请求数据&lt;/h3&gt;
+&lt;p&gt;如果懒加载某路由的代码然后在发起数据请求，那么会出现链式加载。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/36c1148853b79dc39370eca0835f3c96/a9a89/Comet-02.webp&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 28.515625%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAADwAwCdASoUAAYAPtFWpEwoJKOiMAgBABoJQBOja/23+A99ETWqSPUgAP6bhvfWhcI2r6n6TGh9+gn6uB38ZnKiQaMCvsY7UsphhzI92jLgHw+F4Je7xAura9TrIvuBEcnq4EhzRcJ5MAOYScAAAA==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;linked load&quot;
+        title=&quot;linked load&quot;
+        src=&quot;/static/36c1148853b79dc39370eca0835f3c96/5ca24/Comet-02.webp&quot;
+        srcset=&quot;/static/36c1148853b79dc39370eca0835f3c96/cbe2e/Comet-02.webp 148w,
+/static/36c1148853b79dc39370eca0835f3c96/3084c/Comet-02.webp 295w,
+/static/36c1148853b79dc39370eca0835f3c96/5ca24/Comet-02.webp 590w,
+/static/36c1148853b79dc39370eca0835f3c96/dad35/Comet-02.webp 885w,
+/static/36c1148853b79dc39370eca0835f3c96/a9a89/Comet-02.webp 1024w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;为了解决此问题，Facebook 提出了 EntryPoints，它们是包装代码分割点并将输入转换为查询的文件。这些文件非常小，并且在任何代码拆分点处都可以提前下载。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/b27d0d24b660a6b392ac82b27026cf71/a9a89/Comet-03-1.webp&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 38.76953125%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAADQAwCdASoUAAgAPtFUo0uoJKMhsAgBABoJYwBUfoga9Si/Xltt//AA/uiKZfnNArae5D4do9x6M7jUMB/DmMIs7l8T9PRlxj9PcD6qCIJc7/T3jtNU8jzBsmq41sx9+MLXWJelg2xqME1Km3FOAAAA&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;parallel load&quot;
+        title=&quot;parallel load&quot;
+        src=&quot;/static/b27d0d24b660a6b392ac82b27026cf71/5ca24/Comet-03-1.webp&quot;
+        srcset=&quot;/static/b27d0d24b660a6b392ac82b27026cf71/cbe2e/Comet-03-1.webp 148w,
+/static/b27d0d24b660a6b392ac82b27026cf71/3084c/Comet-03-1.webp 295w,
+/static/b27d0d24b660a6b392ac82b27026cf71/5ca24/Comet-03-1.webp 590w,
+/static/b27d0d24b660a6b392ac82b27026cf71/dad35/Comet-03-1.webp 885w,
+/static/b27d0d24b660a6b392ac82b27026cf71/a9a89/Comet-03-1.webp 1024w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;GraphQL 查询仍与视图位于同一位置，但是 EntryPoint 封装了何时需要该查询以及如何将输入转换为正确的变量。 web 应用使用这些 EntryPoints 来自动决定何时获取资源。&lt;/p&gt;
 &lt;h2&gt;原文&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://engineering.fb.com/web/facebook-redesign/&quot;&gt;https://engineering.fb.com/web/facebook-redesign/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[React 过渡]]></title><description><![CDATA[前言 笔者最近在做移动端的项目，项目经理某天给我发了一个链接panel-stack，我试用了一下感觉蛮不错的，每层（stack）切换时非常丝滑。在我们的项目中，针对路由做了一层包装，当用户点击链接时，我们会在 dom 上 append…]]></description><link>https://www.keisei.top/react-transition-group/</link><guid isPermaLink="false">https://www.keisei.top/react-transition-group/</guid><pubDate>Mon, 01 Jun 2020 23:21:00 GMT</pubDate><content:encoded>&lt;h3&gt;前言&lt;/h3&gt;
 &lt;p&gt;笔者最近在做移动端的项目，项目经理某天给我发了一个链接&lt;a href=&quot;https://blueprintjs.com/docs/#core/components/panel-stack&quot;&gt;panel-stack&lt;/a&gt;，我试用了一下感觉蛮不错的，每层（stack）切换时非常丝滑。在我们的项目中，针对路由做了一层包装，当用户点击链接时，我们会在 dom 上 append 该链接指向页面的节点，而原页面的节点不会被销毁。这样做的好处是，可以记住原页面的滚动位置、交互状态，但不好的地方是用户刷新页面时只会记录最近一个链接，这样之前页面的元素就丢失了。&lt;/p&gt;
