@@ -246,6 +246,32 @@ fragment ProfileData on User {
 }
 ```
 
+## 定义路由以快速跳转
+
+快速跳转对单页应用来说是重要的功能之一。当跳转到一个新的路由，需要向服务端获取各种代码、数据来渲染页面。为了减少每次加载新页面的往返时延，客户端需要提前知道每个路由所加载的资源。
+
+### 尽早请求资源
+
+对客户端渲染的应用来说等待 React 渲染完成是非常常见的。通常可以使用 [React.lazy](https://reactjs.org/docs/code-splitting.html#reactlazy) 来实现懒加载。这会使页面跳转变慢，相反在点击发送资源请求之前就开始预加载：
+
+![preload](Comet-01.webp)
+
+提前开始请求，当 hover 或 focus 时预加载（preload），鼠标按下去时发起请求（fetch）。
+
+为了提供更流畅的跳转体验，使用[React Suspense transitions](https://reactjs.org/docs/concurrent-mode-patterns.html#transitions) 来继续加载前一页面直到显示下页面的 loading 状态或渲染完成的新页面。
+
+### 并行加载代码和请求数据
+
+如果懒加载某路由的代码然后在发起数据请求，那么会出现链式加载。
+
+![linked load](Comet-02.webp)
+
+为了解决此问题，Facebook 提出了 EntryPoints，它们是包装代码分割点并将输入转换为查询的文件。这些文件非常小，并且在任何代码拆分点处都可以提前下载。
+
+![parallel load](Comet-03-1.webp)
+
+GraphQL 查询仍与视图位于同一位置，但是 EntryPoint 封装了何时需要该查询以及如何将输入转换为正确的变量。 web 应用使用这些 EntryPoints 来自动决定何时获取资源。
+
 ## 原文
 
 <https://engineering.fb.com/web/facebook-redesign/>
