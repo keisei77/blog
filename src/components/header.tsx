@@ -113,6 +113,9 @@ function Header(props: HeaderProps) {
           >
             疫情数据
           </StyledAnchor>
+          <StyledMenu scrollRate={scrollRate} to="/friends">
+            友链
+          </StyledMenu>
           <StyledMenu scrollRate={scrollRate} to="/about">
             关于
           </StyledMenu>
