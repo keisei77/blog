@@ -1,4 +1,57 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 17 Jul 2020 15:27:18 GMT</lastBuildDate><item><title><![CDATA[Facebook.com 新网站的技术栈]]></title><description><![CDATA[前言 Facebook.com 在 2004 年发布时还是简单的服务端渲染的 PHP…]]></description><link>https://www.keisei.top/rebuild-tech-stack-facebook/</link><guid isPermaLink="false">https://www.keisei.top/rebuild-tech-stack-facebook/</guid><pubDate>Fri, 19 Jun 2020 23:42:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 31 Jul 2020 13:39:45 GMT</lastBuildDate><item><title><![CDATA[bash 脚本入门]]></title><description><![CDATA[前言 最近深感能力不足，于是开始了每日的 leetcode 刷题。为了以后复习方便，单独开了一个仓库进行存档。每道题目为单个 md 文件，commit…]]></description><link>https://www.keisei.top/basic-bash-script/</link><guid isPermaLink="false">https://www.keisei.top/basic-bash-script/</guid><pubDate>Fri, 31 Jul 2020 20:37:00 GMT</pubDate><content:encoded>&lt;h3&gt;前言&lt;/h3&gt;
+&lt;p&gt;最近深感能力不足，于是开始了每日的 leetcode 刷题。为了以后复习方便，单独开了一个&lt;a href=&quot;https://github.com/keisei77/algorithm-practice&quot;&gt;仓库&lt;/a&gt;进行存档。每道题目为单个 md 文件，commit 记录为题目的名称 &lt;code class=&quot;language-text&quot;&gt;:white_check_mark: 347. Top K Frequent Elements.md&lt;/code&gt;。&lt;/p&gt;
+&lt;h3&gt;建档步骤枯燥且重复&lt;/h3&gt;
+&lt;p&gt;起初决定以每道题目的名称作为文件名，内容的标题也是题目名，即 &lt;code class=&quot;language-text&quot;&gt;# 347. Top K Frequent Elements&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;由于是新增文件，所以 &lt;code class=&quot;language-text&quot;&gt;git status&lt;/code&gt; 输出的内容为：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;txt&quot;&gt;&lt;pre class=&quot;language-txt&quot;&gt;&lt;code class=&quot;language-txt&quot;&gt;On branch master
+Your branch is up to date with &amp;#39;origin/master&amp;#39;.
+
+Untracked files:
+  (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to include in what will be committed)
+
+        347. Top K Frequent Elements.md
+
+nothing added to commit but untracked files present (use &amp;quot;git add&amp;quot; to track)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这种格式的文本显然很难去提取当前需要提交的文件名，所以需要去了解 &lt;code class=&quot;language-text&quot;&gt;git status&lt;/code&gt; 有没有一个标准化的输出格式。&lt;/p&gt;
+&lt;h3&gt;探索解决方案&lt;/h3&gt;
+&lt;p&gt;在考虑通过脚本解决上述问题时，考虑到新增和提交是两个步骤，所以分为两个独立的脚本。&lt;/p&gt;
+&lt;h4&gt;新增脚本&lt;/h4&gt;
+&lt;p&gt;首先新增文件的脚本比较简单，就是通过输入文件名，以此来生成文件和标题：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token shebang important&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;set&lt;/span&gt; -e
+
+&lt;span class=&quot;token assign-left variable&quot;&gt;problem&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token variable&quot;&gt;$@&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;token variable&quot;&gt;$@&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;then&lt;/span&gt;
+    &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Please enter the problem name.&quot;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt;
+    &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;# &lt;span class=&quot;token variable&quot;&gt;$problem&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;$problem&lt;/span&gt;.md&quot;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;fi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;由于对 &lt;code class=&quot;language-text&quot;&gt;bash&lt;/code&gt; 还是比较陌生，所以可能水平有些次。不过虽然看起来很简单，但是这里有一个技巧：就是 &lt;code class=&quot;language-text&quot;&gt;$@&lt;/code&gt; 会拿到执行该脚本时传入的所有 arguments。为什么不能拿 &lt;code class=&quot;language-text&quot;&gt;$1&lt;/code&gt; 来获取题目呢？这就是遇到的一个坑点：在执行脚本时跑的命令是：&lt;code class=&quot;language-text&quot;&gt;./bin/add_problem.sh 347. Top K Frequent Elements.md&lt;/code&gt;，结果 &lt;code class=&quot;language-text&quot;&gt;$1&lt;/code&gt; 的值为 &lt;code class=&quot;language-text&quot;&gt;347.&lt;/code&gt; 而不是预期的整个标题内容。&lt;/p&gt;
+&lt;h4&gt;提交脚本&lt;/h4&gt;
+&lt;p&gt;通过获取当前待提交的文件名，并提交推送至远程仓库：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token shebang important&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;set&lt;/span&gt; -e
+&lt;span class=&quot;token comment&quot;&gt;# https://stackoverflow.com/a/5238537/6796500&lt;/span&gt;
+&lt;span class=&quot;token assign-left variable&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; status --porcelain &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;sed&lt;/span&gt; s/^&lt;span class=&quot;token punctuation&quot;&gt;..&lt;/span&gt;.//&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;token variable&quot;&gt;$file&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;then&lt;/span&gt;
+    &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;No files changed.&quot;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;token builtin class-name&quot;&gt;.&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; commit -m &lt;span class=&quot;token string&quot;&gt;&quot;:white_check_mark: &lt;span class=&quot;token variable&quot;&gt;$file&lt;/span&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; push
+&lt;span class=&quot;token keyword&quot;&gt;fi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这里最重要的一点就是拿到所有变更的文件名，经过搜索发现果然有人提过这个需求：&lt;a href=&quot;https://stackoverflow.com/a/5238537/6796500&quot;&gt;https://stackoverflow.com/a/5238537/6796500&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;那么就好办了，直接把拿到的文件名加入到 commit message 中，然后执行 git 操作。&lt;/p&gt;
+&lt;h3&gt;总结&lt;/h3&gt;
+&lt;p&gt;虽然目前基本满足了个人需求，但是这里还有一点遗憾，就是 &lt;code class=&quot;language-text&quot;&gt;git status&lt;/code&gt; 可以拿到多个变更文件。本来可以通过 &lt;code class=&quot;language-text&quot;&gt;for loop&lt;/code&gt; 来提交多个 commit，但是还是遇到了先前的问题：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;347. Top K Frequent Elements.md
+78. Subsets.md&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这里变更了两个文件：&lt;code class=&quot;language-text&quot;&gt;$files&lt;/code&gt;，但是 &lt;code class=&quot;language-text&quot;&gt;for $file in $files&lt;/code&gt; 得到的 &lt;code class=&quot;language-text&quot;&gt;$file&lt;/code&gt; 却是：&lt;code class=&quot;language-text&quot;&gt;347.&lt;/code&gt;，&lt;code class=&quot;language-text&quot;&gt;Top&lt;/code&gt;，&lt;code class=&quot;language-text&quot;&gt;K&lt;/code&gt; 等。这是目前待解决的问题。如有解决方案，还请帮忙提供解决方式：&lt;a href=&quot;https://github.com/keisei77/algorithm-practice/issues/1&quot;&gt;https://github.com/keisei77/algorithm-practice/issues/1&lt;/a&gt;，不胜感激。&lt;/p&gt;
+&lt;p&gt;通过写简单的脚本，确实提高了部分效率，也对 bash 的使用有了新的认知。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Facebook.com 新网站的技术栈]]></title><description><![CDATA[前言 Facebook.com 在 2004 年发布时还是简单的服务端渲染的 PHP…]]></description><link>https://www.keisei.top/rebuild-tech-stack-facebook/</link><guid isPermaLink="false">https://www.keisei.top/rebuild-tech-stack-facebook/</guid><pubDate>Fri, 19 Jun 2020 23:42:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;Facebook.com 在 2004 年发布时还是简单的服务端渲染的 PHP 网站。随着时间的发展，陆续增加了许多新的技术来提供更好的体验：每个新的功能都使得网站变慢而且变得更难维护。后来就难以增加新的功能了。像黑暗模式、保存信息流的位置，没有直接的技术方案来实现。&lt;/p&gt;
 &lt;p&gt;当开始思考如何为现代浏览器构建新的 web 应用，同时带来用户期待的新功能时，之前的技术栈不能够带来类 APP 的体验和性能。Facebook 的团队开始采用 &lt;a href=&quot;https://reactjs.org/&quot;&gt;React&lt;/a&gt; 和 &lt;a href=&quot;https://relay.dev/&quot;&gt;Relay&lt;/a&gt; 来重新设计架构。&lt;/p&gt;
 &lt;h2&gt;开始&lt;/h2&gt;
