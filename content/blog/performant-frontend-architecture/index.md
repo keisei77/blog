@@ -1,5 +1,5 @@
 ---
-title: 高性能前端架构
+title: 【译】高性能前端架构
 date: '2020-03-12 21:02'
 description: '本文将从几个方面来介绍如何构建高性能架构'
 tags: ['Architecture', 'Performance']

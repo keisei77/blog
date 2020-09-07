@@ -1,5 +1,5 @@
 ---
-title: 处理 Web 应用中的内存泄露问题
+title: 【译】处理 Web 应用中的内存泄露问题
 date: '2020-03-01 22:08'
 description: '分析内存泄漏的原因,做出针对性的处理'
 tags: ['memory leak']

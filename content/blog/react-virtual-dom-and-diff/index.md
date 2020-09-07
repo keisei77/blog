@@ -1,5 +1,5 @@
 ---
-title: 虚拟DOM和diff算法在React中的工作方式
+title: 【译】虚拟DOM和diff算法在React中的工作方式
 date: '2020-01-19 22:31'
 description: '本文主要介绍React中的虚拟DOM和diff算法是如何工作的，以及部分源码解读'
 tags: ['React', 'React diff', 'Virtual DOM']

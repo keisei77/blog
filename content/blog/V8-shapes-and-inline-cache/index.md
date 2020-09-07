@@ -1,5 +1,5 @@
 ---
-title: JavaScript 引擎基础：Shapes 和 Inline Caches
+title: 【译】JavaScript 引擎基础：Shapes 和 Inline Caches
 date: '2019-11-18 22:51'
 description: '了解 JavaScript 引擎基本的工作原理，可以帮助我们写出更加高性能的代码。'
 tags: ['javascript engines', 'V8', 'shapes', 'inline caches', 'fundamentals']

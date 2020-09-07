@@ -1,5 +1,5 @@
 ---
-title: 了解 V8 内存管理
+title: 【译】了解 V8 内存管理
 date: '2020-02-24 23:03'
 description: '对V8的内存管理加以了解'
 tags: ['V8', 'Garbage Collection']

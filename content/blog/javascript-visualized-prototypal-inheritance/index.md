@@ -1,5 +1,5 @@
 ---
-title: JavaScript 可视化之原型继承
+title: 【译】JavaScript 可视化之原型继承
 date: '2020-02-04 17:24'
 description: '原型继承以图形化的方式展示，方便理解'
 tags: ['JavaScript Visualized', 'Prototypal Inheritance']

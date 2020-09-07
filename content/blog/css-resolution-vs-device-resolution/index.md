@@ -1,5 +1,5 @@
 ---
-title: 区分CSS 分辨率和设备分辨率
+title: 【译】区分CSS 分辨率和设备分辨率
 date: '2019-12-14 21:33'
 description: 'CSS中的像素和设备分辨率像素的区分'
 tags: ['CSS', 'Resolution']

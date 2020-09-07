@@ -1,5 +1,5 @@
 ---
-title: JavaScript 可视化之事件循环
+title: 【译】JavaScript 可视化之事件循环
 date: '2020-01-25 20:45'
 description: '事件循环以图形化的方式展示，方便理解'
 tags: ['JavaScript Visualized', 'Event Loop']

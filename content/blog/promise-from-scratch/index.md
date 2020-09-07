@@ -1,5 +1,5 @@
 ---
-title: 简单的Promise实现
+title: 【译】简单的Promise实现
 date: '2019-12-08 19:30'
 description: 'No BB, show me the code.'
 tags: ['Promise']

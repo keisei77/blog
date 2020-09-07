@@ -1,5 +1,5 @@
 ---
-title: Facebook.com 新网站的技术栈
+title: 【译】Facebook.com 新网站的技术栈
 date: '2020-06-19 23:42'
 description: '本文主要介绍 Facebook.com 新网站的技术栈的细节'
 tags: ['Tech Stack']

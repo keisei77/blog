@@ -1,5 +1,5 @@
 ---
-title: 初识 React Native 架构
+title: 【译】初识 React Native 架构
 date: '2020-02-22 21:59'
 description: '对RN架构有一个整体的了解，原文章可能已过时但核心原理应该是不变的。'
 tags: ['Architecture', 'React Native']

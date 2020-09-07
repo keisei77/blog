@@ -1,5 +1,5 @@
 ---
-title: 神奇的模板字符串
+title: 【译】神奇的模板字符串
 date: '2019-12-01 16:41'
 description: '本文主要介绍了ES6的模板字符串的高级用法'
 tags: ['Template Literals', 'ES6']

@@ -1,5 +1,5 @@
 ---
-title: React SSR 初体验
+title: 【译】React SSR 初体验
 date: '2020-02-09 20:10'
 description: 'SSR 的入门学习'
 tags: ['React', 'SSR']

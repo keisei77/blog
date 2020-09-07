@@ -1,5 +1,5 @@
 ---
-title: 渲染器进程的内部执行
+title: 【译】渲染器进程的内部执行
 date: '2019-12-18 23:38'
 description: '渲染器进程的内部执行过程'
 tags: ['Renderer process']

@@ -1,5 +1,5 @@
 ---
-title: React源码中导致V8性能断崖下滑的真相
+title: 【译】React源码中导致V8性能断崖下滑的真相
 date: '2019-11-14 22:42'
 description: '本文主要讲述了V8如何在内存中表示JavaScript类型，并且是如何影响Shape机制的，这将会为我们解释近期发现的一个React核心代码中的性能问题。'
 tags: ['React', 'V8', 'representations', 'optimize']
