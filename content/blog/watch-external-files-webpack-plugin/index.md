@@ -2,7 +2,7 @@
 title: webpack 监听外部文件变更
 date: '2020-09-10 23:20'
 description: '本文将介绍当需要根据外部文件变更触发编译时，如何通过编写插件来解决该问题。'
-tags: ['Browser process', 'navigation']
+tags: ['webpack', 'plugin']
 ---
 
 ### 背景
