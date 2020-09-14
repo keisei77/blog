@@ -1,4 +1,101 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 14 Sep 2020 12:16:20 GMT</lastBuildDate><item><title><![CDATA[webpack 监听外部文件变更]]></title><description><![CDATA[背景 最近几个月的工作都以移动端为主，主要的工作内容是将 PC 端已有的核心业务移植到 Mobile…]]></description><link>https://www.keisei.top/watch-external-files-webpack-plugin/</link><guid isPermaLink="false">https://www.keisei.top/watch-external-files-webpack-plugin/</guid><pubDate>Thu, 10 Sep 2020 23:20:00 GMT</pubDate><content:encoded>&lt;h3&gt;背景&lt;/h3&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[学习随笔]]></title><description><![CDATA[日常学习之互联网技术]]></description><link>https://www.keisei.top</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 14 Sep 2020 13:04:32 GMT</lastBuildDate><item><title><![CDATA[vscode 调试 node.js]]></title><description><![CDATA[引言 作为前端工程师经常打交道的开发工具无非 IDE 编辑器 和 Chrome，在 Chrome 中调试是非常方便的，直接在 开发者工具的  栏打断点就可以了。那么，如果遇到需要写 node 相关的代码，比如 webpack 配置项，应该怎么调试来实现我们的需求呢？ VS…]]></description><link>https://www.keisei.top/easy-debug-in-node/</link><guid isPermaLink="false">https://www.keisei.top/easy-debug-in-node/</guid><pubDate>Mon, 14 Sep 2020 20:20:00 GMT</pubDate><content:encoded>&lt;h3&gt;引言&lt;/h3&gt;
+&lt;p&gt;作为前端工程师经常打交道的开发工具无非 IDE 编辑器 和 Chrome，在 Chrome 中调试是非常方便的，直接在 开发者工具的 &lt;code class=&quot;language-text&quot;&gt;source&lt;/code&gt; 栏打断点就可以了。那么，如果遇到需要写 node 相关的代码，比如 webpack 配置项，应该怎么调试来实现我们的需求呢？&lt;/p&gt;
+&lt;h3&gt;VS Code 配置&lt;/h3&gt;
+&lt;p&gt;在 VS Code 中单独有 debug 的菜单，需要指定 &lt;code class=&quot;language-text&quot;&gt;launch.json&lt;/code&gt; 文件，该文件为 VS Code 提供启动调试所需的各项配置。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// launch.json&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// 使用 IntelliSense 了解相关属性。&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// 悬停以查看现有属性的描述。&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;0.2.0&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;configurations&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;token property&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;node&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token property&quot;&gt;&quot;request&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;launch&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token property&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Launch via NPM&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token property&quot;&gt;&quot;runtimeExecutable&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;npm&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token property&quot;&gt;&quot;runtimeArgs&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;run-script&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;debug&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token property&quot;&gt;&quot;cwd&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;${workspaceFolder}/envloader/mobile&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token property&quot;&gt;&quot;port&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;9229&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;上面是我们项目的调试配置，&lt;code class=&quot;language-text&quot;&gt;runtimeExecutable&lt;/code&gt; 指明调试方式是 &lt;code class=&quot;language-text&quot;&gt;npm&lt;/code&gt; 方式，&lt;code class=&quot;language-text&quot;&gt;runtimeArgs&lt;/code&gt; 为执行调试传的参数，&lt;code class=&quot;language-text&quot;&gt;cwd&lt;/code&gt; 指定工作目录。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// package.json&lt;/span&gt;
+
+&lt;span class=&quot;token property&quot;&gt;&quot;scripts&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;debug&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;node --max_old_space_size=12288 --inspect-brk node_modules/webpack/bin/webpack.js --config build/webpack.dev.js --watch&quot;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;注意 &lt;code class=&quot;language-text&quot;&gt;debug&lt;/code&gt; 脚本要传入 &lt;code class=&quot;language-text&quot;&gt;--inspect-brk&lt;/code&gt;，这样才可以开启 node 的调试功能。&lt;/p&gt;
+&lt;p&gt;VS Code 调试菜单点击执行按钮，我们就可以愉快的调试 &lt;code class=&quot;language-text&quot;&gt;webpack.dev.js&lt;/code&gt; 代码了。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/bf7c368f2f8cd1745c96a0fc2f4c072d/a5701/webpack-plugin-debug.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 55.13823682837767%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAABiElEQVQoz22SaW4bMQyF5yQFkjbj0UKtJLV6HMdB8qv3v045MbqlBT4IAkWR4ntaMrXN5icVZDWOFeSQRx+3mLvLE2JzqdlQIBTZuFRdLD41QY4W41ryPaXhAq/aK5MMcMG588DUjCsA5B1b3xRIaVRAJ4vgS6LLIlH0PWPXNioTNOAGRKG12FMcWYp6Vva4s1n8xckcz1wku+QLlt3nBoEhVuU4hAquKFcVFEldjWT/xaqTiX3ZTOZ4ls4+svMojwfPvYxZW+ZqA0LILhJE/BMNyYS+nHTCMEWGx9V8Xe2qgo00+nyb+37ez2P2ylwoEUbG9BOIWQMvm84onXkKVM+RprJkoVZ+Ke1KeYpmq8Z/+Jh5M1joKjMfNogHeZyAXZoRd09niRh/jP2h82/uvi7icPYz5fGwmi+P28OTee3j+/PlffRraTuVHPiT1HdsqIuzePONA39T4fgqJr2W8V6HrG91PFOvqZr/XdbSuY5bwimaS3l9fIZyAlrFnjtizJFKcvoJGecHF/R/IMINj8kAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;debug webpack plugin&quot;
+        title=&quot;debug webpack plugin&quot;
+        src=&quot;/static/bf7c368f2f8cd1745c96a0fc2f4c072d/799d3/webpack-plugin-debug.png&quot;
+        srcset=&quot;/static/bf7c368f2f8cd1745c96a0fc2f4c072d/00d96/webpack-plugin-debug.png 148w,
+/static/bf7c368f2f8cd1745c96a0fc2f4c072d/0b23c/webpack-plugin-debug.png 295w,
+/static/bf7c368f2f8cd1745c96a0fc2f4c072d/799d3/webpack-plugin-debug.png 590w,
+/static/bf7c368f2f8cd1745c96a0fc2f4c072d/2a3d6/webpack-plugin-debug.png 885w,
+/static/bf7c368f2f8cd1745c96a0fc2f4c072d/ae92f/webpack-plugin-debug.png 1180w,
+/static/bf7c368f2f8cd1745c96a0fc2f4c072d/a5701/webpack-plugin-debug.png 1917w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;可以看到，webpack 内部的数据结构尽收眼底。&lt;/p&gt;
+&lt;h3&gt;Chrome 开发者工具风格&lt;/h3&gt;
+&lt;p&gt;刚才的 &lt;code class=&quot;language-text&quot;&gt;launch.json&lt;/code&gt; 中，有 &lt;code class=&quot;language-text&quot;&gt;port: 9229&lt;/code&gt; 这个属性，我们可以在浏览器访问 &lt;code class=&quot;language-text&quot;&gt;chrome://inspect&lt;/code&gt; ，就能以我们熟悉的 chrome 风格来调试 node 程序了。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto;  max-width: 590px;&quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/81940091cc430cc930fd8a6e2c3f691f/3516d/chrome-debug.jpg&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 79.65023847376787%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAQABQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAECBf/EABYBAQEBAAAAAAAAAAAAAAAAAAEAAv/aAAwDAQACEAMQAAAB21ZlRRH/xAAZEAACAwEAAAAAAAAAAAAAAAAAAQIQERL/2gAIAQEAAQUCxGROUNUj/8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAwEBPwE//8QAFxEAAwEAAAAAAAAAAAAAAAAAAAEREv/aAAgBAgEBPwGIyj//xAAUEAEAAAAAAAAAAAAAAAAAAAAg/9oACAEBAAY/Al//xAAbEAABBAMAAAAAAAAAAAAAAAAAARAhUTFBof/aAAgBAQABPyFdxUnWZCaMD//aAAwDAQACAAMAAAAQG/8A/8QAFREBAQAAAAAAAAAAAAAAAAAAAQD/2gAIAQMBAT8Qlb//xAAVEQEBAAAAAAAAAAAAAAAAAAAAYf/aAAgBAgEBPxCSD//EABoQAQEBAAMBAAAAAAAAAAAAAAERAEFRkYH/2gAIAQEAAT8QLJ55dCNL4wxQv3UCFJ3gBJ9MEVJVd//Z&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;debug in chrome&quot;
+        title=&quot;debug in chrome&quot;
+        src=&quot;/static/81940091cc430cc930fd8a6e2c3f691f/88218/chrome-debug.jpg&quot;
+        srcset=&quot;/static/81940091cc430cc930fd8a6e2c3f691f/7237a/chrome-debug.jpg 148w,
+/static/81940091cc430cc930fd8a6e2c3f691f/0cfdf/chrome-debug.jpg 295w,
+/static/81940091cc430cc930fd8a6e2c3f691f/88218/chrome-debug.jpg 590w,
+/static/81940091cc430cc930fd8a6e2c3f691f/3516d/chrome-debug.jpg 629w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h3&gt;总结&lt;/h3&gt;
+&lt;p&gt;调试程序能够帮助我们对代码有更深刻的了解，能够提供运行时的执行上下文、调用栈等信息。此外，在调试线上混淆后的代码时，对各种 a、o、f 等难以理解的变量名参数名也能通过运行时的变量数据轻易分析出代码的基本逻辑。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[webpack 监听外部文件变更]]></title><description><![CDATA[背景 最近几个月的工作都以移动端为主，主要的工作内容是将 PC 端已有的核心业务移植到 Mobile…]]></description><link>https://www.keisei.top/watch-external-files-webpack-plugin/</link><guid isPermaLink="false">https://www.keisei.top/watch-external-files-webpack-plugin/</guid><pubDate>Thu, 10 Sep 2020 23:20:00 GMT</pubDate><content:encoded>&lt;h3&gt;背景&lt;/h3&gt;
 &lt;p&gt;最近几个月的工作都以移动端为主，主要的工作内容是将 PC 端已有的核心业务移植到 Mobile 端。那么就遇到了相同的业务逻辑是再实现一套还是直接复用原有的逻辑呢？作为业务方，我们肯定是希望能复用的复用，减少额外的工作量，另外后期的维护也会比较轻松。即便将来出现了产品逻辑或交互上的差异，到时候再拆分也是可以的。所以我们的结论是 PC 端与 Mobile 端为两个平行目录，但是在执行打包命令时会先将 PC 端文件目录同步到 Mobile 下的 &lt;code class=&quot;language-text&quot;&gt;plugin&lt;/code&gt; 目录，用到了哪段逻辑，就引用 &lt;code class=&quot;language-text&quot;&gt;plugin/\*&lt;/code&gt; 下的文件。&lt;/p&gt;
 &lt;h3&gt;痛点&lt;/h3&gt;
 &lt;p&gt;在本地开发过程中，当修改了 PC 目录下某个文件，如果需要触发 webpack 打包，需要手动将变更的该文件 copy 到上述 &lt;code class=&quot;language-text&quot;&gt;plugin&lt;/code&gt; 目录下。PS: 这里的 webpack 打包是在 Mobile 的目录下执行的。&lt;/p&gt;
