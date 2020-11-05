@@ -18,7 +18,7 @@
   "homepage": "https://www.keisei.top",
   "private": true,
   "dependencies": {
-    "@types/lodash": "^4.14.149",
+    "@types/lodash": "^4.14.162",
     "@types/react-dom": "^16.9.5",
     "@types/react-helmet": "^5.0.14",
     "@types/styled-components": "^4.4.0",
