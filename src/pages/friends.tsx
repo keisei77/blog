@@ -8,6 +8,11 @@ const FRIENDS = [
     title: '卡拉搜索',
     desc: '',
   },
+  {
+    url: 'https://kalacloud.com/',
+    title: '卡拉云低代码工具',
+    desc: '',
+  }
 ];
 
 const Friends = () => (
