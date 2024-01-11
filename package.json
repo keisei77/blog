@@ -23,7 +23,7 @@
     "@types/react-helmet": "^5.0.14",
     "@types/styled-components": "^4.4.0",
     "babel-plugin-styled-components": "^1.10.6",
-    "gatsby": "^2.17.12",
+    "gatsby": "^3.0.0",
     "gatsby-cli": "^2.8.29",
     "gatsby-image": "^2.2.32",
     "gatsby-plugin-feed": "^2.3.20",
